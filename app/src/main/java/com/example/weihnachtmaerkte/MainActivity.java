@@ -3,6 +3,7 @@ package com.example.weihnachtmaerkte;
 import android.accessibilityservice.AccessibilityService;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -33,6 +34,11 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
+import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_explore);
+
+        loadUser();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -143,5 +151,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
         }
         return true;
+    }
+
+    private void loadUser(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        String id = sharedPreferences.getString(USER_ID, "");
+        TextView textView = findViewById(R.id.header_username);
+        Toast.makeText(MainActivity.this, id, Toast.LENGTH_LONG).show();
+        //textView.setText(id);
     }
 }
