@@ -78,13 +78,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_search_black_24dp);
-        /*fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
     }
 
     @Override
@@ -141,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
             case R.id.nav_friends:
                 Intent intent = new Intent(MainActivity.this, FriendsActivity.class);
+                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 drawer.closeDrawer(GravityCompat.START);
                 drawer.postDelayed(new Runnable() {
                     @Override
@@ -155,9 +149,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void loadUser(){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        String id = sharedPreferences.getString(USER_ID, "");
+        Long id = sharedPreferences.getLong(USER_ID, -1);
         TextView textView = findViewById(R.id.header_username);
-        Toast.makeText(MainActivity.this, id, Toast.LENGTH_LONG).show();
+        //Toast.makeText(MainActivity.this, id, Toast.LENGTH_LONG).show();
         //textView.setText(id);
+
     }
 }

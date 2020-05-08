@@ -137,5 +137,4 @@ class BackendMock {
                 friends)
     }
 
-    
 }

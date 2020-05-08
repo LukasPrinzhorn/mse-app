@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         if(sharedPreferences.contains(USER_ID)){
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
             finish();
         }
@@ -49,9 +48,10 @@ public class LoginActivity extends AppCompatActivity {
     private void registerUser(String username){
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(USER_ID, "1");
+        editor.putLong(USER_ID, 1);
         editor.apply();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
     }
 
 
