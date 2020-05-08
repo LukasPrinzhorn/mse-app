@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -29,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.view.View;
 import android.view.Menu;
@@ -70,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         toggle.syncState();
 
 
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -85,12 +86,56 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         .setAction("Action", null).show();
             }
         });*/
+
+        /**
+         * Kotlin Code for the Java method below
+        */
+        /*
+        val layout: SlidingUpPanelLayout = findViewById(R.id.slider)
+
+        layout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
+            override fun onPanelSlide(panel: View?, slideOffset: Float) {
+                findViewById<RelativeLayout>(R.id.sliderLayout).background.alpha =
+                        Math.round(slideOffset * 100)
+            }
+
+            override fun onPanelStateChanged(
+                    panel: View?,
+                    previousState: SlidingUpPanelLayout.PanelState?,
+                    newState: SlidingUpPanelLayout.PanelState?
+            ) {
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
+                    showToast("Panel expanded")
+                }
+            }
+        })
+        */
+        SlidingUpPanelLayout layout = findViewById(R.id.slider);
+
+        layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                //findViewById(R.id.sliderLayout).setAlpha((slideOffset*0.5f)+0.2f);
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED){
+                    showToast("Expanded");
+                    FragmentContainerView fragment = findViewById(R.id.fragmentSliding);
+                }
+            }
+        });
+    }
+
+    private void showToast(String text) {
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-         navigationView.setCheckedItem(R.id.nav_explore);
+        navigationView.setCheckedItem(R.id.nav_explore);
     }
 
     @Override
@@ -110,10 +155,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bitmap bigNav = BitmapFactory.decodeResource(getResources(), R.drawable.navigation);
         Bitmap smallNav = Bitmap.createScaledBitmap(bigNav, 140, 140, false);
         BitmapDescriptor navIcon = BitmapDescriptorFactory.fromBitmap(smallNav);
-        LatLng zwidemu = new LatLng(48.204509,16.360773);
-        LatLng mq = new LatLng(48.203322,16.358644);
-        LatLng spittelberg = new LatLng(48.204116,16.355023);
-        LatLng position = new LatLng(48.203475,16.360252);
+        LatLng zwidemu = new LatLng(48.204509, 16.360773);
+        LatLng mq = new LatLng(48.203322, 16.358644);
+        LatLng spittelberg = new LatLng(48.204116, 16.355023);
+        LatLng position = new LatLng(48.203475, 16.360252);
         mMap.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
         mMap.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
         mMap.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
@@ -126,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -135,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.nav_explore:
                 drawer.closeDrawer(GravityCompat.START);
                 break;
@@ -153,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-    private void loadUser(){
+    private void loadUser() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         String id = sharedPreferences.getString(USER_ID, "");
         TextView textView = findViewById(R.id.header_username);

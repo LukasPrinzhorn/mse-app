@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.weihnachtmaerkte"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -56,6 +56,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation "androidx.core:core-ktx:1.2.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Sliding Up Panel
+    implementation "com.sothree.slidinguppanel:library:3.4.0"
 }
 repositories {
     mavenCentral()
