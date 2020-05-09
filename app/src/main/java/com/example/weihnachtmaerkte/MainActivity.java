@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import com.example.weihnachtmaerkte.markets.ListFragment;
+import com.example.weihnachtmaerkte.markets.SlidingFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -31,6 +33,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentManager;
 
 import android.view.View;
 import android.view.Menu;
@@ -87,50 +90,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
-        /**
-         * Kotlin Code for the Java method below
-        */
-        /*
-        val layout: SlidingUpPanelLayout = findViewById(R.id.slider)
+        SlidingFragment slidingFragment = new SlidingFragment();
+        ListFragment listFragment = new ListFragment();
+        FragmentManager manager = getSupportFragmentManager();
 
-        layout.addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
-            override fun onPanelSlide(panel: View?, slideOffset: Float) {
-                findViewById<RelativeLayout>(R.id.sliderLayout).background.alpha =
-                        Math.round(slideOffset * 100)
-            }
+        manager.beginTransaction()
+                .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
+                .commit();
 
-            override fun onPanelStateChanged(
-                    panel: View?,
-                    previousState: SlidingUpPanelLayout.PanelState?,
-                    newState: SlidingUpPanelLayout.PanelState?
-            ) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
-                    showToast("Panel expanded")
-                }
-            }
-        })
-        */
         SlidingUpPanelLayout layout = findViewById(R.id.slider);
-
         layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
-                //findViewById(R.id.sliderLayout).setAlpha((slideOffset*0.5f)+0.2f);
+                if (slideOffset > 0){
+                    manager.beginTransaction()
+                            .replace(R.id.fragmentSliding, listFragment, listFragment.getTag())
+                            .commit();
+                }
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.EXPANDED){
-                    showToast("Expanded");
-                    FragmentContainerView fragment = findViewById(R.id.fragmentSliding);
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    manager.beginTransaction()
+                            .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
+                            .commit();
                 }
             }
         });
     }
 
-    private void showToast(String text) {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
-    }
 
     @Override
     protected void onResume() {
@@ -200,9 +189,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void loadUser() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        Long id = sharedPreferences.getLong(USER_ID, -1);
-        TextView textView = findViewById(R.id.header_username);
+        //SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        //Long id = sharedPreferences.getLong(USER_ID, -1);
+        //TextView textView = findViewById(R.id.header_username);
         //Toast.makeText(MainActivity.this, id, Toast.LENGTH_LONG).show();
         //textView.setText(id);
     }

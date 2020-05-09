@@ -78,11 +78,11 @@
 
                 <androidx.fragment.app.FragmentContainerView
                     android:id="@+id/fragmentSliding"
-                    android:name="com.example.weihnachtmaerkte.markets.SlidingFragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center|top"
                     tools:layout="@layout/fragment_sliding" />
+                <!-- android:name="com.example.weihnachtmaerkte.markets.SlidingFragment" -->
 
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
