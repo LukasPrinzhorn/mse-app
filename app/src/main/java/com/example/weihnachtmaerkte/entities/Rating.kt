@@ -6,9 +6,9 @@ data class Rating(val id: Long,
                   var drinks: Float,
                   var crowding: Float,
                   var family: Float,
-                  var title: String,
-                  var text: String,
-                  var images: List<String>
+                  var title: String?,
+                  var text: String?,
+                  var images: List<String>?
 
 ) {
 }

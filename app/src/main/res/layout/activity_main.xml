@@ -62,7 +62,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-                app:umanoPanelHeight="216dp"
+                app:umanoPanelHeight="316dp"
                 tools:context=".MainActivity">
 
                 <androidx.fragment.app.FragmentContainerView
@@ -82,7 +82,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center|top"
                     tools:layout="@layout/fragment_sliding" />
-                <!-- android:name="com.example.weihnachtmaerkte.markets.SlidingFragment" -->
 
             </com.sothree.slidinguppanel.SlidingUpPanelLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
