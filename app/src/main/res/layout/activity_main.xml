@@ -62,7 +62,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-                app:umanoPanelHeight="316dp"
+                app:umanoPanelHeight="148dp"
                 tools:context=".MainActivity">
 
                 <androidx.fragment.app.FragmentContainerView

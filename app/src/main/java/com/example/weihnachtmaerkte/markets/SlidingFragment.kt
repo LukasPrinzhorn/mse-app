@@ -30,21 +30,17 @@ class SlidingFragment : Fragment() {
     }
 
     private fun addDataSet() {
-        val data:List<Market> = DataSource.createMarketsDataSet()
+        val data: List<Market> = DataSource.createMarketsDataSet()
         previewAdapter.submitList(data)
     }
 
     private fun initRecyclerView() {
 
         recycler_view.apply {
-            layoutManager = LinearLayoutManager(this@SlidingFragment.activity, LinearLayoutManager.HORIZONTAL,false)
-         /*   val topSpacingDecorator =
-                    TopSpacingItemDecoration(
-                            30
-                    )
-            addItemDecoration(topSpacingDecorator)*/
-            previewAdapter =
-                    PreviewRecyclerAdapter()
+            layoutManager = LinearLayoutManager(this@SlidingFragment.activity, LinearLayoutManager.HORIZONTAL, false)
+            val topSpacingDecorator = TopSpacingItemDecoration(20)
+            addItemDecoration(topSpacingDecorator)
+            previewAdapter = PreviewRecyclerAdapter()
             adapter = previewAdapter
         }
     }
