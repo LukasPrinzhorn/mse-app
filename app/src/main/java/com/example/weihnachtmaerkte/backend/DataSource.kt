@@ -133,6 +133,19 @@ class DataSource {
                             "@drawable/zwidemu"
                     )
             )
+            list.add(
+                    Market(105,
+                            "Weihnachtsmarkt Karlsplatz",
+                            "Karlsplatz 1, 1040 Wien",
+                            coordinates,
+                            "27.11.2020 - 06.01.2021",
+                            "10 - 22Uhr",
+                            "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
+                            listOf(rating4),
+                            //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png"
+                            "@drawable/karlsplatz"
+                    )
+            )
             return list;
         }
     }

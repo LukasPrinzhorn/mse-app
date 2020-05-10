@@ -2,6 +2,7 @@ package com.example.weihnachtmaerkte;
 
 import android.accessibilityservice.AccessibilityService;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -35,6 +37,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.AttributeSet;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -90,36 +93,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });*/
 
-        SlidingFragment slidingFragment = new SlidingFragment();
-        ListFragment listFragment = new ListFragment();
-        FragmentManager manager = getSupportFragmentManager();
-
-        manager.beginTransaction()
-                .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
-                .commit();
-
-        SlidingUpPanelLayout layout = findViewById(R.id.slider);
-        layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-                if (slideOffset > 0){
-                    manager.beginTransaction()
-                            .replace(R.id.fragmentSliding, listFragment, listFragment.getTag())
-                            .commit();
-                }
-            }
-
-            @Override
-            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    manager.beginTransaction()
-                            .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
-                            .commit();
-                }
-            }
-        });
+        initSLidingPanel();
     }
-
 
     @Override
     protected void onResume() {
@@ -186,6 +161,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
         }
         return true;
+    }
+
+    private void initSLidingPanel() {
+        SlidingFragment slidingFragment = new SlidingFragment();
+        ListFragment listFragment = new ListFragment();
+        FragmentManager manager = getSupportFragmentManager();
+
+        manager.beginTransaction()
+                .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
+                .commit();
+
+        SlidingUpPanelLayout layout = findViewById(R.id.slider);
+        layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                if (slideOffset > 0) {
+
+                    manager.beginTransaction()
+                            .replace(R.id.fragmentSliding, listFragment, listFragment.getTag())
+                            .commit();
+                }
+            }
+
+            @Override
+            public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
+                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
+                    manager.beginTransaction()
+                            .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
+                            .commit();
+                }
+            }
+        });
     }
 
     private void loadUser() {

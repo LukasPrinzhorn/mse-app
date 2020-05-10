@@ -14,14 +14,14 @@ import com.example.weihnachtmaerkte.entities.Rating
 import kotlin.collections.ArrayList
 
 
-class PreviewRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Market> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return PreviewViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                        R.layout.preview_item,
+                        R.layout.list_item,
                         parent,
                         false
                 )
@@ -30,6 +30,7 @@ class PreviewRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
+
             is PreviewViewHolder -> {
                 holder.bind(items[position])
             }
@@ -46,53 +47,46 @@ class PreviewRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     class PreviewViewHolder
-        constructor(
-                itemView: View
-        ) : RecyclerView.ViewHolder(itemView) {
+    constructor(
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
 
-            val market_image = itemView.market_image
-            val market_name = itemView.market_name
-            val market_rating = itemView.market_rating
+        val market_image = itemView.market_image
+        val market_name = itemView.market_name
+        val market_rating = itemView.market_rating
 
-            fun bind(market: Market) {
+        fun bind(market: Market) {
             //only for testing purpose
-                if (market.image.startsWith("@")) {
-                    if (market.image == "@drawable/museumsquartier") {
-                        market_image.setImageResource(R.drawable.museumsquartier)
-                    }
-                    if (market.image == "@drawable/spittelberg") {
-                        market_image.setImageResource(R.drawable.spittelberg)
-                    }
-                    if (market.image == "@drawable/wiener_weihnachtstraum") {
-                        market_image.setImageResource(R.drawable.wiener_weihnachtstraum)
-                    }
-                    if (market.image == "@drawable/zwidemu") {
-                        market_image.setImageResource(R.drawable.zwidemu)
-                    }
-                    if (market.image == "@drawable/karlsplatz") {
-                        market_image.setImageResource(R.drawable.karlsplatz)
-                    }
-                } else {
-                    val requestOptions = RequestOptions()
-                            .placeholder(R.drawable.ic_launcher_background)
-                            .error(R.drawable.ic_launcher_background)
-
-                    Glide.with(itemView.context)
-                            .applyDefaultRequestOptions(requestOptions)
-                            .load(market.image)
-                            .into(market_image)
+            if (market.image.startsWith("@")) {
+                if (market.image == "@drawable/museumsquartier") {
+                    market_image.setImageResource(R.drawable.museumsquartier)
                 }
-
-                if (market.name.length > 17) {
-                    var text: String = market.name.substring(0,17) + "...";
-                    market_name.setText(text)
-                } else {
-                    market_name.setText(market.name)
-
+                if (market.image == "@drawable/spittelberg") {
+                    market_image.setImageResource(R.drawable.spittelberg)
                 }
-                market_rating.setText(calculateAverageRating(market.ratings))
+                if (market.image == "@drawable/wiener_weihnachtstraum") {
+                    market_image.setImageResource(R.drawable.wiener_weihnachtstraum)
+                }
+                if (market.image == "@drawable/zwidemu") {
+                    market_image.setImageResource(R.drawable.zwidemu)
+                }
+                if (market.image == "@drawable/karlsplatz") {
+                    market_image.setImageResource(R.drawable.karlsplatz)
+                }
+            } else {
+                val requestOptions = RequestOptions()
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_background)
 
+                Glide.with(itemView.context)
+                        .applyDefaultRequestOptions(requestOptions)
+                        .load(market.image)
+                        .into(market_image)
             }
+            market_name.setText(market.name)
+            market_rating.setText(calculateAverageRating(market.ratings))
+
+        }
 
         private fun calculateAverageRating(list: List<Rating>): String {
             var counter: Int = 0
