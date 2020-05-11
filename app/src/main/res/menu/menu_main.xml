@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.weihnachtmaerkte.MainActivity">
-    <item
+    <!--<item
         android:title="Location Enabled"
         app:showAsAction="always"
-        android:icon="@drawable/ic_location_off_black_24dp"/>
+        android:icon="@drawable/ic_location_off_black_24dp"/>-->
 </menu>

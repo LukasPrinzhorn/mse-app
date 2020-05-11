@@ -115,47 +115,47 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
                     .addActionIcon(R.drawable.ic_person_remove)
                     .create()
                     .decorate();
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-        }
-    };
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
 
-    @Override
-    public void onBackPressed() {
-        if(drawer.isDrawerOpen(GravityCompat.START)){
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.nav_friends:
+        @Override
+        public void onBackPressed() {
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
                 drawer.closeDrawer(GravityCompat.START);
-                break;
-            case R.id.nav_explore:
-                Intent intent = new Intent(FriendsActivity.this, MainActivity.class);
-                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                drawer.closeDrawer(GravityCompat.START);
-                drawer.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(intent);
-                    }
-                }, 200);
-                break;
+            } else {
+                super.onBackPressed();
+            }
         }
-        return true;
-    }
 
-    private void loadFriends(){
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        Long id = sharedPreferences.getLong(USER_ID, -1);
-        if(id != -1){
-            BackendMock backendMock = new BackendMock();
-            user = backendMock.getUserById(id);
-            friends = user.getFriends();
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.nav_friends:
+                    drawer.closeDrawer(GravityCompat.START);
+                    break;
+                case R.id.nav_explore:
+                    Intent intent = new Intent(FriendsActivity.this, MainActivity.class);
+                    intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    drawer.closeDrawer(GravityCompat.START);
+                    drawer.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(intent);
+                        }
+                    }, 200);
+                    break;
+            }
+            return true;
+        }
+
+        private void loadFriends() {
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+            Long id = sharedPreferences.getLong(USER_ID, -1);
+            if (id != -1) {
+                BackendMock backendMock = new BackendMock();
+                user = backendMock.getUserById(id);
+                friends = user.getFriends();
             /*LinearLayout friendLayout = findViewById(R.id.friends_layout);
             for(SimpleUserDTO u: user.getFriends()){
                 TextView textView = new TextView(FriendsActivity.this);
@@ -166,10 +166,10 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
                 textView.setText(u.getUsername());
                 friendLayout.addView(textView);
             }*/
-            List<String> usernames = new ArrayList<>();
-            for(SimpleUserDTO u: friends){
-                usernames.add(u.getUsername());
-            }
+                List<String> usernames = new ArrayList<>();
+                for (SimpleUserDTO u : friends) {
+                    usernames.add(u.getUsername());
+                }
 
 
             /*ListView friendsList = findViewById(R.id.friends_list);
@@ -184,23 +184,23 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
                 }
             });*/
 
-            recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(FriendsActivity.this));
+                recyclerView = findViewById(R.id.recyclerView);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(FriendsActivity.this));
 
-            adapter = new FriendAdapter(friends, FriendsActivity.this);
-            recyclerView.setAdapter(adapter);
+                adapter = new FriendAdapter(friends, FriendsActivity.this);
+                recyclerView.setAdapter(adapter);
 
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-            itemTouchHelper.attachToRecyclerView(recyclerView);
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                itemTouchHelper.attachToRecyclerView(recyclerView);
+            }
+
         }
 
-    }
-
-    private void removeFriend(Long id){
-        String message = "Removed friend with id " + id;
-        Toast.makeText(FriendsActivity.this, message, Toast.LENGTH_LONG).show();
-    }
+        private void removeFriend(Long id) {
+            String message = "Removed friend with id " + id;
+            Toast.makeText(FriendsActivity.this, message, Toast.LENGTH_LONG).show();
+        }
 
     /*class FriendAdapter extends ArrayAdapter<String>{
 
@@ -228,47 +228,46 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     }*/
 
 
+        class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
 
-    class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder>{
+            private List<SimpleUserDTO> friends = new ArrayList<>();
+            private Context context;
 
-        private List<SimpleUserDTO> friends = new ArrayList<>();
-        private Context context;
+            public FriendAdapter(List<SimpleUserDTO> friends, Context context) {
+                this.friends = friends;
+                this.context = context;
+            }
 
-        public FriendAdapter(List<SimpleUserDTO> friends, Context context) {
-            this.friends = friends;
-            this.context = context;
-        }
+            @NonNull
+            @Override
+            public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_row, parent, false);
 
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_row, parent, false);
+                return new ViewHolder(v);
+            }
 
-            return new ViewHolder(v);
-        }
+            @Override
+            public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+                String username = friends.get(position).getUsername();
 
-            String username = friends.get(position).getUsername();
+                holder.friendUsername.setText(username);
+            }
 
-            holder.friendUsername.setText(username);
-        }
+            @Override
+            public int getItemCount() {
+                return friends.size();
+            }
 
-        @Override
-        public int getItemCount() {
-            return friends.size();
-        }
+            class ViewHolder extends RecyclerView.ViewHolder {
 
-        class ViewHolder extends RecyclerView.ViewHolder{
+                public TextView friendUsername;
 
-            public TextView friendUsername;
+                public ViewHolder(@NonNull View itemView) {
+                    super(itemView);
 
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-
-                friendUsername = itemView.findViewById(R.id.friend_username);
+                    friendUsername = itemView.findViewById(R.id.friend_username);
+                }
             }
         }
     }
-}

@@ -17,4 +17,5 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Placeholder for List of markets</string>
+    <string name="freunde">Freunde:</string>
 </resources>
