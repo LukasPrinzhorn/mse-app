@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.backend.DataSource
 import com.example.weihnachtmaerkte.entities.Market
-import kotlinx.android.synthetic.main.fragment_sliding.*
+import kotlinx.android.synthetic.main.fragment_preview.*
 
 
 /**

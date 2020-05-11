@@ -1,19 +1,14 @@
 package com.example.weihnachtmaerkte;
 
-import android.accessibilityservice.AccessibilityService;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.example.weihnachtmaerkte.markets.ListFragment;
-import com.example.weihnachtmaerkte.markets.SlidingFragment;
+import com.example.weihnachtmaerkte.markets.PreviewFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -23,30 +18,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
-import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -164,12 +148,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initSLidingPanel() {
-        SlidingFragment slidingFragment = new SlidingFragment();
+        PreviewFragment previewFragment = new PreviewFragment();
         ListFragment listFragment = new ListFragment();
         FragmentManager manager = getSupportFragmentManager();
 
         manager.beginTransaction()
-                .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
+                .replace(R.id.fragmentSliding, previewFragment, previewFragment.getTag())
                 .commit();
 
         SlidingUpPanelLayout layout = findViewById(R.id.slider);
@@ -188,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
                 if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
                     manager.beginTransaction()
-                            .replace(R.id.fragmentSliding, slidingFragment, slidingFragment.getTag())
+                            .replace(R.id.fragmentSliding, previewFragment, previewFragment.getTag())
                             .commit();
                 }
             }
