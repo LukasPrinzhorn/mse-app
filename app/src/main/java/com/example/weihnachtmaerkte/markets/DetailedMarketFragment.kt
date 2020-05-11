@@ -1,15 +1,17 @@
 package com.example.weihnachtmaerkte.markets
 
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
+
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -30,7 +32,7 @@ class DetailedMarketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.button_first).setOnClickListener {
+        view.findViewById<ImageView>(R.id.detailed_edit).setOnClickListener {
             findNavController().navigate(R.id.action_First2Fragment_to_Second2Fragment)
         }
 
@@ -44,9 +46,43 @@ class DetailedMarketFragment : Fragment() {
                 market = it
             }
         }
+        setData()
 
-        val textView: TextView = view.findViewById(R.id.textview_first)
-        val text = "Fragment of market '${market.name}' with id ${market.id}"
-        textView.text = text
+    }
+
+    private fun setData() {
+        var textView: TextView = view?.findViewById(R.id.detailed_market_name) as TextView
+        textView.text = market.name
+        textView = view?.findViewById(R.id.detailed_market_address) as TextView
+        textView.text = market.address
+        textView = view?.findViewById(R.id.detailed_market_date) as TextView
+        textView.text = market.dates
+        textView = view?.findViewById(R.id.detailed_market_time) as TextView
+        textView.text = market.openingHours
+        textView = view?.findViewById(R.id.detailed_market_homepage) as TextView
+        textView.text = market.weblink
+        textView.movementMethod = LinkMovementMethod.getInstance()
+
+        val imageView : ImageView = view?.findViewById(R.id.detailed_market_image) as ImageView
+
+        if (market.image.startsWith("@")) {
+            if (market.image == "@drawable/museumsquartier") {
+                imageView.setImageResource(R.mipmap.museumsquartier)
+            }
+            if (market.image == "@drawable/spittelberg") {
+                imageView.setImageResource(R.mipmap.spittelberg)
+            }
+            if (market.image == "@drawable/wiener_weihnachtstraum") {
+                imageView.setImageResource(R.mipmap.wiener_weihnachtstraum)
+            }
+            if (market.image == "@drawable/zwidemu") {
+                imageView.setImageResource(R.mipmap.zwidemu)
+            }
+            if (market.image == "@drawable/karlsplatz") {
+                imageView.setImageResource(R.mipmap.karlsplatz)
+            }
+        }/* else {
+            //load real picture
+        }*/
     }
 }

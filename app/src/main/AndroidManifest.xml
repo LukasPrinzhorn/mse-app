@@ -17,10 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".markets.DetailedMarketActivity"
-            android:label="@string/title_activity_detailed_market"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity
             android:name=".LoginActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize">
@@ -56,6 +52,10 @@
             android:name=".FriendsActivity"
             android:label="Friends"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".markets.DetailedMarketActivity"
+            android:label="@string/title_activity_detailed_market"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

@@ -7,12 +7,13 @@ import kotlinx.android.synthetic.main.activity_detailed_market.*
 
 class DetailedMarketActivity : AppCompatActivity() {
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_market)
         setSupportActionBar(toolbar)
-
-
     }
+
 
 }
