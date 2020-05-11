@@ -13,27 +13,26 @@ import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.preview_item.view.*
 
 
-class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ListRecyclerAdapter(private var onMarketListener: OnMarketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Market> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PreviewViewHolder(
+        return ListViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                         R.layout.list_item,
                         parent,
                         false
-                )
+                ),
+                onMarketListener
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-
-            is PreviewViewHolder -> {
+            is ListViewHolder -> {
                 holder.bind(items[position])
             }
-
         }
     }
 
@@ -41,14 +40,19 @@ class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         return items.size
     }
 
+    interface OnMarketListener {
+        fun onMarketClick(position: Int)
+    }
+
     fun submitList(marketList: List<Market>) {
         items = marketList
     }
 
-    class PreviewViewHolder
+    class ListViewHolder
     constructor(
-            itemView: View
-    ) : RecyclerView.ViewHolder(itemView) {
+            itemView: View,
+            private var onMarketListener: OnMarketListener
+    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val marketImage = itemView.market_image
         private val marketName = itemView.market_name
@@ -84,7 +88,11 @@ class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             }
             marketName.text = market.name
             marketRating.text = calculateAverageRating(market.ratings)
+            itemView.setOnClickListener(this)
+        }
 
+        override fun onClick(v: View?) {
+            onMarketListener.onMarketClick(adapterPosition)
         }
 
         private fun calculateAverageRating(list: List<Rating>): String {

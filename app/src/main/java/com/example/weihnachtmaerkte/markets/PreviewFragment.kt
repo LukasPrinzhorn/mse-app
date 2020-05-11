@@ -41,6 +41,14 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener{
         addDataSet()
     }
 
+    override fun onMarketClick(position: Int) {
+        val intent = Intent(this@PreviewFragment.activity, DetailedMarketActivity::class.java)
+        val bundle = Bundle()
+        bundle.putLong("id", items[position].id)
+        intent.putExtra("bundle",bundle)
+        startActivity(intent)
+    }
+
     private fun addDataSet() {
         items = DataSource.createMarketsDataSet()
         previewAdapter.submitList(items)
@@ -56,14 +64,4 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener{
             adapter = previewAdapter
         }
     }
-
-    override fun onMarketClick(position: Int) {
-        val intent = Intent(this@PreviewFragment.activity, DetailedMarketActivity::class.java)
-        val bundle = Bundle()
-        bundle.putLong("id", items[position].id)
-        intent.putExtra("bundle",bundle)
-        startActivity(intent)
-    }
-
-
 }
