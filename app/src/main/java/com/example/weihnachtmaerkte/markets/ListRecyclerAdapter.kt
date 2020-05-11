@@ -58,19 +58,19 @@ class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             //only for testing purpose
             if (market.image.startsWith("@")) {
                 if (market.image == "@drawable/museumsquartier") {
-                    marketImage.setImageResource(R.drawable.museumsquartier)
+                    marketImage.setImageResource(R.mipmap.museumsquartier)
                 }
                 if (market.image == "@drawable/spittelberg") {
-                    marketImage.setImageResource(R.drawable.spittelberg)
+                    marketImage.setImageResource(R.mipmap.spittelberg)
                 }
                 if (market.image == "@drawable/wiener_weihnachtstraum") {
-                    marketImage.setImageResource(R.drawable.wiener_weihnachtstraum)
+                    marketImage.setImageResource(R.mipmap.wiener_weihnachtstraum)
                 }
                 if (market.image == "@drawable/zwidemu") {
-                    marketImage.setImageResource(R.drawable.zwidemu)
+                    marketImage.setImageResource(R.mipmap.zwidemu)
                 }
                 if (market.image == "@drawable/karlsplatz") {
-                    marketImage.setImageResource(R.drawable.karlsplatz)
+                    marketImage.setImageResource(R.mipmap.karlsplatz)
                 }
             } else {
                 val requestOptions = RequestOptions()
