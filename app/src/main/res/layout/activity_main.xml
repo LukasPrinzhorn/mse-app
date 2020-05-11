@@ -31,7 +31,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
-                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+                    app:popupTheme="@style/AppTheme.PopupOverlay"
+                    app:contentInsetStartWithNavigation="0dp"/>
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -51,7 +52,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    <!--<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                         android:id="@+id/fab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -66,7 +67,12 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.0"
-                        app:tint="@color/textColor" />
+                        app:tint="@color/textColor"
+                        android:text="Search text">
+
+
+                    </com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton>-->
+
 
                     <androidx.fragment.app.FragmentContainerView
                         android:id="@+id/map"

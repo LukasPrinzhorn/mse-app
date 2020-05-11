@@ -4,4 +4,10 @@
         android:title="Location Enabled"
         app:showAsAction="always"
         android:icon="@drawable/ic_location_off_black_24dp"/>-->
+    <item
+        android:id="@+id/search_item"
+        android:title="Search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_search_black_24dp"/>
 </menu>
