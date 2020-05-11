@@ -6,10 +6,10 @@
         <item
             android:id="@+id/nav_explore"
             android:icon="@drawable/ic_explore"
-            android:title="Explore" />
+            android:title="@string/menu_explore" />
         <item
             android:id="@+id/nav_friends"
             android:icon="@drawable/ic_friend"
-            android:title="Friends" />
+            android:title="@string/menu_friends" />
     </group>
 </menu>

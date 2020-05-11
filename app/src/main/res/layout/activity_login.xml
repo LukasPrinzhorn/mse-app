@@ -6,7 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/login_logo"
@@ -17,7 +17,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/app_icon"/>
 
         <TextView
             android:id="@+id/textView2"
@@ -28,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
-            android:text="Wähle einen Nutzernamen" />
+            android:text="@string/choose_username" />
 
         <EditText
             android:id="@+id/username"
@@ -42,9 +43,10 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
             android:gravity="bottom"
-            android:hint="username"
+            android:hint="@string/hint_username"
             android:inputType="text"
-            android:selectAllOnFocus="true" />
+            android:selectAllOnFocus="true"
+            android:autofillHints="@string/hint_username"/>
 
         <Button
             android:id="@+id/login"

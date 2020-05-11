@@ -1,20 +1,14 @@
 package com.example.weihnachtmaerkte;
 
-import android.accessibilityservice.AccessibilityService;
-import android.app.FragmentTransaction;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.example.weihnachtmaerkte.markets.ListFragment;
 import com.example.weihnachtmaerkte.markets.PreviewFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -22,44 +16,24 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputLayout;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.xmlpull.v1.XmlPullParser;
-
-import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
-import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
-    private GoogleMap mMap;
     private DrawerLayout drawer;
     private NavigationView navigationView;
 
@@ -80,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_explore);
 
-        loadUser();
+        //loadUser();
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -124,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
         Bitmap bigCandyCane = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
         Bitmap smallCandyCane = Bitmap.createScaledBitmap(bigCandyCane, 200, 200, false);
         BitmapDescriptor candyCaneIcon = BitmapDescriptorFactory.fromBitmap(smallCandyCane);
@@ -136,13 +109,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng mq = new LatLng(48.203322, 16.358644);
         LatLng spittelberg = new LatLng(48.204116, 16.355023);
         LatLng position = new LatLng(48.203475, 16.360252);
-        mMap.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
-        mMap.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
-        mMap.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
-        mMap.addMarker(new MarkerOptions().position(position).icon(navIcon));
+        googleMap.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
+        googleMap.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
+        googleMap.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
+        googleMap.addMarker(new MarkerOptions().position(position).icon(navIcon));
         // Add a marker in Sydney and move the camera
         CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(17).tilt(45f).bearing(-60).build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
     }
 
@@ -165,12 +138,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Intent intent = new Intent(MainActivity.this, FriendsActivity.class);
                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 drawer.closeDrawer(GravityCompat.START);
-                drawer.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(intent);
-                    }
-                }, 200);
+                drawer.postDelayed(() -> startActivity(intent), 200);
                 break;
         }
         return true;
@@ -208,11 +176,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
     }
 
-    private void loadUser() {
-        //SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        //Long id = sharedPreferences.getLong(USER_ID, -1);
-        //TextView textView = findViewById(R.id.header_username);
-        //Toast.makeText(MainActivity.this, id, Toast.LENGTH_LONG).show();
-        //textView.setText(id);
-    }
+    /*private void loadUser() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        Long id = sharedPreferences.getLong(USER_ID, -1);
+
+    }*/
 }

@@ -11,14 +11,15 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_person"/>
+        android:src="@drawable/ic_person"
+        android:contentDescription="@string/person_icon"/>
 
     <TextView
         android:id="@+id/header_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="Hallo, Lukas"
+        android:text="@string/hallo_lukas"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
 
