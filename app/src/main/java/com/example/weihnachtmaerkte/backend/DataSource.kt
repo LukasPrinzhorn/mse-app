@@ -4,7 +4,6 @@ import com.example.weihnachtmaerkte.backend.DTOs.DetailedMarketDTO
 import com.example.weihnachtmaerkte.backend.DTOs.SimpleRatingDTO
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
-import kotlin.collections.ArrayList
 
 class DataSource {
 
@@ -12,7 +11,7 @@ class DataSource {
 
         fun listOfMarkets(): List<DetailedMarketDTO> {
             val list = ArrayList<DetailedMarketDTO>()
-            var simpleRatingDTO: SimpleRatingDTO =
+            val simpleRatingDTO =
                     SimpleRatingDTO(4.8f,
                             3.7f,
                             3.5f,
@@ -38,7 +37,7 @@ class DataSource {
 
         fun createMarketsDataSet(): List<Market> {
             val list = ArrayList<Market>()
-            var rating1: Rating =
+            val rating1 =
                     Rating(1,
                             4.8f,
                             3.7f,
@@ -49,7 +48,7 @@ class DataSource {
                             null,
                             null)
 
-            var rating2: Rating =
+            val rating2 =
                     Rating(1,
                             3.8f,
                             2.7f,
@@ -59,7 +58,7 @@ class DataSource {
                             null,
                             null,
                             null)
-            var rating3: Rating =
+            val rating3 =
                     Rating(3,
                             1.8f,
                             1.7f,
@@ -69,7 +68,7 @@ class DataSource {
                             null,
                             null,
                             null)
-            var rating4: Rating =
+            val rating4 =
                     Rating(4,
                             4.8f,
                             4.7f,
@@ -79,7 +78,7 @@ class DataSource {
                             null,
                             null,
                             null)
-            var coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)
+            val coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)
 
             list.add(
                     Market(101,
@@ -146,7 +145,7 @@ class DataSource {
                             "@drawable/karlsplatz"
                     )
             )
-            return list;
+            return list
         }
     }
 

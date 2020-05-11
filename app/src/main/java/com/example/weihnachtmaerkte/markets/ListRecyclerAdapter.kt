@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.preview_item.view.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
-import kotlin.collections.ArrayList
+import kotlinx.android.synthetic.main.preview_item.view.*
 
 
 class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -51,27 +50,27 @@ class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
 
-        val market_image = itemView.market_image
-        val market_name = itemView.market_name
-        val market_rating = itemView.market_rating
+        private val marketImage = itemView.market_image
+        private val marketName = itemView.market_name
+        private val marketRating = itemView.market_rating
 
         fun bind(market: Market) {
             //only for testing purpose
             if (market.image.startsWith("@")) {
                 if (market.image == "@drawable/museumsquartier") {
-                    market_image.setImageResource(R.drawable.museumsquartier)
+                    marketImage.setImageResource(R.drawable.museumsquartier)
                 }
                 if (market.image == "@drawable/spittelberg") {
-                    market_image.setImageResource(R.drawable.spittelberg)
+                    marketImage.setImageResource(R.drawable.spittelberg)
                 }
                 if (market.image == "@drawable/wiener_weihnachtstraum") {
-                    market_image.setImageResource(R.drawable.wiener_weihnachtstraum)
+                    marketImage.setImageResource(R.drawable.wiener_weihnachtstraum)
                 }
                 if (market.image == "@drawable/zwidemu") {
-                    market_image.setImageResource(R.drawable.zwidemu)
+                    marketImage.setImageResource(R.drawable.zwidemu)
                 }
                 if (market.image == "@drawable/karlsplatz") {
-                    market_image.setImageResource(R.drawable.karlsplatz)
+                    marketImage.setImageResource(R.drawable.karlsplatz)
                 }
             } else {
                 val requestOptions = RequestOptions()
@@ -81,39 +80,39 @@ class ListRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 Glide.with(itemView.context)
                         .applyDefaultRequestOptions(requestOptions)
                         .load(market.image)
-                        .into(market_image)
+                        .into(marketImage)
             }
-            market_name.setText(market.name)
-            market_rating.setText(calculateAverageRating(market.ratings))
+            marketName.text = market.name
+            marketRating.text = calculateAverageRating(market.ratings)
 
         }
 
         private fun calculateAverageRating(list: List<Rating>): String {
-            var counter: Int = 0
-            var result: Float = 0f
+            var counter = 0
+            var result = 0f
             list.forEach {
                 result += (it.ambience + it.crowding + it.drinks + it.family + it.food) / 5.0f
                 counter++
             }
-            if (counter != 0) {
+            return if (counter != 0) {
                 result = (result / counter)
-                return "" + round(result, 1)
+                "" + round(result, 1)
             } else {
-                return "0"
+                "0"
             }
         }
 
         private fun round(number:Float, decimal:Int):Float{
-            var numberString: String = "" + number
-            var splits : List<String> = numberString.split(".");
+            val numberString: String = "" + number
+            val splits : List<String> = numberString.split(".")
             if (splits.size == 1){
                 return number
             }
-            if (splits.size == 2){
-                var s: String = splits.get(0) + "." + splits.get(1).substring(0, decimal)
-                return s.toFloat()
+            return if (splits.size == 2){
+                val s: String = splits[0] + "." + splits[1].substring(0, decimal)
+                s.toFloat()
             } else {
-                return 0f
+                0f
             }
         }
     }

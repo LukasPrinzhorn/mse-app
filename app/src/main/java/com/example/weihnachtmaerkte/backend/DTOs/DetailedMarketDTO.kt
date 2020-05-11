@@ -9,5 +9,4 @@ data class DetailedMarketDTO(val id: Long,
                              var averageRating: SimpleRatingDTO,
                              var ratingIds: List<Long>,
                              var image: String
-) {
-}
+)

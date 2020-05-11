@@ -8,15 +8,23 @@
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_maps">Map</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_sign_in">Register</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Placeholder for List of markets</string>
     <string name="freunde">Freunde:</string>
     <string name="title_activity_detailed_market">DetailedMarketActivity</string>
+
+    <!-- Content Descriptions -->
+    <string name="content_description_ImageView_arrow_Down">Nach unten zeigender Pfeil</string>
+    <string name="content_description_ImageView_arrow_Up">Nach oben zeigender Pfeil</string>
+    <string name="content_description_ImageView_market_image">Bild des Weihnachtsmarktes</string>
+    <string name="content_description_ImageView_image_star">Sternbewertung</string>
+
+    <!-- Default Values -->
+    <string name="default_market_rating">0</string>
+    <string name="default_market_name">Not Known</string>
+    <string name="default_market_distance">1,2km</string>
 </resources>

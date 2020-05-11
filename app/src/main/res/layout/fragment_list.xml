@@ -17,17 +17,17 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingHorizontal="1dp"
-
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/arrow_Down2" />
+            app:layout_constraintTop_toBottomOf="@id/arrow_Down" />
 
 
         <ImageView
-            android:id="@+id/arrow_Down2"
+            android:id="@+id/arrow_Down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/content_description_ImageView_arrow_Down"
             android:src="@drawable/ic_keyboard_arrow_down_white_48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

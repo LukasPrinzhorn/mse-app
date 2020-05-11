@@ -24,8 +24,8 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener{
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        var view: View = inflater.inflate(R.layout.fragment_preview, container, false)
-        var arrow: View = view.findViewById<ImageView>(R.id.arrowUp)
+        val view: View = inflater.inflate(R.layout.fragment_preview, container, false)
+        val arrow: View = view.findViewById<ImageView>(R.id.arrow_Up)
         arrow.setOnClickListener {
             val layout: SlidingUpPanelLayout? = activity?.findViewById(R.id.slider)
             if (layout != null) {
@@ -58,8 +58,8 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener{
     }
 
     override fun onMarketClick(position: Int) {
-        var intent : Intent = Intent(this@PreviewFragment.activity, DetailedMarketActivity::class.java)
-        var bundle : Bundle = Bundle()
+        val intent = Intent(this@PreviewFragment.activity, DetailedMarketActivity::class.java)
+        val bundle = Bundle()
         bundle.putLong("id", items[position].id)
         intent.putExtra("bundle",bundle)
         startActivity(intent)

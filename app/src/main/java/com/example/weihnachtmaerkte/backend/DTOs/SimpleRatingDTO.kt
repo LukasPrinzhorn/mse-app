@@ -5,5 +5,4 @@ data class SimpleRatingDTO(var ambience: Float,
                       var drinks: Float,
                       var crowding: Float,
                       var family: Float
-) {
-}
+)

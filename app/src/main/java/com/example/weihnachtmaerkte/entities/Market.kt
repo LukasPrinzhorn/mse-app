@@ -9,5 +9,4 @@ data class Market(val id : Long,
                   var weblink: String,
                   var ratings: List<Rating>,
                   var image: String
-) {
-}
+)

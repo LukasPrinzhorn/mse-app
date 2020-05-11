@@ -10,5 +10,4 @@ data class Rating(val id: Long,
                   var text: String?,
                   var images: List<String>?
 
-) {
-}
+)

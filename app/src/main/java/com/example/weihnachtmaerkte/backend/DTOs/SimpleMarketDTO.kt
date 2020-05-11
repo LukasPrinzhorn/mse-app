@@ -5,5 +5,4 @@ data class SimpleMarketDTO(val id: Long,
                            var coordinates: DoubleArray,
                            var averageRating: SimpleRatingDTO,
                            var image: String
-) {
-}
+)

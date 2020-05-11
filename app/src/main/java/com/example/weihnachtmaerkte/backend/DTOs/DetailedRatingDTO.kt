@@ -9,5 +9,4 @@ data class DetailedRatingDTO(val id: Long,
                              var title: String,
                              var text: String,
                              var images: List<String>
-) {
-}
+)

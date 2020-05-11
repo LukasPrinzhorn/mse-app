@@ -1,7 +1,6 @@
 package com.example.weihnachtmaerkte.backend
 
 import com.example.weihnachtmaerkte.backend.DTOs.*
-import java.lang.reflect.Array
 
 class BackendMock {
 
@@ -34,7 +33,7 @@ class BackendMock {
     }
 
     fun getAllMarketsFiltered(xCoord: Double, yCoord: Double, radius: Double): List<SimpleMarketDTO> {
-        var result = ArrayList<SimpleMarketDTO>();
+        val result = ArrayList<SimpleMarketDTO>()
 
         result.add(SimpleMarketDTO(1,
                 "Wiener Weihnachtstraum",
@@ -97,19 +96,19 @@ class BackendMock {
                 "SampleImage"
         ))
 
-        return result;
+        return result
     }
 
     fun getAllMarkets(): List<SimpleMarketDTO> {
-        return getAllMarketsFiltered(0.0, 0.0, 0.0);
+        return getAllMarketsFiltered(0.0, 0.0, 0.0)
     }
 
     fun getCoordinates(input: String): DoubleArray? {
-        return DoubleArray(2) { 2.0 };
+        return DoubleArray(2) { 2.0 }
     }
 
     fun getRatingById(id: Long): DetailedRatingDTO {
-        var images = ArrayList<String>();
+        val images = ArrayList<String>()
         images.add("Image 1")
         images.add("Image 2")
 
@@ -126,7 +125,7 @@ class BackendMock {
     }
 
     fun getUserById(id: Long): DetailedUserDTO? {
-        var friends = ArrayList<SimpleUserDTO>()
+        val friends = ArrayList<SimpleUserDTO>()
         friends.add(SimpleUserDTO(2,
                 "lukas_1"))
         friends.add(SimpleUserDTO(3,

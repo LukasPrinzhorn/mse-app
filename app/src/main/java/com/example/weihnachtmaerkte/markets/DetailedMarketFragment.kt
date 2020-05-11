@@ -1,12 +1,12 @@
 package com.example.weihnachtmaerkte.markets
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
@@ -34,19 +34,19 @@ class DetailedMarketFragment : Fragment() {
             findNavController().navigate(R.id.action_First2Fragment_to_Second2Fragment)
         }
 
-        var bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
-        var id: Long = bundle?.get("id") as Long
+        val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
+        val id: Long = bundle?.get("id") as Long
 
 
-        var markets : List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
+        val markets : List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
         markets.forEach{
             if (it.id == id){
                 market = it
             }
         }
 
-        var textView: TextView = view.findViewById(R.id.textview_first)
-        var text: String = "Fragment of market '${market.name}' with id ${market.id}"
+        val textView: TextView = view.findViewById(R.id.textview_first)
+        val text = "Fragment of market '${market.name}' with id ${market.id}"
         textView.text = text
     }
 }
