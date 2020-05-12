@@ -7,6 +7,6 @@
     <dimen name="nav_header_height">176dp</dimen>
 
     <!-- Personal sizes>-->
-    <dimen name="default_detailed_rating_text_size">14sp</dimen>
+    <dimen name="default_detailed_rating_text_size">16sp</dimen>
 
 </resources>

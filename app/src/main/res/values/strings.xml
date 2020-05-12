@@ -46,7 +46,7 @@
     <string name="default_detailed_market_date">Dates not Found</string>
     <string name="default_detailed_market_time">Time not Found</string>
     <string name="default_detailed_market_homepage">Link not Found</string>
-    <string name="default_market_rate_title">Bewerten Sie Ihr Erlebnis am Weihnachtsmarkt</string>
+    <string name="default_market_rate_title">Bewerten Sie Ihr Erlebnis am Adventmarkt</string>
 
     <!-- shown Strings -->
     <string name="label_ambiente">Ambiente: </string>
@@ -56,4 +56,5 @@
     <string name="label_family">Familie: </string>
     <string name="label_comment_title">Erfahrungsberichte: </string>
     <string name="friend_add">friend_add</string>
+    <string name="hint_comment">Kommentare zu Ihrem Erlebnis</string>
 </resources>
