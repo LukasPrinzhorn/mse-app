@@ -4,4 +4,7 @@
     <color name="colorAccent">#52704a</color>
     <color name="textColor">#FFFFFF</color>
     <color name="borderColor">#000000</color>
+    <color name="colorAccent80opacity">#3252704A</color>
+    <color name="colorPrimary80opacity">#33920006</color>
+
 </resources>

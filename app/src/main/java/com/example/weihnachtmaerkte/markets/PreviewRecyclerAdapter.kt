@@ -88,8 +88,8 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
                         .into(marketImage)
             }
 
-            if (market.name.length > 17) {
-                val text: String = market.name.substring(0, 17) + "..."
+            if (market.name.length > 16) {
+                val text: String = market.name.substring(0, 16) + "..."
                 marketName.text = text
             } else {
                 marketName.text = market.name

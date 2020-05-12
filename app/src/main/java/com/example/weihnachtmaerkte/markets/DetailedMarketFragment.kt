@@ -53,7 +53,7 @@ class DetailedMarketFragment : Fragment() {
     private fun setData() {
         var textView: TextView = view?.findViewById(R.id.detailed_market_name) as TextView
         textView.text = market.name
-        textView = view?.findViewById(R.id.detailed_market_address) as TextView
+        textView = view?.findViewById(R.id.detailed_market_rate_title) as TextView
         textView.text = market.address
         textView = view?.findViewById(R.id.detailed_market_date) as TextView
         textView.text = market.dates
