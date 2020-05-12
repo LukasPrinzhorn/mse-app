@@ -7,17 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
+import com.example.weihnachtmaerkte.entities.Rating
+import kotlinx.android.synthetic.main.fragment_detailed_market.*
 
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class DetailedMarketFragment : Fragment() {
-    private lateinit var market : Market
+class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListener {
+    private lateinit var market: Market
+    private lateinit var commentViewAdapter: CommentRecyclerAdapter
+    private var items: List<Rating> = ArrayList()
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +40,7 @@ class DetailedMarketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<ImageView>(R.id.detailed_edit).setOnClickListener {
+        view.findViewById<ImageView>(R.id.fab_detailed_edit).setOnClickListener {
             findNavController().navigate(R.id.action_First2Fragment_to_Second2Fragment)
         }
 
@@ -40,20 +48,41 @@ class DetailedMarketFragment : Fragment() {
         val id: Long = bundle?.get("id") as Long
 
 
-        val markets : List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
-        markets.forEach{
-            if (it.id == id){
+        val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
+        markets.forEach {
+            if (it.id == id) {
                 market = it
             }
         }
         setData()
+        initRecyclerView()
+        addDataSet()
+    }
 
+    override fun onCommentClick(position: Int) {
+        Toast.makeText(this@DetailedMarketFragment.activity, "hiiii", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun addDataSet() {
+        items = market.ratings
+        commentViewAdapter.submitList(items)
+    }
+
+    private fun initRecyclerView() {
+
+        recycler_view_comment.apply {
+            layoutManager = LinearLayoutManager(this@DetailedMarketFragment.activity, RecyclerView.VERTICAL, false)
+            val topSpacingDecorator = TopSpacingItemDecoration(20)
+            addItemDecoration(topSpacingDecorator)
+            commentViewAdapter = CommentRecyclerAdapter(this@DetailedMarketFragment)
+            adapter = commentViewAdapter
+        }
     }
 
     private fun setData() {
         var textView: TextView = view?.findViewById(R.id.detailed_market_name) as TextView
         textView.text = market.name
-        textView = view?.findViewById(R.id.detailed_market_rate_title) as TextView
+        textView = view?.findViewById(R.id.detailed_market_address) as TextView
         textView.text = market.address
         textView = view?.findViewById(R.id.detailed_market_date) as TextView
         textView.text = market.dates
@@ -63,7 +92,7 @@ class DetailedMarketFragment : Fragment() {
         textView.text = market.weblink
         textView.movementMethod = LinkMovementMethod.getInstance()
 
-        val imageView : ImageView = view?.findViewById(R.id.detailed_market_image) as ImageView
+        val imageView: ImageView = view?.findViewById(R.id.detailed_market_image) as ImageView
 
         if (market.image.startsWith("@")) {
             if (market.image == "@drawable/museumsquartier") {

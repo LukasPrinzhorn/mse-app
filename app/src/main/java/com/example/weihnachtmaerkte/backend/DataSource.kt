@@ -44,8 +44,8 @@ class DataSource {
                             3.5f,
                             2.3f,
                             1.8f,
-                            null,
-                            null,
+                            "Ekelhaft",
+                            "Überall liegt Müll.",
                             null)
 
             val rating2 =
@@ -55,8 +55,8 @@ class DataSource {
                             4.5f,
                             1.3f,
                             1.3f,
-                            null,
-                            null,
+                            "Köstliches Essen",
+                            "Besonders Heinz Bratwurststand ist sehr zu empfehlen.",
                             null)
             val rating3 =
                     Rating(3,
@@ -65,8 +65,8 @@ class DataSource {
                             1.5f,
                             0.3f,
                             1.3f,
-                            null,
-                            null,
+                            "Geil",
+                            "Punsch haut richtig rein",
                             null)
             val rating4 =
                     Rating(4,
@@ -75,8 +75,8 @@ class DataSource {
                             4.5f,
                             2.3f,
                             4.3f,
-                            null,
-                            null,
+                            "Wunderbar",
+                            "Meine Familie liebt Wien's Weihnachtsmärkte, aber diesen ganz besonders",
                             null)
             val coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)
 
@@ -88,7 +88,7 @@ class DataSource {
                             "27.11.2020 - 06.01.2021",
                             "10 - 22Uhr",
                             "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
-                            listOf(rating1, rating2),
+                            listOf(rating1, rating2, rating3, rating4),
                             //"https://raw.githubusercontent.com/mitchtabian/Blog-Images/master/digital_ocean.png"
                             "@drawable/wiener_weihnachtstraum"
                     )

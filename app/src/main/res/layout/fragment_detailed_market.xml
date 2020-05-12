@@ -1,453 +1,476 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorAccent80opacity"
-        tools:context=".markets.DetailedMarketFragment">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent80opacity"
+    tools:context=".markets.DetailedMarketFragment">
 
 
-        <ImageView
-            android:id="@+id/detailed_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/empty_box_bg"
-            android:contentDescription="@string/content_description_Edit_Icon"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/detailed_market_rate_title"
-            app:srcCompat="@drawable/ic_rate_review_black_24dp" />
+    <ImageView
+        android:id="@+id/detailed_market_image"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:contentDescription="@string/content_description_ImageView_market_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/detailed_market_image"
-            android:layout_width="0dp"
-            android:layout_height="160dp"
-            android:contentDescription="@string/content_description_ImageView_market_image"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/detailed_market_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/default_market_name"
-            android:textColor="@color/textColor"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toBottomOf="@+id/detailed_market_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/detailed_market_rate_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="56dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/default_detailed_market_address"
-            android:textColor="@color/borderColor"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailed_market_image" />
-
-        <TextView
-            android:id="@+id/detailed_market_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/default_detailed_market_date"
-            android:textColor="@color/borderColor"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/detailed_market_rate_title"
-            app:layout_constraintTop_toBottomOf="@+id/detailed_market_rate_title" />
-
-        <TextView
-            android:id="@+id/detailed_market_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/default_detailed_market_time"
-            android:textColor="@color/borderColor"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/detailed_market_date"
-            app:layout_constraintTop_toBottomOf="@+id/detailed_market_date" />
-
-        <TextView
-            android:id="@+id/detailed_market_homepage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:autoLink="web"
-            android:maxWidth="200dp"
-            android:text="@string/default_detailed_market_homepage"
-            android:textColor="#0000EE"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/detailed_market_time"
-            app:layout_constraintTop_toBottomOf="@+id/detailed_market_time" />
+    <TextView
+        android:id="@+id/detailed_market_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_market_name"
+        android:textColor="@color/textColor"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/detailed_market_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
-        <ImageView
-            android:id="@+id/detailed_market_address_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/content_description_Icon_address"
-            app:layout_constraintEnd_toStartOf="@+id/detailed_market_rate_title"
-            app:layout_constraintTop_toTopOf="@+id/detailed_market_rate_title"
-            app:srcCompat="@drawable/ic_location_on_black_24dp" />
 
-        <ImageView
-            android:id="@+id/detailed_market_date_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/content_description_Icon_date"
-            app:layout_constraintEnd_toStartOf="@+id/detailed_market_date"
-            app:layout_constraintTop_toTopOf="@+id/detailed_market_date"
-            app:srcCompat="@drawable/ic_date_range_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_market_time_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/content_description_Icon_time"
-            app:layout_constraintEnd_toStartOf="@+id/detailed_market_time"
-            app:layout_constraintTop_toTopOf="@+id/detailed_market_time"
-            app:srcCompat="@drawable/ic_access_time_black_24dp" />
-
-     <ImageView
-         android:id="@+id/detailed_market_homepage_image"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:layout_marginEnd="16dp"
-         android:contentDescription="@string/content_description_Icon_time"
-         app:layout_constraintEnd_toStartOf="@+id/detailed_market_time"
-         app:layout_constraintTop_toTopOf="@+id/detailed_market_homepage"
-         app:srcCompat="@drawable/ic_home_black_24dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/detailed_market_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
 
-     <TextView
-            android:id="@+id/detailed_ambiente"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/label_ambiente"
-            android:textColor="@color/borderColor"
-            android:textSize="@dimen/default_detailed_rating_text_size"
-            app:layout_constraintStart_toStartOf="@+id/detailed_market_time_image"
-            app:layout_constraintTop_toBottomOf="@id/detailed_market_homepage" />
-
-        <ImageView
-            android:id="@+id/detailed_ambiente_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_ambiente"
-            app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_ambiente_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_ambiente_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_2"
-            app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_ambiente_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_3"
-            app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
-            app:srcCompat="@drawable/ic_star_half_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_ambiente_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_4"
-            app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <TextView
-            android:id="@+id/detailed_speisen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/label_speisen"
-            android:textColor="@color/borderColor"
-            android:textSize="@dimen/default_detailed_rating_text_size"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
-            app:layout_constraintTop_toBottomOf="@id/detailed_ambiente" />
-
-        <ImageView
-            android:id="@+id/detailed_speisen_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_speisen_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_speisen_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_speisen_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_speisen_2"
-            app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_speisen_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_speisen_3"
-            app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_speisen_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_speisen_4"
-            app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <TextView
-            android:id="@+id/detailed_getraenke"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/label_getraenke"
-            android:textColor="@color/borderColor"
-            android:textSize="@dimen/default_detailed_rating_text_size"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
-            app:layout_constraintTop_toBottomOf="@id/detailed_speisen" />
-
-        <ImageView
-            android:id="@+id/detailed_getraenke_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toStartOf="@+id/detailed_speisen_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_getraenke_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_getraenke_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_2"
-            app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_getraenke_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_3"
-            app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_getraenke_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_4"
-            app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
-            app:srcCompat="@drawable/ic_star_half_black_24dp" />
-
-        <TextView
-            android:id="@+id/detailed_crowding"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/label_crowding"
-            android:textColor="@color/borderColor"
-            android:textSize="@dimen/default_detailed_rating_text_size"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
-            app:layout_constraintTop_toBottomOf="@id/detailed_getraenke" />
-
-        <ImageView
-            android:id="@+id/detailed_crowding_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_crowding_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_crowding_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_crowding_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_crowding_2"
-            app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
-            app:srcCompat="@drawable/ic_star_half_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_crowding_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_crowding_3"
-            app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_crowding_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_crowding_4"
-            app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
-            app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
-        <TextView
-            android:id="@+id/detailed_family"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/label_family"
-            android:textColor="@color/borderColor"
-            android:textSize="@dimen/default_detailed_rating_text_size"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
-            app:layout_constraintTop_toBottomOf="@id/detailed_crowding" />
-
-        <ImageView
-            android:id="@+id/detailed_family_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toStartOf="@+id/detailed_ambiente_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_family"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_family_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_family_1"
-            app:layout_constraintTop_toTopOf="@+id/detailed_family"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_family_3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_family_2"
-            app:layout_constraintTop_toTopOf="@+id/detailed_family"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_family_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_family_3"
-            app:layout_constraintTop_toTopOf="@+id/detailed_family"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <ImageView
-            android:id="@+id/detailed_family_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:contentDescription="@string/content_description_Rating_Star"
-            app:layout_constraintStart_toEndOf="@+id/detailed_family_4"
-            app:layout_constraintTop_toTopOf="@+id/detailed_family"
-            app:srcCompat="@drawable/ic_star_black_24dp" />
-
-        <TextView
-            android:id="@+id/detailed_comment_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="@string/label_comment_title"
-            android:textSize="24sp"
-            android:textColor="@color/borderColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailed_family" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_detailed_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/ic_rate_review_white_24dp"
+                app:backgroundTint="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/detailed_market_address"
+                app:tint="@color/textColor" />
+
+            <TextView
+                android:id="@+id/detailed_market_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="56dp"
+                android:layout_marginTop="16dp"
+                android:text="@string/default_detailed_market_address"
+                android:textColor="@color/borderColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/detailed_market_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/default_detailed_market_date"
+                android:textColor="@color/borderColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/detailed_market_address"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_market_address" />
+
+            <TextView
+                android:id="@+id/detailed_market_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/default_detailed_market_time"
+                android:textColor="@color/borderColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/detailed_market_date"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_market_date" />
+
+            <TextView
+                android:id="@+id/detailed_market_homepage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:autoLink="web"
+                android:maxWidth="200dp"
+                android:text="@string/default_detailed_market_homepage"
+                android:textColor="#0000EE"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/detailed_market_time"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_market_time" />
+
+
+            <ImageView
+                android:id="@+id/detailed_market_address_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/content_description_Icon_address"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_market_address"
+                app:layout_constraintTop_toTopOf="@+id/detailed_market_address"
+                app:srcCompat="@drawable/ic_location_on_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_market_date_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/content_description_Icon_date"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_market_date"
+                app:layout_constraintTop_toTopOf="@+id/detailed_market_date"
+                app:srcCompat="@drawable/ic_date_range_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_market_time_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/content_description_Icon_time"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_market_time"
+                app:layout_constraintTop_toTopOf="@+id/detailed_market_time"
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_market_homepage_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/content_description_Icon_time"
+                app:layout_constraintEnd_toStartOf="@+id/detailed_market_time"
+                app:layout_constraintTop_toTopOf="@+id/detailed_market_homepage"
+                app:srcCompat="@drawable/ic_home_black_24dp" />
+
+
+            <TextView
+                android:id="@+id/detailed_ambiente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/label_ambiente"
+                android:textColor="@color/borderColor"
+                android:textSize="@dimen/default_detailed_rating_text_size"
+                app:layout_constraintStart_toStartOf="@+id/detailed_market_time_image"
+                app:layout_constraintTop_toBottomOf="@id/detailed_market_homepage" />
+
+            <ImageView
+                android:id="@+id/detailed_ambiente_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_ambiente"
+                app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_ambiente_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_ambiente_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_2"
+                app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_ambiente_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_3"
+                app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
+                app:srcCompat="@drawable/ic_star_half_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_ambiente_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_4"
+                app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <TextView
+                android:id="@+id/detailed_speisen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/label_speisen"
+                android:textColor="@color/borderColor"
+                android:textSize="@dimen/default_detailed_rating_text_size"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
+                app:layout_constraintTop_toBottomOf="@id/detailed_ambiente" />
+
+            <ImageView
+                android:id="@+id/detailed_speisen_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_speisen_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_speisen_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_speisen_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_speisen_2"
+                app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_speisen_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_speisen_3"
+                app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_speisen_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_speisen_4"
+                app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <TextView
+                android:id="@+id/detailed_getraenke"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/label_getraenke"
+                android:textColor="@color/borderColor"
+                android:textSize="@dimen/default_detailed_rating_text_size"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
+                app:layout_constraintTop_toBottomOf="@id/detailed_speisen" />
+
+            <ImageView
+                android:id="@+id/detailed_getraenke_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toStartOf="@+id/detailed_speisen_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_getraenke_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_getraenke_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_2"
+                app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_getraenke_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_3"
+                app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_getraenke_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_4"
+                app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
+                app:srcCompat="@drawable/ic_star_half_black_24dp" />
+
+            <TextView
+                android:id="@+id/detailed_crowding"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/label_crowding"
+                android:textColor="@color/borderColor"
+                android:textSize="@dimen/default_detailed_rating_text_size"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
+                app:layout_constraintTop_toBottomOf="@id/detailed_getraenke" />
+
+            <ImageView
+                android:id="@+id/detailed_crowding_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_crowding_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_crowding_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_crowding_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_crowding_2"
+                app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
+                app:srcCompat="@drawable/ic_star_half_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_crowding_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_crowding_3"
+                app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_crowding_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_crowding_4"
+                app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
+                app:srcCompat="@drawable/ic_star_border_black_24dp" />
+
+            <TextView
+                android:id="@+id/detailed_family"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/label_family"
+                android:textColor="@color/borderColor"
+                android:textSize="@dimen/default_detailed_rating_text_size"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
+                app:layout_constraintTop_toBottomOf="@id/detailed_crowding" />
+
+            <ImageView
+                android:id="@+id/detailed_family_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toStartOf="@+id/detailed_ambiente_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_family"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_family_2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_family_1"
+                app:layout_constraintTop_toTopOf="@+id/detailed_family"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_family_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_family_2"
+                app:layout_constraintTop_toTopOf="@+id/detailed_family"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_family_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_family_3"
+                app:layout_constraintTop_toTopOf="@+id/detailed_family"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <ImageView
+                android:id="@+id/detailed_family_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:contentDescription="@string/content_description_Rating_Star"
+                app:layout_constraintStart_toEndOf="@+id/detailed_family_4"
+                app:layout_constraintTop_toTopOf="@+id/detailed_family"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
+
+            <TextView
+                android:id="@+id/detailed_comment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/label_comment_title"
+                android:textColor="@color/borderColor"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_family" />
+
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_comment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingHorizontal="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detailed_comment_title"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
