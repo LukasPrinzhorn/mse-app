@@ -1,5 +1,7 @@
 package com.example.weihnachtmaerkte;
 
+import android.animation.AnimatorSet;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -27,15 +29,22 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.HorizontalScrollView;
 import android.widget.SearchView;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private Menu menu;
+
+    private boolean sortingExpanded = false;
 
 
     @Override
@@ -83,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search_item);
@@ -109,15 +119,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng mq = new LatLng(48.203322, 16.358644);
         LatLng spittelberg = new LatLng(48.204116, 16.355023);
         LatLng position = new LatLng(48.203475, 16.360252);
+        LatLng centerMapPosition = new LatLng(48.20422041318572, 16.358340494334698);
         googleMap.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
         googleMap.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
         googleMap.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
         googleMap.addMarker(new MarkerOptions().position(position).icon(navIcon));
         // Add a marker in Sydney and move the camera
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(17).tilt(45f).bearing(-60).build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(centerMapPosition).zoom(17).tilt(45f).bearing(-60).build();
         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
     }
+
 
     @Override
     public void onBackPressed() {
@@ -162,15 +173,37 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     manager.beginTransaction()
                             .replace(R.id.fragmentSliding, listFragment, listFragment.getTag())
                             .commit();
+                    menu.clear();
+                    getMenuInflater().inflate(R.menu.menu_sort, menu);
+                    menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (sortingExpanded) {
+                                item.setIcon(R.drawable.ic_sort);
+                                collapseSorting();
+                                sortingExpanded = false;
+                            } else {
+                                item.setIcon(R.drawable.ic_close);
+                                expandSorting();
+                                sortingExpanded = true;
+                            }
+                            return false;
+                        }
+                    });
+                } else {
+                    manager.beginTransaction()
+                            .replace(R.id.fragmentSliding, previewFragment, previewFragment.getTag())
+                            .commit();
+                    menu.clear();
+                    getMenuInflater().inflate(R.menu.menu_main, menu);
                 }
             }
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if (newState == SlidingUpPanelLayout.PanelState.COLLAPSED) {
-                    manager.beginTransaction()
-                            .replace(R.id.fragmentSliding, previewFragment, previewFragment.getTag())
-                            .commit();
+                if(previousState == SlidingUpPanelLayout.PanelState.EXPANDED && sortingExpanded){
+                    sortingExpanded = false;
+                    collapseSorting();
                 }
             }
         });
@@ -181,4 +214,50 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Long id = sharedPreferences.getLong(USER_ID, -1);
 
     }*/
+
+    private void collapseSorting() {
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.sorting_criterias);
+        TypedValue tv = new TypedValue();
+
+        int actionBarHeight = 0;
+        if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+        }
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(actionBarHeight, 0).setDuration(200);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                horizontalScrollView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
+                horizontalScrollView.requestLayout();
+            }
+        });
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(valueAnimator);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.start();
+    }
+
+    private void expandSorting() {
+        HorizontalScrollView horizontalScrollView = findViewById(R.id.sorting_criterias);
+        TypedValue tv = new TypedValue();
+
+        int actionBarHeight = 0;
+        if (getTheme().resolveAttribute(R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
+        }
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, actionBarHeight).setDuration(200);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                horizontalScrollView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
+                horizontalScrollView.requestLayout();
+            }
+        });
+
+        AnimatorSet set = new AnimatorSet();
+        set.play(valueAnimator);
+        set.setInterpolator(new AccelerateDecelerateInterpolator());
+        set.start();
+    }
 }

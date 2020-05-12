@@ -57,4 +57,11 @@
     <string name="label_comment_title">Erfahrungsberichte: </string>
     <string name="friend_add">friend_add</string>
     <string name="hint_comment">Kommentare zu Ihrem Erlebnis</string>
+    <string name="menu_sort">menu_sort</string>
+    <string name="rating">Bewertung</string>
+    <string name="rating_family">Familie</string>
+    <string name="rating_ambiente">Ambiente</string>
+    <string name="rating_food">Speisen</string>
+    <string name="rating_drinks">Getränke</string>
+    <string name="rating_crowding">Überfülltheit</string>
 </resources>
