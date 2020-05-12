@@ -127,9 +127,25 @@ class BackendMock {
     fun getUserById(id: Long): DetailedUserDTO? {
         val friends = ArrayList<SimpleUserDTO>()
         friends.add(SimpleUserDTO(2,
-                "lukas_1"))
+                "vienna_traveler123"))
         friends.add(SimpleUserDTO(3,
-                "lukas_2"))
+                "0815_tourist"))
+        friends.add(SimpleUserDTO(2,
+                "der_punscher"))
+        friends.add(SimpleUserDTO(3,
+                "lebkuchenfreak"))
+        friends.add(SimpleUserDTO(2,
+                "glühweinfanatiker"))
+        friends.add(SimpleUserDTO(3,
+                "christkind"))
+        friends.add(SimpleUserDTO(2,
+                "zuckerstange_nr1"))
+        friends.add(SimpleUserDTO(3,
+                "weihnachtsmann"))
+        friends.add(SimpleUserDTO(2,
+                "zimtnelke"))
+        friends.add(SimpleUserDTO(3,
+                "schaumrolle"))
 
         return DetailedUserDTO(1,
                 "robert_1",

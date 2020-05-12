@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,9 +67,12 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
         toggle.syncState();
 
         loadFriends();
+    }
 
-        FloatingActionButton friendAddButton = findViewById(R.id.friend_add_button);
-        friendAddButton.setImageResource(R.drawable.ic_person_add);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_friends, menu);
+        return true;
     }
 
     private final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -84,8 +88,9 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
             friends.remove(position);
             adapter.notifyItemRemoved(position);
+            String message = deletedUser.getUsername() + "entfernt";
 
-            Snackbar.make(recyclerView, deletedUser.getUsername(), Snackbar.LENGTH_LONG)
+            Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG)
                     .setAction("Undo", v -> {
                         friends.add(position, deletedUser);
                         adapter.notifyItemInserted(position);

@@ -34,8 +34,8 @@
     <string name="person_icon">placeholder person icon</string>
     <string name="hallo_lukas">Hallo, Lukas</string>
     <string name="hint_username">username</string>
-    <string name="menu_explore">Explore</string>
-    <string name="menu_friends">Friends</string>
+    <string name="menu_explore">Entdecken</string>
+    <string name="menu_friends">Freunde</string>
     <string name="menu_search">Search</string>
 
     <!-- shown Strings -->
@@ -45,4 +45,5 @@
     <string name="label_crowding">Überfülltheit: </string>
     <string name="label_family">Ambiente: </string>
     <string name="label_comment_title">Erfahrungsberichte: </string>
+    <string name="friend_add">friend_add</string>
 </resources>
