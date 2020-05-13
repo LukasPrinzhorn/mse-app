@@ -51,8 +51,8 @@ class CommentRecyclerAdapter(private var onCommentListener: OnCommentListener) :
             private var onCommentListener: OnCommentListener
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
-        private val commentTitle = itemView.comment_title;
-        private val commentText = itemView.comment_text;
+        private val commentTitle = itemView.comment_title
+        private val commentText = itemView.comment_text
 
 
         fun bind(rating: Rating) {

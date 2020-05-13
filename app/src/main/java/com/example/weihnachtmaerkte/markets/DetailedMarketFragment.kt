@@ -10,12 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
-import com.example.weihnachtmaerkte.entities.Rating
-import kotlinx.android.synthetic.main.fragment_detailed_market.*
 
 
 /**
@@ -23,8 +19,6 @@ import kotlinx.android.synthetic.main.fragment_detailed_market.*
  */
 class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListener {
     private lateinit var market: Market
-    private lateinit var commentViewAdapter: CommentRecyclerAdapter
-    private var items: List<Rating> = ArrayList()
 
 
     override fun onCreateView(
@@ -44,9 +38,12 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
             findNavController().navigate(R.id.action_First2Fragment_to_Second2Fragment)
         }
 
+        view.findViewById<TextView>(R.id.button_more_comments).setOnClickListener {
+            findNavController().navigate(R.id.action_First2Fragment_to_Third2Fragment)
+        }
+
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
-
 
         val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
         markets.forEach {
@@ -55,22 +52,26 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
             }
         }
         setData()
-        initRecyclerView()
-        addDataSet()
+        //initRecyclerView()
+        //addDataSet()
+
+        view.findViewById<ImageView>(R.id.detailed_go_back).setOnClickListener{
+            activity?.finish()
+        }
     }
 
     override fun onCommentClick(position: Int) {
         Toast.makeText(this@DetailedMarketFragment.activity, "hiiii", Toast.LENGTH_SHORT).show()
     }
 
-    private fun addDataSet() {
+  /*  private fun addDataSet() {
         items = market.ratings
         commentViewAdapter.submitList(items)
     }
 
     private fun initRecyclerView() {
 
-        recycler_view_comment.apply {
+        recycler_view.apply {
             layoutManager = LinearLayoutManager(this@DetailedMarketFragment.activity, RecyclerView.VERTICAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
@@ -78,7 +79,7 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
             adapter = commentViewAdapter
         }
     }
-
+*/
     private fun setData() {
         var textView: TextView = view?.findViewById(R.id.detailed_market_name) as TextView
         textView.text = market.name

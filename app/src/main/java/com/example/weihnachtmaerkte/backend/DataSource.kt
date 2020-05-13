@@ -96,11 +96,11 @@ class DataSource {
             list.add(
                     Market(102,
                             "Museumsquartier",
-                            "Rathausplatz 1, 1010 Wien",
+                            "Museumsplatz 1, 1070 Wien",
                             coordinates,
-                            "27.11.2020 - 06.01.2021",
-                            "10 - 22Uhr",
-                            "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
+                            "06.12.2020 - 28.12.2020",
+                            "13 - 20Uhr",
+                            "https://www.stadt-wien.at/wien/maerkte/winter-im-mq-advent-im-museumsquartier-wien.html",
                             listOf(rating2, rating3, rating4),
                             //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/time_to_build_a_kotlin_app.png"
                             "@drawable/museumsquartier"
@@ -109,11 +109,11 @@ class DataSource {
             list.add(
                     Market(103,
                             "Adventmarkt Spittelberg",
-                            "Rathausplatz 1, 1010 Wien",
+                            "Spittelberggasse 20/1, 1070 Wien",
                             coordinates,
-                            "27.11.2020 - 06.01.2021",
-                            "10 - 22Uhr",
-                            "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
+                            "06.12.2020 - 23.12.2020",
+                            "14 - 21Uhr",
+                            "https://spittelberg.at/de/",
                             listOf(rating1, rating2, rating3),
                             //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png"
                             "@drawable/spittelberg"
@@ -122,11 +122,11 @@ class DataSource {
             list.add(
                     Market(104,
                             "Weihnachtsdorf Marien-Theresien-Platz",
-                            "Rathausplatz 1, 1010 Wien",
+                            "Maria-Theresien-Platz, Burgring 5, 1010 Wienn",
                             coordinates,
-                            "27.11.2020 - 06.01.2021",
-                            "10 - 22Uhr",
-                            "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
+                            "24.11.2020 - 31.12.2020",
+                            "11 - 21Uhr",
+                            "https://www.weihnachtsmarkt.at/maria-theresien-platz/der-markt/uebersicht/",
                             listOf(rating1, rating4),
                             //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png"
                             "@drawable/zwidemu"
@@ -137,8 +137,8 @@ class DataSource {
                             "Weihnachtsmarkt Karlsplatz",
                             "Karlsplatz 1, 1040 Wien",
                             coordinates,
-                            "27.11.2020 - 06.01.2021",
-                            "10 - 22Uhr",
+                            "23.11.2020 - 26.12.2020",
+                            "11 - 01Uhr",
                             "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
                             listOf(rating4),
                             //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png"

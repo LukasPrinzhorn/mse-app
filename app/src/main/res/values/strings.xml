@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Adventmärkte Wien</string>
-    <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
+    <string name="third_fragment_label">Third Fragment</string>
     <string name="next">Bewerten</string>
     <string name="previous">Abbrechen</string>
-    <string name="save">Speichern</string>
+    <string name="save">Bewerten</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="title_activity_maps">Map</string>
@@ -15,8 +15,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_sign_in">Register</string>
 
-    <string name="freunde">Freunde:</string>
-    <string name="title_activity_detailed_market">DetailedMarketActivity</string>
+    <!-- unused: <string name="freunde">Freunde:</string>-->
+    <string name="title_activity_detailed_market">Übersicht</string>
 
     <!-- Content Descriptions -->
     <string name="content_description_ImageView_arrow_Down">Nach unten zeigender Pfeil</string>
@@ -27,7 +27,7 @@
     <string name="content_description_Icon_address">Icon fuer die Adresse</string>
     <string name="content_description_Icon_date">Icon fuer das Datum</string>
     <string name="content_description_Icon_time">Icon fuer die Oeffnungszeiten</string>
-    <string name="content_description_Edit_Icon">Icon zum Bewerten eines Marktes</string>
+    <string name="content_description_go_back">Go back Arrow</string>
 
 
     <!-- Default Values -->
@@ -47,6 +47,9 @@
     <string name="default_detailed_market_time">Time not Found</string>
     <string name="default_detailed_market_homepage">Link not Found</string>
     <string name="default_market_rate_title">Bewerten Sie Ihr Erlebnis am Adventmarkt</string>
+    <string name="default_comment_username">Christopher</string>
+    <string name="default_comment_title">Kein Titel</string>
+    <string name="default_comment_text">Kein Kommentar</string>
 
     <!-- shown Strings -->
     <string name="label_ambiente">Ambiente: </string>
@@ -54,7 +57,7 @@
     <string name="label_getraenke">Getränke: </string>
     <string name="label_crowding">Überfülltheit: </string>
     <string name="label_family">Familie: </string>
-    <string name="label_comment_title">Erfahrungsberichte: </string>
+    <string name="label_comment_title">Erfahrungsberichte</string>
     <string name="friend_add">friend_add</string>
     <string name="hint_comment">Kommentare zu Ihrem Erlebnis</string>
     <string name="menu_sort">menu_sort</string>

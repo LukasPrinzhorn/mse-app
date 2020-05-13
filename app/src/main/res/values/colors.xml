@@ -5,6 +5,6 @@
     <color name="textColor">#FFFFFF</color>
     <color name="borderColor">#000000</color>
     <color name="colorAccent80opacity">#3252704A</color>
-    <color name="colorPrimary80opacity">#33920006</color>
+    <color name="colorPrimary60opacity">#66920006</color>
     <color name="buttonCancel">#26000000</color>
 </resources>

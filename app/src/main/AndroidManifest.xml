@@ -56,7 +56,8 @@
         <activity
             android:name=".markets.DetailedMarketActivity"
             android:label="@string/title_activity_detailed_market"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
