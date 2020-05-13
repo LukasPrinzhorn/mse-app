@@ -5,12 +5,13 @@
     android:id="@+id/layout_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
     tools:context=".markets.ListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

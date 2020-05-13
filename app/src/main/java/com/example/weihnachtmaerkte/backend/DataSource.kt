@@ -49,6 +49,16 @@ class DataSource {
                             "Wunderbar",
                             "Meine Familie liebt Wien's Weihnachtsmärkte, aber diesen ganz besonders",
                             null)
+            val rating5 =
+                    Rating(4,
+                            4.8f,
+                            4.2f,
+                            2.5f,
+                            1.3f,
+                            4.3f,
+                            "Wunderbar",
+                            "Meine Familie liebt Wien's Weihnachtsmärkte, aber diesen ganz besonders",
+                            null)
             val coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)
 
             list.add(
@@ -59,7 +69,7 @@ class DataSource {
                             "27.11.2020 - 06.01.2021",
                             "10 - 22Uhr",
                             "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
-                            listOf(rating1, rating2, rating3, rating4),
+                            listOf(rating1, rating4),
                             //"https://raw.githubusercontent.com/mitchtabian/Blog-Images/master/digital_ocean.png"
                             "@drawable/wiener_weihnachtstraum"
                     )
@@ -78,21 +88,9 @@ class DataSource {
                             "@drawable/museumsquartier"
                     )
             )
+
             list.add(
                     Market(103,
-                            "Adventmarkt Spittelberg",
-                            "Spittelberggasse 20/1, 1070 Wien",
-                            coordinates,
-                            "06.12.2020 - 23.12.2020",
-                            "14 - 21Uhr",
-                            "https://spittelberg.at/de/",
-                            listOf(rating1, rating2, rating3),
-                            //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png"
-                            "@drawable/spittelberg"
-                    )
-            )
-            list.add(
-                    Market(104,
                             "Weihnachtsdorf Marien-Theresien-Platz",
                             "Maria-Theresien-Platz, Burgring 5, 1010 Wienn",
                             coordinates,
@@ -105,14 +103,14 @@ class DataSource {
                     )
             )
             list.add(
-                    Market(105,
+                    Market(104,
                             "Weihnachtsmarkt Karlsplatz",
                             "Karlsplatz 1, 1040 Wien",
                             coordinates,
                             "23.11.2020 - 26.12.2020",
                             "11 - 01Uhr",
                             "http://www.wiener-rathausplatz.at/christkindlmarkt.html",
-                            listOf(rating4),
+                            listOf(rating2, rating3, rating4, rating5),
                             //"https://raw.githubusercontent.com/mitchtabian/Kotlin-RecyclerView-Example/json-data-source/app/src/main/res/drawable/coding_for_entrepreneurs.png"
                             "@drawable/karlsplatz"
                     )

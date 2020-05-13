@@ -4,16 +4,6 @@ import com.example.weihnachtmaerkte.backend.DTOs.*
 
 class BackendMock {
 
-    /*fun getMarketById(id: Long): DetailedMarketDTO? {
-        val markets: List<DetailedMarketDTO> = DataSource.listOfMarkets()
-        var returnMarketDTO : DetailedMarketDTO? = null;
-        markets.forEach {
-            if (it.id == id){
-                returnMarketDTO = it;
-            }
-        }
-        return returnMarketDTO;
-    }*/
 
     fun getMarketById(id: Long): DetailedMarketDTO? {
         return DetailedMarketDTO(100,

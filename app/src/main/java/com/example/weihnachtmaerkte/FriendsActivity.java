@@ -71,12 +71,9 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_friends, menu);
-        menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                Toast.makeText(FriendsActivity.this, "NFC aktiviert, Handys aneinander halten", Toast.LENGTH_LONG).show();
-                return true;
-            }
+        menu.getItem(0).setOnMenuItemClickListener(item -> {
+            Toast.makeText(FriendsActivity.this, "NFC aktiviert, Handys aneinander halten", Toast.LENGTH_LONG).show();
+            return true;
         });
         return true;
     }
