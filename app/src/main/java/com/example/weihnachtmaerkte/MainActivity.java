@@ -29,7 +29,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
@@ -175,20 +174,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             .commit();
                     menu.clear();
                     getMenuInflater().inflate(R.menu.menu_sort, menu);
-                    menu.getItem(0).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (sortingExpanded) {
-                                item.setIcon(R.drawable.ic_sort);
-                                collapseSorting();
-                                sortingExpanded = false;
-                            } else {
-                                item.setIcon(R.drawable.ic_close);
-                                expandSorting();
-                                sortingExpanded = true;
-                            }
-                            return false;
+                    menu.getItem(0).setOnMenuItemClickListener(item -> {
+                        if (sortingExpanded) {
+                            item.setIcon(R.drawable.ic_sort);
+                            collapseSorting();
+                            sortingExpanded = false;
+                        } else {
+                            item.setIcon(R.drawable.ic_close);
+                            expandSorting();
+                            sortingExpanded = true;
                         }
+                        return false;
                     });
                 } else {
                     manager.beginTransaction()
@@ -224,12 +220,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
         ValueAnimator valueAnimator = ValueAnimator.ofInt(actionBarHeight, 0).setDuration(200);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                horizontalScrollView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
-                horizontalScrollView.requestLayout();
-            }
+        valueAnimator.addUpdateListener(animation -> {
+            horizontalScrollView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
+            horizontalScrollView.requestLayout();
         });
 
         AnimatorSet set = new AnimatorSet();
@@ -247,12 +240,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, actionBarHeight).setDuration(200);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                horizontalScrollView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
-                horizontalScrollView.requestLayout();
-            }
+        valueAnimator.addUpdateListener(animation -> {
+            horizontalScrollView.getLayoutParams().height = (Integer) animation.getAnimatedValue();
+            horizontalScrollView.requestLayout();
         });
 
         AnimatorSet set = new AnimatorSet();
