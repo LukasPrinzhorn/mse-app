@@ -56,8 +56,8 @@ class DataSource {
                             2.5f,
                             1.3f,
                             4.3f,
-                            "Wunderbar",
-                            "Meine Familie liebt Wien's Weihnachtsmärkte, aber diesen ganz besonders",
+                            "Omas Apfelzauber",
+                            "Die schönste Zeit im Jahr noch süßer mit Omas Apfelzauber Punsch beim Kesslerstand. Und das zu nur 3€",
                             null)
             val coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)
 

@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,7 +57,6 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
     }
 
     override fun onCommentClick(position: Int) {
-        Toast.makeText(this@DetailedMarketCommentsFragment.activity, "hiiii", Toast.LENGTH_SHORT).show()
     }
 
     private fun addDataSet() {
