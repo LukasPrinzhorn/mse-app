@@ -1,9 +1,11 @@
 package com.example.weihnachtmaerkte.markets
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -34,10 +36,12 @@ class DetailedMarketRateFragment : Fragment() {
 
         view.findViewById<Button>(R.id.button_rate_go_back).setOnClickListener {
             findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
+            view.hideKeyboard()
 
         }
         view.findViewById<Button>(R.id.button_rate_save).setOnClickListener {
             findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
+            view.hideKeyboard()
         }
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
@@ -51,6 +55,11 @@ class DetailedMarketRateFragment : Fragment() {
         }
 
         setData()
+    }
+
+    fun View.hideKeyboard() {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun setData() {

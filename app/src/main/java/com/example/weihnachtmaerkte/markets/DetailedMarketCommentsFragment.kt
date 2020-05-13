@@ -41,7 +41,6 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
 
         view.findViewById<ImageView>(R.id.comments_go_back).setOnClickListener {
             findNavController().navigate(R.id.action_Third3Fragment_to_First2Fragment)
-
         }
 
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
