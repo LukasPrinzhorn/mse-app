@@ -59,6 +59,7 @@
     <string name="label_family">Familie: </string>
     <string name="label_comment_title">Erfahrungsberichte</string>
     <string name="friend_add">friend_add</string>
+    <string name="hint_title">Betreff</string>
     <string name="hint_comment">Kommentare zu Ihrem Erlebnis</string>
     <string name="menu_sort">menu_sort</string>
     <string name="rating">Bewertung</string>

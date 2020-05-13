@@ -66,35 +66,5 @@ class CommentRecyclerAdapter(private var onCommentListener: OnCommentListener) :
             onCommentListener.onCommentClick(adapterPosition)
         }
 
-
-
-        private fun calculateAverageRating(list: List<Rating>): String {
-            var counter = 0
-            var result = 0f
-            list.forEach {
-                result += (it.ambience + it.crowding + it.drinks + it.family + it.food) / 5.0f
-                counter++
-            }
-            return if (counter != 0) {
-                result = (result / counter)
-                "" + round(result, 1)
-            } else {
-                "0"
-            }
-        }
-
-        private fun round(number:Float, decimal:Int):Float{
-            val numberString: String = "" + number
-            val splits : List<String> = numberString.split(".")
-            if (splits.size == 1){
-                return number
-            }
-            return if (splits.size == 2){
-                val s: String = splits[0] + "." + splits[1].substring(0, decimal)
-                s.toFloat()
-            } else {
-                0f
-            }
-        }
     }
 }

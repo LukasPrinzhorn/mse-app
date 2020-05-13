@@ -368,26 +368,45 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:backgroundTint="@color/buttonCancel"
                 android:text="@string/previous"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
+            <EditText
+                android:id="@+id/detailed_title_section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/buttonCancel"
+                android:ems="10"
+                android:hint="@string/hint_title"
+                android:inputType="textPersonName"
+                android:maxLength="20"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:paddingStart="8dp"
+                android:textColorHint="@color/textColor"
+                app:layout_constraintStart_toStartOf="@id/detailed_family"
+                app:layout_constraintTop_toBottomOf="@+id/detailed_family" />
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:textColorHint="@color/textColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/detailed_family"
-                app:layout_constraintTop_toBottomOf="@+id/detailed_family">
+                app:layout_constraintTop_toBottomOf="@+id/detailed_title_section">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/detailed_comment_section"
+                    android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/buttonCancel"
@@ -398,7 +417,7 @@
                 android:id="@+id/button_rate_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/save"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -37,7 +37,7 @@ class DetailedMarketRateFragment : Fragment() {
 
         }
         view.findViewById<Button>(R.id.button_rate_save).setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_FirstFragment)
+            findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
         }
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
