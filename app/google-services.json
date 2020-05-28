@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1050741680529",
+    "firebase_url": "https://gluehwein-maps.firebaseio.com",
+    "project_id": "gluehwein-maps",
+    "storage_bucket": "gluehwein-maps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1050741680529:android:203d18f485d3735fa5d230",
+        "android_client_info": {
+          "package_name": "com.example.weihnachtmaerkte"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1050741680529-fg5j0rqt3k3gb9c6krcr0t4gdpoprt59.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC5Q9BrA2ZYSXftksyuNmK-lBQpbw9Ho0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1050741680529-fg5j0rqt3k3gb9c6krcr0t4gdpoprt59.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
