@@ -114,7 +114,7 @@ class BackendMock {
         )
     }
 
-    fun getUserById(id: Long): DetailedUserDTO? {
+    /*fun getUserById(id: Long): DetailedUserDTO? {
         val friends = ArrayList<SimpleUserDTO>()
         friends.add(SimpleUserDTO(2,
                 "vienna_traveler123"))
@@ -140,6 +140,6 @@ class BackendMock {
         return DetailedUserDTO(1,
                 "robert_1",
                 friends)
-    }
+    }*/
 
 }

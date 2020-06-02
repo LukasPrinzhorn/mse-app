@@ -35,7 +35,7 @@
     <string name="app_icon">App Icon</string>
     <string name="choose_username">Wähle einen Nutzernamen</string>
     <string name="person_icon">placeholder person icon</string>
-    <string name="hallo_lukas">Hallo, Lukas</string>
+    <string name="hallo_lukas">Hallo</string>
     <string name="hint_username">username</string>
     <string name="menu_explore">Entdecken</string>
     <string name="menu_friends">Freunde</string>

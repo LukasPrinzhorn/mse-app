@@ -9,6 +9,14 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.weihnachtmaerkte.entities.User;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Logger;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LoginActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFERENCES = "shared_preferences";
@@ -37,13 +45,29 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void registerUser(String username){
+    private void registerUser(String username) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putLong(USER_ID, 1);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users");
+        String id = databaseReference.push().getKey();
+        RegisterUser user = new RegisterUser(username);
+        assert id != null;
+        databaseReference.child(id).setValue(user);
+
+        editor.putString(USER_ID, id);
         editor.apply();
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
+    }
+
+    private static class RegisterUser {
+        String username;
+
+        RegisterUser(String username) {
+            this.username = username;
+        }
     }
 
 

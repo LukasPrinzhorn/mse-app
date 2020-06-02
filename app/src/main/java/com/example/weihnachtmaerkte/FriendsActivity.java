@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,11 +30,23 @@ import com.example.weihnachtmaerkte.backend.DTOs.DetailedUserDTO;
 import com.example.weihnachtmaerkte.backend.DTOs.SimpleUserDTO;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
 import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
@@ -40,10 +54,14 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
     private DrawerLayout drawer;
 
-    private List<SimpleUserDTO> friends;
+    private List<SimpleUserDTO> friends = new ArrayList<>();
+
+    Map<String, String> friendsMap = new HashMap<>();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +75,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
         drawer = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_friends);
 
@@ -65,7 +83,10 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
+        setUsername();
         loadFriends();
+        
     }
 
     @Override
@@ -91,13 +112,23 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
             friends.remove(position);
             adapter.notifyItemRemoved(position);
-            String message = deletedUser.getUsername() + "entfernt";
+            String message = deletedUser.getUsername() + " entfernt";
 
             Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG)
                     .setAction("Undo", v -> {
                         friends.add(position, deletedUser);
                         adapter.notifyItemInserted(position);
                     }).show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    removeFriend(deletedUser.getId());
+                }
+
+            }, 3500);
         }
 
         @Override
@@ -138,28 +169,79 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
     private void loadFriends() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        long id = sharedPreferences.getLong(USER_ID, -1);
-        if (id != -1) {
-            BackendMock backendMock = new BackendMock();
-            DetailedUserDTO user = backendMock.getUserById(id);
-            friends = user.getFriends();
+        String id = sharedPreferences.getString(USER_ID, null);
+        if (id != null) {
 
-            recyclerView = findViewById(R.id.recyclerView);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(FriendsActivity.this));
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            DatabaseReference databaseReference = firebaseDatabase.getReference("users/" + id + "/friends");
+            databaseReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    long count = dataSnapshot.getChildrenCount();
+                    friends.clear();
+                    for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                        String id = snap.getKey();
+                        loadFriendUsername(id);
+                    }
 
-            adapter = new FriendAdapter(friends);
-            recyclerView.setAdapter(adapter);
+                    recyclerView = findViewById(R.id.recyclerView);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(FriendsActivity.this));
+                }
 
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-            itemTouchHelper.attachToRecyclerView(recyclerView);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
         }
-
     }
 
-    private void removeFriend(Long id) {
-        String message = "Removed friend with id " + id;
-        Toast.makeText(FriendsActivity.this, message, Toast.LENGTH_LONG).show();
+    private void loadFriendUsername(String id) {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users/" + id + "/username");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue(String.class);
+                boolean alreadyInList = false;
+                assert username != null;
+                for (SimpleUserDTO u : friends) {
+                    if (u.getId().equals(id)) {
+                        u.setUsername(username);
+                        alreadyInList = true;
+                    }
+                }
+                if (!alreadyInList) {
+                    friends.add(new SimpleUserDTO(id, username));
+                }
+
+                adapter = new FriendAdapter(friends);
+                recyclerView.setAdapter(adapter);
+
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                itemTouchHelper.attachToRecyclerView(recyclerView);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void removeFriend(String friendId) {
+        /*String message = "Removed friend with id " + id;
+        Toast.makeText(FriendsActivity.this, message, Toast.LENGTH_LONG).show();*/
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        String userId = sharedPreferences.getString(USER_ID, null);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+        DatabaseReference ref = firebaseDatabase.getReference("users/" + friendId + "/friends/" + userId);
+        ref.removeValue();
+
+        ref = firebaseDatabase.getReference("users/" + userId + "/friends/" + friendId);
+        ref.removeValue();
+
     }
 
 
@@ -202,5 +284,29 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
                 friendUsername = itemView.findViewById(R.id.friend_username);
             }
         }
+    }
+
+    private void setUsername(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        String userId = sharedPreferences.getString(USER_ID, null);
+        assert userId != null;
+
+        TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users/" + userId);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String message = "Hallo " + dataSnapshot.child("username").getValue(String.class) + "!";
+                headerMessage.setText(message);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                String message = "Hallo";
+                headerMessage.setText(message);
+            }
+        });
     }
 }

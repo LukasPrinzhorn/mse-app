@@ -3,6 +3,7 @@ package com.example.weihnachtmaerkte;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,6 +20,11 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
@@ -29,6 +35,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Menu;
@@ -36,6 +43,12 @@ import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.SearchView;
+import android.widget.TextView;
+
+import java.util.HashMap;
+
+import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
+import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, NavigationView.OnNavigationItemSelectedListener {
 
@@ -53,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        assert getSupportActionBar() != null;
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -61,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_explore);
+
+
+        setUsername();
 
         //loadUser();
 
@@ -249,5 +266,29 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         set.play(valueAnimator);
         set.setInterpolator(new AccelerateDecelerateInterpolator());
         set.start();
+    }
+
+    private void setUsername(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        String userId = sharedPreferences.getString(USER_ID, null);
+        assert userId != null;
+
+        TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users/" + userId);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String message = "Hallo " + dataSnapshot.child("username").getValue(String.class) + "!";
+                headerMessage.setText(message);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                String message = "Hallo";
+                headerMessage.setText(message);
+            }
+        });
     }
 }
