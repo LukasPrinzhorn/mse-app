@@ -86,7 +86,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
         setUsername();
         loadFriends();
-        
+
     }
 
     @Override
