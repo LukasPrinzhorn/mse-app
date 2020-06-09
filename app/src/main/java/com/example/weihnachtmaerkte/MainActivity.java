@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
@@ -42,11 +44,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 
+import static com.example.weihnachtmaerkte.FriendsActivity.QR_CODE_PREFIX;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
 import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
@@ -272,6 +276,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         String userId = sharedPreferences.getString(USER_ID, null);
         assert userId != null;
+
+        try {
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.encodeBitmap(QR_CODE_PREFIX + userId, BarcodeFormat.QR_CODE, 400, 400);
+            ImageView imageViewQrCode = navigationView.findViewById(R.id.qr_code);
+            imageViewQrCode.setImageBitmap(bitmap);
+        } catch(Exception e) {
+            Log.i("Info", e.getMessage());
+        }
 
         TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
 

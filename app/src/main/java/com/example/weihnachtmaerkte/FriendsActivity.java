@@ -2,6 +2,7 @@ package com.example.weihnachtmaerkte;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +38,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -62,6 +68,10 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     private RecyclerView.Adapter adapter;
 
     private NavigationView navigationView;
+
+    public static final String QR_CODE_PREFIX = "weihnachtsmarkt:";
+
+    private boolean deleteCancelled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,11 +103,49 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_friends, menu);
         menu.getItem(0).setOnMenuItemClickListener(item -> {
-            Toast.makeText(FriendsActivity.this, "NFC aktiviert, Handys aneinander halten", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(FriendsActivity.this, QRScannerActivity.class);
+            IntentIntegrator integrator = new IntentIntegrator(this);
+            integrator.setPrompt("QR CODE Scannen");
+            integrator.setCameraId(0); // Use a specific camera of the device
+            integrator.setOrientationLocked(true);
+            integrator.setBeepEnabled(false);
+            integrator.setCaptureActivity(QRScannerActivity.class);
+            integrator.initiateScan();
+            //makeFriendWith("def");
             return true;
         });
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+            } else {
+                //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                if(result.getContents().startsWith(QR_CODE_PREFIX)){
+                    makeFriendWith(result.getContents().substring(QR_CODE_PREFIX.length()));
+                } else  {
+                    Toast.makeText(this, "QR Code nicht erkannt", Toast.LENGTH_LONG).show();
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void makeFriendWith(String friendId){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        String userId = sharedPreferences.getString(USER_ID, null);
+        if(userId != null && friendId != null && !userId.equals(friendId)){
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            firebaseDatabase.getReference("users/" + userId).child("friends").child(friendId).setValue(true);
+            firebaseDatabase.getReference("users/" + friendId).child("friends").child(userId).setValue(true);
+        }
+    }
+
 
     private final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
@@ -116,6 +164,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
             Snackbar.make(recyclerView, message, Snackbar.LENGTH_LONG)
                     .setAction("Undo", v -> {
+                        deleteCancelled = true;
                         friends.add(position, deletedUser);
                         adapter.notifyItemInserted(position);
                     }).show();
@@ -231,16 +280,20 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     private void removeFriend(String friendId) {
         /*String message = "Removed friend with id " + id;
         Toast.makeText(FriendsActivity.this, message, Toast.LENGTH_LONG).show();*/
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
-        String userId = sharedPreferences.getString(USER_ID, null);
+        if(!deleteCancelled){
+            SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+            String userId = sharedPreferences.getString(USER_ID, null);
 
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
-        DatabaseReference ref = firebaseDatabase.getReference("users/" + friendId + "/friends/" + userId);
-        ref.removeValue();
+            DatabaseReference ref = firebaseDatabase.getReference("users/" + friendId + "/friends/" + userId);
+            ref.removeValue();
 
-        ref = firebaseDatabase.getReference("users/" + userId + "/friends/" + friendId);
-        ref.removeValue();
+            ref = firebaseDatabase.getReference("users/" + userId + "/friends/" + friendId);
+            ref.removeValue();
+        }
+        deleteCancelled = false;
+
 
     }
 
@@ -290,6 +343,15 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         String userId = sharedPreferences.getString(USER_ID, null);
         assert userId != null;
+
+        try {
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.encodeBitmap(QR_CODE_PREFIX + userId, BarcodeFormat.QR_CODE, 400, 400);
+            ImageView imageViewQrCode = navigationView.findViewById(R.id.qr_code);
+            imageViewQrCode.setImageBitmap(bitmap);
+        } catch(Exception e) {
+            Log.i("Info", e.getMessage());
+        }
 
         TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
 
