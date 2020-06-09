@@ -1,13 +1,27 @@
 package com.example.weihnachtmaerkte;
 
+import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.weihnachtmaerkte.markets.ListFragment;
 import com.example.weihnachtmaerkte.markets.PreviewFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,7 +32,9 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,12 +47,16 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -45,8 +65,13 @@ import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -61,6 +86,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Menu menu;
 
     private boolean sortingExpanded = false;
+
+    private boolean firstStartup = false;
+
+    GoogleMap map;
+    BitmapDescriptor candyCaneIcon;
+    BitmapDescriptor navIcon;
+    Marker currentPositionMarker;
+
+    LocationManager locationManager;
+    Context mContext;
+
+    FloatingActionButton centerFab;
+    boolean movedByProgram = false;
 
 
     @Override
@@ -80,6 +118,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_explore);
 
+        if (getIntent() != null && getIntent().getExtras() != null) {
+            firstStartup = getIntent().getExtras().containsKey("firstStartup");
+        }
 
         setUsername();
 
@@ -96,11 +137,72 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
 
-        /*ExtendedFloatingActionButton fab = findViewById(R.id.fab);
-        fab.setIconResource(R.drawable.ic_search_black_24dp);
-        fab.extend();*/
+        centerFab = findViewById(R.id.center_fab);
+        centerFab.hide();
+        centerFab.setImageResource(R.drawable.my_location);
+        centerFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isLocationEnabled();
+            }
+        });
 
         initSLidingPanel();
+
+        mContext = this;
+        locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+
+    }
+
+    LocationListener locationListenerGPS = new LocationListener() {
+        @Override
+        public void onLocationChanged(android.location.Location location) {
+            double latitude = location.getLatitude();
+            double longitude = location.getLongitude();
+
+            moveMapToPosition(new LatLng(latitude, longitude));
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+    private void isLocationEnabled() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (firstStartup) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                        0);
+            } else {
+                moveMapToPosition(new LatLng(48.210033, 16.363449));
+            }
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    2000,
+                    10, locationListenerGPS);
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        firstStartup = false;
+        isLocationEnabled();
     }
 
     @Override
@@ -122,31 +224,62 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchView.setIconified(false);
         searchView.setIconifiedByDefault(false);
 
+        /*searchItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Log.i("Info", "Searching...");
+                searchCoordinates("Kärtner Straße");
+                return true;
+            }
+        });*/
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchCoordinates(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return true;
     }
 
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
         Bitmap bigCandyCane = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
         Bitmap smallCandyCane = Bitmap.createScaledBitmap(bigCandyCane, 200, 200, false);
-        BitmapDescriptor candyCaneIcon = BitmapDescriptorFactory.fromBitmap(smallCandyCane);
+        candyCaneIcon = BitmapDescriptorFactory.fromBitmap(smallCandyCane);
 
         Bitmap bigNav = BitmapFactory.decodeResource(getResources(), R.drawable.navigation);
         Bitmap smallNav = Bitmap.createScaledBitmap(bigNav, 140, 140, false);
-        BitmapDescriptor navIcon = BitmapDescriptorFactory.fromBitmap(smallNav);
+        navIcon = BitmapDescriptorFactory.fromBitmap(smallNav);
         LatLng zwidemu = new LatLng(48.204509, 16.360773);
         LatLng mq = new LatLng(48.203322, 16.358644);
         LatLng spittelberg = new LatLng(48.204116, 16.355023);
-        LatLng position = new LatLng(48.203475, 16.360252);
-        LatLng centerMapPosition = new LatLng(48.20422041318572, 16.358340494334698);
-        googleMap.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
-        googleMap.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
-        googleMap.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
-        googleMap.addMarker(new MarkerOptions().position(position).icon(navIcon));
-        // Add a marker in Sydney and move the camera
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(centerMapPosition).zoom(17).tilt(45f).bearing(-60).build();
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        map.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
+        map.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
+        map.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
+
+        map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                if (!movedByProgram) {
+                    displayFab();
+                }
+            }
+        });
+
+        isLocationEnabled();
+    }
+
+    private void displayFab() {
+        centerFab.show();
     }
 
 
@@ -218,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-                if(previousState == SlidingUpPanelLayout.PanelState.EXPANDED && sortingExpanded){
+                if (previousState == SlidingUpPanelLayout.PanelState.EXPANDED && sortingExpanded) {
                     sortingExpanded = false;
                     collapseSorting();
                 }
@@ -272,7 +405,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         set.start();
     }
 
-    private void setUsername(){
+    private void setUsername() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         String userId = sharedPreferences.getString(USER_ID, null);
         assert userId != null;
@@ -282,7 +415,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Bitmap bitmap = barcodeEncoder.encodeBitmap(QR_CODE_PREFIX + userId, BarcodeFormat.QR_CODE, 400, 400);
             ImageView imageViewQrCode = navigationView.findViewById(R.id.qr_code);
             imageViewQrCode.setImageBitmap(bitmap);
-        } catch(Exception e) {
+        } catch (Exception e) {
             Log.i("Info", e.getMessage());
         }
 
@@ -304,4 +437,54 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
     }
+
+    private void searchCoordinates(String input) {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "https://eu1.locationiq.com/v1/search.php?key=19d0252ffc7645&q=" + input + " Wien&format=json";
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                response -> {
+                    String newJSON = "{\"value\":" + response + "}";
+                    //Log.i("Response", "Response is: " + response.substring(0, 500));
+                    try {
+                        JSONObject respObject = new JSONObject(newJSON);
+                        JSONArray array = respObject.getJSONArray("value");
+                        double lon = array.getJSONObject(0).getDouble("lon");
+                        double lat = array.getJSONObject(0).getDouble("lat");
+                        //Log.i("Lon", String.valueOf(lon));
+                        //Log.i("Lat", String.valueOf(lat));
+
+                        moveMapToPosition(new LatLng(lat, lon));
+
+                    } catch (JSONException e) {
+                        Log.e("JSON Error", e.getMessage());
+                    }
+                }, error -> Log.e("Response error", "That didn't work!"));
+
+        queue.add(stringRequest);
+    }
+
+    private void moveMapToPosition(LatLng position) {
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(17).tilt(45f).bearing(-60).build();
+        if (currentPositionMarker != null) {
+            currentPositionMarker.remove();
+        }
+        currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(navIcon));
+        movedByProgram = true;
+        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
+            @Override
+            public void onFinish() {
+                centerFab.hide();
+                movedByProgram = false;
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
+    }
+
 }

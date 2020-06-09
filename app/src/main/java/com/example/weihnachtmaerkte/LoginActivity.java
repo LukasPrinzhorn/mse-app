@@ -58,7 +58,9 @@ public class LoginActivity extends AppCompatActivity {
 
         editor.putString(USER_ID, id);
         editor.apply();
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("firstStartup", true);
+        startActivity(intent);
         finish();
     }
 
