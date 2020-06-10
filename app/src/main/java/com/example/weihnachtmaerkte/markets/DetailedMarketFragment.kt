@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.weihnachtmaerkte.R
@@ -19,6 +18,7 @@ import com.example.weihnachtmaerkte.entities.Market
  */
 class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListener {
     private lateinit var market: Market
+    private lateinit var markets: ArrayList<Market>
 
 
     override fun onCreateView(
@@ -44,8 +44,11 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
 
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
+        markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
+        //Log.d("marketgröße-detailed", ""+markets1.size)
 
-        val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
+
+        //val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
         markets.forEach {
             if (it.id == id) {
                 market = it
@@ -61,7 +64,7 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
     }
 
     override fun onCommentClick(position: Int) {
-        Toast.makeText(this@DetailedMarketFragment.activity, "hiiii", Toast.LENGTH_SHORT).show()
+
     }
 
   /*  private fun addDataSet() {

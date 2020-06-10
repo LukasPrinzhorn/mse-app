@@ -21,6 +21,8 @@ import com.example.weihnachtmaerkte.entities.Market
 class DetailedMarketRateFragment : Fragment() {
 
     private lateinit var market: Market
+    private lateinit var markets: ArrayList<Market>
+
 
 
     override fun onCreateView(
@@ -45,9 +47,9 @@ class DetailedMarketRateFragment : Fragment() {
         }
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
+        markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
 
-
-        val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
+        //val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
         markets.forEach {
             if (it.id == id) {
                 market = it

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
+import com.example.weihnachtmaerkte.backend.DataSource
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.preview_item.view.*
@@ -87,7 +88,17 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener) : Recy
                         .into(marketImage)
             }
             marketName.text = market.name
-            marketRating.text = calculateAverageRating(market.ratings)
+            val ratingIds: ArrayList<Long>? = market.ratings
+            val ratings: List<Rating> = DataSource.createRatingDataSet()
+            val results = ArrayList<Rating>()
+            if (ratingIds != null) {
+                ratings.forEach {
+                    if (ratingIds.contains(it.id)) {
+                        results.add(it)
+                    }
+                }
+            }
+            marketRating.text = calculateAverageRating(results)
             itemView.setOnClickListener(this)
         }
 

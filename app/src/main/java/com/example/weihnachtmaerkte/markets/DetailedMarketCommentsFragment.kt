@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
+import com.example.weihnachtmaerkte.backend.DataSource
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.fragment_detailed_market_comments.*
@@ -21,6 +22,8 @@ import kotlinx.android.synthetic.main.fragment_detailed_market_comments.*
  */
 class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnCommentListener {
     private lateinit var market: Market
+    private lateinit var markets: ArrayList<Market>
+
     private lateinit var commentViewAdapter: CommentRecyclerAdapter
     private var items: List<Rating> = ArrayList()
 
@@ -44,8 +47,10 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
 
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
+        markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
 
-        val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
+
+//        val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
         markets.forEach {
             if (it.id == id) {
                 market = it
@@ -60,8 +65,15 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
     }
 
     private fun addDataSet() {
-        items = market.ratings
-        commentViewAdapter.submitList(items)
+        var itemIds:ArrayList<Long> = market.ratings!!
+        var ratings:List<Rating> = DataSource.createRatingDataSet()
+        var results = ArrayList<Rating>()
+        ratings.forEach{
+            if (itemIds.contains(it.id)){
+                results.add(it)
+            }
+        }
+        commentViewAdapter.submitList(results)
     }
 
     private fun initRecyclerView() {

@@ -3,6 +3,7 @@ package com.example.weihnachtmaerkte;
 import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.example.weihnachtmaerkte.entities.Market;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -68,12 +70,15 @@ import android.widget.ImageView;
 import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
 
 import static com.example.weihnachtmaerkte.FriendsActivity.QR_CODE_PREFIX;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
@@ -84,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Menu menu;
+    private ArrayList<Market> markets = new ArrayList<>();
 
     private boolean sortingExpanded = false;
 
@@ -136,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        retrieveDataFromFireBase();
 
         centerFab = findViewById(R.id.center_fab);
         centerFab.hide();
@@ -147,7 +154,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        initSLidingPanel();
 
         mContext = this;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -308,10 +314,72 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-    private void initSLidingPanel() {
-        PreviewFragment previewFragment = new PreviewFragment();
-        ListFragment listFragment = new ListFragment();
+    private void retrieveDataFromFireBase() {
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        Activity activity = this;
+        DatabaseReference databaseReference = firebaseDatabase.getReference("markets/");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    String marketId = ds.getKey().toString();
+
+
+                    DatabaseReference marketIdRef = databaseReference.child(marketId);
+                    ValueEventListener eventListener = new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            /*TODO check Rating List?*/
+                            String marketIdString = dataSnapshot.child("id").getValue().toString();
+                            Long marketId = Long.parseLong(marketIdString);
+                            String marketName = dataSnapshot.child("name").getValue().toString();
+                            String marketAddress = dataSnapshot.child("address").getValue().toString();
+                            ArrayList<Long> ratings = new ArrayList<>(Arrays.asList(1L,3L));
+                            Market market = new Market(marketId, marketName, marketAddress, null, "null", "null", "null", ratings, "@drawable/zwidemu");
+
+                            markets.add(market);
+                            Log.d("Marketgröße",""+markets.size());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    };
+                    marketIdRef.addListenerForSingleValueEvent(eventListener);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        //TODO find better solutions
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                initSlidingPanel();
+            }
+        }.start();
+
+    }
+
+    private void initSlidingPanel() {
+        Log.d("Marketgröße-sliding",""+markets.size());
+
+        PreviewFragment previewFragment = PreviewFragment.newInstance(markets);
+        ListFragment listFragment = ListFragment.newInstance(markets);
         FragmentManager manager = getSupportFragmentManager();
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("markets", markets);
+        previewFragment.setArguments(bundle);
 
         manager.beginTransaction()
                 .replace(R.id.fragmentSliding, previewFragment, previewFragment.getTag())
