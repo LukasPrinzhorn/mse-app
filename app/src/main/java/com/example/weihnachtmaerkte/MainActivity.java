@@ -65,6 +65,7 @@ import androidx.appcompat.widget.SearchView;
 
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,17 +87,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private boolean firstStartup = false;
 
-    GoogleMap map;
-    BitmapDescriptor candyCaneIcon;
-    BitmapDescriptor navIcon;
-    BitmapDescriptor locationIcon;
-    Marker currentPositionMarker;
-    LatLng currentSearchCoordinates;
+    private GoogleMap map;
+    private BitmapDescriptor candyCaneIcon;
+    private BitmapDescriptor navIcon;
+    private BitmapDescriptor locationIcon;
+    private Marker currentPositionMarker;
+    private LatLng currentSearchCoordinates;
 
-    LocationManager locationManager;
-    Context mContext;
+    private LocationManager locationManager;
+    private Context mContext;
 
-    FloatingActionButton centerFab;
+    private FloatingActionButton centerFab;
     boolean movedByProgram = false;
     boolean centeredOnUser;
 
@@ -135,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
         retrieveDataFromFireBase();
@@ -142,13 +144,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         centerFab = findViewById(R.id.center_fab);
         centerFab.hide();
         centerFab.setImageResource(R.drawable.my_location);
-        centerFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                centeredOnUser = true;
-                currentSearchCoordinates = null;
-                isLocationEnabled();
-            }
+        centerFab.setOnClickListener(v -> {
+            centeredOnUser = true;
+            currentSearchCoordinates = null;
+            isLocationEnabled();
         });
 
 
@@ -200,6 +199,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             centeredOnUser = true;
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            assert location != null;
             moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     2000,
@@ -283,13 +283,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
         map.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
 
-        map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
-            @Override
-            public void onCameraMove() {
-                if (!movedByProgram && !(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
-                    displayFab();
-                    centeredOnUser = false;
-                }
+        map.setOnCameraMoveListener(() -> {
+            if (!movedByProgram && !(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+                displayFab();
+                centeredOnUser = false;
             }
         });
 
@@ -364,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(@NotNull DatabaseError databaseError) {
                         }
                     };
                     marketIdRef.addListenerForSingleValueEvent(eventListener);
@@ -503,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             ImageView imageViewQrCode = navigationView.findViewById(R.id.qr_code);
             imageViewQrCode.setImageBitmap(bitmap);
         } catch (Exception e) {
-            Log.i("Info", e.getMessage());
+            Log.e("Exception", (e.getMessage()== null) ? "No further information" : e.getMessage());
         }
 
         TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
@@ -550,7 +547,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
 
                     } catch (JSONException e) {
-                        Log.e("JSON Error", e.getMessage());
+                        Log.e("JSON Error", (e.getMessage()== null) ? "No further information" : e.getMessage());
                     }
                 }, error -> Log.e("Response error", "That didn't work!"));
 

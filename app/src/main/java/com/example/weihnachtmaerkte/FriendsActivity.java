@@ -34,15 +34,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +49,6 @@ import java.util.Map;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
 import static com.example.weihnachtmaerkte.LoginActivity.USER_ID;
 
@@ -59,8 +57,6 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     private DrawerLayout drawer;
 
     private List<SimpleUserDTO> friends = new ArrayList<>();
-
-    Map<String, String> friendsMap = new HashMap<>();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -78,7 +74,9 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        assert getSupportActionBar() != null;
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("Freunde");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -109,7 +107,6 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
             integrator.setBeepEnabled(false);
             integrator.setCaptureActivity(QRScannerActivity.class);
             integrator.initiateScan();
-            //makeFriendWith("def");
             return true;
         });
         return true;
@@ -118,14 +115,32 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                //Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-            } else {
+        if (result != null) {
+            if (result.getContents() != null) {
                 //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                if(result.getContents().startsWith(QR_CODE_PREFIX)){
-                    makeFriendWith(result.getContents().substring(QR_CODE_PREFIX.length()));
-                } else  {
+                if (result.getContents().startsWith(QR_CODE_PREFIX)) {
+
+                    String friendId = result.getContents().substring(QR_CODE_PREFIX.length());
+                    if (!friendId.equals("")) {
+                        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users");
+                        rootRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                                if (!snapshot.hasChild(friendId)) {
+                                    Toast.makeText(FriendsActivity.this, "Uns ist dieser User nicht bekannt", Toast.LENGTH_LONG).show();
+                                } else {
+                                    makeFriendWith(friendId);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
+                        });
+                    } else {
+                        Toast.makeText(this, "Uns ist dieser User nicht bekannt", Toast.LENGTH_LONG).show();
+                    }
+                } else {
                     Toast.makeText(this, "QR Code nicht erkannt", Toast.LENGTH_LONG).show();
                 }
             }
@@ -134,13 +149,14 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-    private void makeFriendWith(String friendId){
+    private void makeFriendWith(String friendId) {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         String userId = sharedPreferences.getString(USER_ID, null);
-        if(userId != null && friendId != null && !userId.equals(friendId)){
+        if (userId != null && friendId != null && !userId.equals(friendId)) {
             FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
             firebaseDatabase.getReference("users/" + userId).child("friends").child(friendId).setValue(true);
             firebaseDatabase.getReference("users/" + friendId).child("friends").child(userId).setValue(true);
+
         }
     }
 
@@ -207,8 +223,10 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
             case R.id.nav_explore:
                 Intent intent = new Intent(FriendsActivity.this, MainActivity.class);
                 intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 drawer.closeDrawer(GravityCompat.START);
-                drawer.postDelayed(() -> startActivity(intent), 200);
+                drawer.postDelayed(() -> startActivityIfNeeded(intent, 0), 200);
+                finish();
                 break;
         }
         return true;
@@ -224,7 +242,6 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
             databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    long count = dataSnapshot.getChildrenCount();
                     friends.clear();
                     for (DataSnapshot snap : dataSnapshot.getChildren()) {
                         String id = snap.getKey();
@@ -278,7 +295,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
     private void removeFriend(String friendId) {
         /*String message = "Removed friend with id " + id;
         Toast.makeText(FriendsActivity.this, message, Toast.LENGTH_LONG).show();*/
-        if(!deleteCancelled){
+        if (!deleteCancelled) {
             SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
             String userId = sharedPreferences.getString(USER_ID, null);
 
@@ -337,7 +354,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
         }
     }
 
-    private void setUsername(){
+    private void setUsername() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         String userId = sharedPreferences.getString(USER_ID, null);
         assert userId != null;
@@ -347,8 +364,8 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
             Bitmap bitmap = barcodeEncoder.encodeBitmap(QR_CODE_PREFIX + userId, BarcodeFormat.QR_CODE, 400, 400);
             ImageView imageViewQrCode = navigationView.findViewById(R.id.qr_code);
             imageViewQrCode.setImageBitmap(bitmap);
-        } catch(Exception e) {
-            Log.i("Info", e.getMessage());
+        } catch (Exception e) {
+            Log.e("Exception", (e.getMessage() == null) ? "No further information" : e.getMessage());
         }
 
         TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
