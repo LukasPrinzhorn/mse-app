@@ -14,22 +14,15 @@ import androidx.navigation.fragment.findNavController
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 
-
-/**
- * A simple [Fragment] subclass as the second destination in the navigation.
- */
 class DetailedMarketRateFragment : Fragment() {
 
     private lateinit var market: Market
     private lateinit var markets: ArrayList<Market>
 
-
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detailed_market_rate, container, false)
     }
 
@@ -48,14 +41,11 @@ class DetailedMarketRateFragment : Fragment() {
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
         markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
-
-        //val markets: List<Market> = com.example.weihnachtmaerkte.backend.DataSource.createMarketsDataSet()
         markets.forEach {
             if (it.id == id) {
                 market = it
             }
         }
-
         setData()
     }
 

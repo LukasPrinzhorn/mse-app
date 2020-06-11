@@ -27,8 +27,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.weihnachtmaerkte.backend.BackendMock;
-import com.example.weihnachtmaerkte.backend.DTOs.DetailedUserDTO;
 import com.example.weihnachtmaerkte.backend.DTOs.SimpleUserDTO;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;

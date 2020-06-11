@@ -1,6 +1,5 @@
 package com.example.weihnachtmaerkte.backend
 
-import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 
 class DataSource {
@@ -69,7 +68,7 @@ class DataSource {
             }
             return ratingList
         }
-
+/*
         fun createMarketsDataSet(): List<Market> {
             val marketList = ArrayList<Market>()
             val coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)
@@ -134,6 +133,7 @@ class DataSource {
             )
             return marketList
         }
+ */
     }
 }
 

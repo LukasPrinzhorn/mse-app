@@ -3,7 +3,6 @@ package com.example.weihnachtmaerkte.markets.previews
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +22,6 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
     private lateinit var previewAdapter: PreviewRecyclerAdapter
     private var markets: ArrayList<Market> = ArrayList()
 
-
     companion object {
         @JvmStatic
         fun newInstance(marketsBundle: ArrayList<Market>) = PreviewFragment().apply {
@@ -37,7 +35,6 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
         super.onAttach(context)
         arguments?.getParcelableArrayList<Market>("markets")?.let {
             markets = it
-            Log.d("Marketgröße-preview", "" + it.size)
         }
     }
 
@@ -68,17 +65,15 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
         val bundle = Bundle()
         bundle.putLong("id", markets[position].id)
         bundle.putParcelableArrayList("markets", markets)
-        intent.putExtra("bundle",bundle)
+        intent.putExtra("bundle", bundle)
         startActivity(intent)
     }
 
     private fun addDataSet() {
-        //markets = DataSource.createMarketsDataSet()
         previewAdapter.submitList(markets)
     }
 
     private fun initRecyclerView() {
-
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this@PreviewFragment.activity, LinearLayoutManager.HORIZONTAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)

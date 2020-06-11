@@ -10,7 +10,7 @@ import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.comment_item.view.*
 
 
-class CommentRecyclerAdapter(private var onCommentListener: OnCommentListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Rating> = ArrayList()
 
@@ -20,8 +20,7 @@ class CommentRecyclerAdapter(private var onCommentListener: OnCommentListener) :
                         R.layout.comment_item,
                         parent,
                         false
-                ),
-                onCommentListener
+                )
         )
     }
 
@@ -37,9 +36,7 @@ class CommentRecyclerAdapter(private var onCommentListener: OnCommentListener) :
         return items.size
     }
 
-    interface OnCommentListener {
-        fun onCommentClick(position: Int)
-    }
+    interface OnCommentListener
 
     fun submitList(ratingList: List<Rating>) {
         items = ratingList
@@ -47,24 +44,15 @@ class CommentRecyclerAdapter(private var onCommentListener: OnCommentListener) :
 
     class CommentViewHolder
     constructor(
-            itemView: View,
-            private var onCommentListener: OnCommentListener
-    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+            itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
 
         private val commentTitle = itemView.comment_title
         private val commentText = itemView.comment_text
 
-
         fun bind(rating: Rating) {
             commentTitle.text = rating.title
             commentText.text = rating.text
-
-            itemView.setOnClickListener(this)
         }
-
-        override fun onClick(v: View?) {
-            onCommentListener.onCommentClick(adapterPosition)
-        }
-
     }
 }

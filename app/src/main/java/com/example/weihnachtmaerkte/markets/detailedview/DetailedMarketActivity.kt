@@ -21,7 +21,6 @@ class DetailedMarketActivity : AppCompatActivity(), NavigationView.OnNavigationI
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detailed_market)
 
-
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
@@ -55,6 +54,4 @@ class DetailedMarketActivity : AppCompatActivity(), NavigationView.OnNavigationI
         }
         return true
     }
-
-
 }

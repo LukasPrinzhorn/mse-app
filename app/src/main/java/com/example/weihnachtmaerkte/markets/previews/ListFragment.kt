@@ -17,12 +17,10 @@ import com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketActivity
 import kotlinx.android.synthetic.main.fragment_preview.*
 
 
-
 class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
 
     private lateinit var listViewAdapter: ListRecyclerAdapter
     private var markets: ArrayList<Market> = ArrayList()
-    private var markets2: List<Market> = ArrayList()
 
     companion object {
         @JvmStatic
@@ -38,7 +36,6 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
         arguments?.getParcelableArrayList<Market>("markets")?.let {
             markets = it
             Log.d("Marketgröße-list", "" + it.size)
-
         }
     }
 
@@ -56,20 +53,17 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     override fun onMarketClick(position: Int) {
         val intent = Intent(this@ListFragment.activity, DetailedMarketActivity::class.java)
         val bundle = Bundle()
-
         bundle.putLong("id", markets[position].id)
         bundle.putParcelableArrayList("markets", markets)
-        intent.putExtra("bundle",bundle)
+        intent.putExtra("bundle", bundle)
         startActivity(intent)
     }
 
     private fun addDataSet() {
-        //markets2 = DataSource.createMarketsDataSet()
         listViewAdapter.submitList(markets)
     }
 
     private fun initRecyclerView() {
-
         recycler_view.apply {
             layoutManager = GridLayoutManager(this@ListFragment.activity, 2, RecyclerView.VERTICAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
@@ -78,6 +72,4 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
             adapter = listViewAdapter
         }
     }
-
-
 }

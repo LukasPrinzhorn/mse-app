@@ -1,6 +1,5 @@
 package com.example.weihnachtmaerkte.markets.previews
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +59,6 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener) : Recy
         private val marketRating = itemView.market_rating
 
         fun bind(market: Market) {
-            //only for testing purpose
             if (market.image.startsWith("@")) {
                 if (market.image == "@drawable/museumsquartier") {
                     marketImage.setImageResource(R.mipmap.museumsquartier)
@@ -121,13 +119,13 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener) : Recy
             }
         }
 
-        private fun round(number:Float, decimal:Int):Float{
+        private fun round(number: Float, decimal: Int): Float {
             val numberString: String = "" + number
-            val splits : List<String> = numberString.split(".")
-            if (splits.size == 1){
+            val splits: List<String> = numberString.split(".")
+            if (splits.size == 1) {
                 return number
             }
-            return if (splits.size == 2){
+            return if (splits.size == 2) {
                 val s: String = splits[0] + "." + splits[1].substring(0, decimal)
                 s.toFloat()
             } else {

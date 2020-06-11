@@ -23,8 +23,7 @@ data class Market(val id: Long,
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readArrayList(Market::class.java.classLoader)?.filterIsInstance<Long>() as ArrayList<Long>,
-            parcel.readString().toString()) {
-    }
+            parcel.readString().toString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)

@@ -27,7 +27,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
                 ),
                 onMarketListener
         )
-}
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
@@ -61,7 +61,6 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
         private val marketRating = itemView.market_rating
 
         fun bind(market: Market) {
-            //only for testing purpose
             if (market.image.startsWith("@")) {
                 if (market.image == "@drawable/museumsquartier") {
                     marketImage.setImageResource(R.mipmap.museumsquartier)
@@ -142,7 +141,5 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
                 0f
             }
         }
-
-
     }
 }
