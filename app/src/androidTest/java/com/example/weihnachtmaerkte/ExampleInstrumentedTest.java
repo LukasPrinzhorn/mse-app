@@ -1,15 +1,12 @@
 package com.example.weihnachtmaerkte;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.rule.GrantPermissionRule;
 import androidx.test.uiautomator.UiDevice;
 import androidx.test.uiautomator.UiObject;
 import androidx.test.uiautomator.UiObjectNotFoundException;
@@ -42,16 +39,8 @@ public class ExampleInstrumentedTest {
 
     @Rule
     @JvmField
-    public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule(LoginActivity.class);
+    public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
-    /*@Rule
-    @JvmField
-    public GrantPermissionRule grantPermissionRuleFineLocation = GrantPermissionRule.grant(android.Manifest.permission.ACCESS_FINE_LOCATION);
-
-    @Rule
-    @JvmField
-    public GrantPermissionRule grantPermissionRuleCoarseLocation = GrantPermissionRule.grant(Manifest.permission.ACCESS_COARSE_LOCATION);
-*/
     @Test
     public void useAppContext() {
         // Context of the app under test.
