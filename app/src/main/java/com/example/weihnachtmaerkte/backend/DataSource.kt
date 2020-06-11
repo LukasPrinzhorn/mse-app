@@ -6,7 +6,7 @@ class DataSource {
 
     companion object {
         var ratingList = ArrayList<Rating>()
-
+/*
         fun createRatingDataSet(): List<Rating> {
             if (ratingList.size < 2) {
                 val rating1 =
@@ -18,7 +18,7 @@ class DataSource {
                                 1.8f,
                                 "Ekelhaft",
                                 "Überall liegt Müll.",
-                                null)
+                                "2")
 
                 val rating2 =
                         Rating(1,
@@ -29,7 +29,7 @@ class DataSource {
                                 1.3f,
                                 "Köstliches Essen",
                                 "Besonders Heinz Bratwurststand ist sehr zu empfehlen.",
-                                null)
+                                "2")
                 val rating3 =
                         Rating(3,
                                 1.8f,
@@ -39,7 +39,7 @@ class DataSource {
                                 1.3f,
                                 "Geil",
                                 "Punsch haut richtig rein",
-                                null)
+                                "2")
                 val rating4 =
                         Rating(4,
                                 4.8f,
@@ -49,7 +49,7 @@ class DataSource {
                                 4.3f,
                                 "Wunderbar",
                                 "Meine Familie liebt Wien's Weihnachtsmärkte, aber diesen ganz besonders",
-                                null)
+                                "2")
                 val rating5 =
                         Rating(5,
                                 4.8f,
@@ -59,7 +59,7 @@ class DataSource {
                                 4.3f,
                                 "Omas Apfelzauber",
                                 "Die schönste Zeit im Jahr noch süßer mit Omas Apfelzauber Punsch beim Kesslerstand. Und das zu nur 3€",
-                                null)
+                                "2")
                 ratingList.add(rating1)
                 ratingList.add(rating2)
                 ratingList.add(rating3)
@@ -68,7 +68,7 @@ class DataSource {
             }
             return ratingList
         }
-/*
+
         fun createMarketsDataSet(): List<Market> {
             val marketList = ArrayList<Market>()
             val coordinates: DoubleArray = doubleArrayOf(2.0, 3.5)

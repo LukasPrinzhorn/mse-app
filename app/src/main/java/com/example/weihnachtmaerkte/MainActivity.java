@@ -20,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.weihnachtmaerkte.entities.Rating;
 import com.example.weihnachtmaerkte.markets.previews.ListFragment;
 import com.example.weihnachtmaerkte.markets.previews.PreviewFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private NavigationView navigationView;
     private Menu menu;
     private ArrayList<Market> markets = new ArrayList<>();
+    private ArrayList<Rating> ratings = new ArrayList<>();
 
     private boolean sortingExpanded = false;
 
@@ -373,6 +375,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        DatabaseReference ratingsReference = firebaseDatabase.getReference("ratings/");
+        ratingsReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    Log.d("value",""+ds.getValue().toString());
+                    Rating rating = ds.getValue(Rating.class);
+                    ratings.add(rating);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         //TODO find better solutions
         new Thread() {
             @Override
@@ -385,18 +404,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 initSlidingPanel();
             }
         }.start();
-
     }
 
     private void initSlidingPanel() {
-        PreviewFragment previewFragment = PreviewFragment.newInstance(markets);
-        ListFragment listFragment = ListFragment.newInstance(markets);
+        PreviewFragment previewFragment = PreviewFragment.newInstance(markets,ratings);
+        ListFragment listFragment = ListFragment.newInstance(markets,ratings);
         FragmentManager manager = getSupportFragmentManager();
 
-        Bundle bundle = new Bundle();
+   /*     Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("markets", markets);
+        bundle.putParcelableArrayList("ratings", ratings);
         previewFragment.setArguments(bundle);
-
+*/
         manager.beginTransaction()
                 .replace(R.id.fragmentSliding, previewFragment, previewFragment.getTag())
                 .commit();
