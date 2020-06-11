@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
+import com.example.weihnachtmaerkte.entities.Rating
 import com.example.weihnachtmaerkte.markets.TopSpacingItemDecoration
 import com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketActivity
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -21,12 +22,14 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
 
     private lateinit var previewAdapter: PreviewRecyclerAdapter
     private var markets: ArrayList<Market> = ArrayList()
+    private var ratings: ArrayList<Rating> = ArrayList()
 
     companion object {
         @JvmStatic
-        fun newInstance(marketsBundle: ArrayList<Market>) = PreviewFragment().apply {
+        fun newInstance(marketsBundle: ArrayList<Market>, ratingsBundle: ArrayList<Rating>) = PreviewFragment().apply {
             arguments = Bundle().apply {
                 putParcelableArrayList("markets", marketsBundle)
+                putParcelableArrayList("ratings", ratingsBundle)
             }
         }
     }
@@ -35,6 +38,9 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
         super.onAttach(context)
         arguments?.getParcelableArrayList<Market>("markets")?.let {
             markets = it
+        }
+        arguments?.getParcelableArrayList<Rating>("ratings")?.let {
+            ratings = it
         }
     }
 
@@ -65,6 +71,7 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
         val bundle = Bundle()
         bundle.putLong("id", markets[position].id)
         bundle.putParcelableArrayList("markets", markets)
+        bundle.putParcelableArrayList("ratings", ratings)
         intent.putExtra("bundle", bundle)
         startActivity(intent)
     }
@@ -78,7 +85,7 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
             layoutManager = LinearLayoutManager(this@PreviewFragment.activity, LinearLayoutManager.HORIZONTAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
-            previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment)
+            previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment, ratings)
             adapter = previewAdapter
         }
     }

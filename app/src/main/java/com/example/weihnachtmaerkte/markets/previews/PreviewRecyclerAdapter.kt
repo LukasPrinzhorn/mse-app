@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
-import com.example.weihnachtmaerkte.backend.DataSource
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.preview_item.view.*
 
 
-class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, private var ratings: List<Rating>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Market> = ArrayList()
 
@@ -25,7 +24,8 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
                         parent,
                         false
                 ),
-                onMarketListener
+                onMarketListener,
+                ratings
         )
     }
 
@@ -53,7 +53,8 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
     class PreviewViewHolder
     constructor(
             itemView: View,
-            private var onMarketListener: OnMarketListener
+            private var onMarketListener: OnMarketListener,
+            private var ratings: List<Rating>
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val marketImage = itemView.market_image
@@ -96,7 +97,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
 
             }
             val ratingIds: ArrayList<Long>? = market.ratings
-            val ratings: List<Rating> = DataSource.createRatingDataSet()
+            //val ratings: List<Rating> = DataSource.createRatingDataSet()
             val results = ArrayList<Rating>()
             if (ratingIds != null) {
                 ratings.forEach {

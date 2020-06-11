@@ -11,7 +11,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
-import com.example.weihnachtmaerkte.backend.DataSource
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 import com.example.weihnachtmaerkte.markets.TopSpacingItemDecoration
@@ -21,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_detailed_market_comments.*
 class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnCommentListener {
     private lateinit var market: Market
     private lateinit var markets: ArrayList<Market>
+    private lateinit var ratings: ArrayList<Rating>
     private lateinit var commentViewAdapter: CommentRecyclerAdapter
 
     override fun onCreateView(
@@ -40,6 +40,7 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: Long = bundle?.get("id") as Long
         markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
+        ratings = bundle.getParcelableArrayList<Rating>("ratings") as ArrayList<Rating>
         markets.forEach {
             if (it.id == id) {
                 market = it
@@ -52,7 +53,7 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
 
     private fun addDataSet() {
         val itemIds: ArrayList<Long> = market.ratings!!
-        val ratings: List<Rating> = DataSource.createRatingDataSet()
+        //val ratings: List<Rating> = DataSource.createRatingDataSet()
         val results = ArrayList<Rating>()
         ratings.forEach {
             if (itemIds.contains(it.id)) {

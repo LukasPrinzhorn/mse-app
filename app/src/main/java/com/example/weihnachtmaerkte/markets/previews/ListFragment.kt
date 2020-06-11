@@ -3,7 +3,6 @@ package com.example.weihnachtmaerkte.markets.previews
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
+import com.example.weihnachtmaerkte.entities.Rating
 import com.example.weihnachtmaerkte.markets.TopSpacingItemDecoration
 import com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketActivity
 import kotlinx.android.synthetic.main.fragment_preview.*
@@ -21,12 +21,14 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
 
     private lateinit var listViewAdapter: ListRecyclerAdapter
     private var markets: ArrayList<Market> = ArrayList()
+    private var ratings: ArrayList<Rating> = ArrayList()
 
     companion object {
         @JvmStatic
-        fun newInstance(marketsBundle: ArrayList<Market>) = ListFragment().apply {
+        fun newInstance(marketsBundle: ArrayList<Market>, ratingsBundle: ArrayList<Rating>) = ListFragment().apply {
             arguments = Bundle().apply {
                 putParcelableArrayList("markets", marketsBundle)
+                putParcelableArrayList("ratings", ratingsBundle)
             }
         }
     }
@@ -35,7 +37,9 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
         super.onAttach(context)
         arguments?.getParcelableArrayList<Market>("markets")?.let {
             markets = it
-            Log.d("Marketgröße-list", "" + it.size)
+        }
+        arguments?.getParcelableArrayList<Rating>("ratings")?.let {
+            ratings = it
         }
     }
 
@@ -55,6 +59,7 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
         val bundle = Bundle()
         bundle.putLong("id", markets[position].id)
         bundle.putParcelableArrayList("markets", markets)
+        bundle.putParcelableArrayList("ratings", ratings)
         intent.putExtra("bundle", bundle)
         startActivity(intent)
     }
@@ -68,7 +73,7 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
             layoutManager = GridLayoutManager(this@ListFragment.activity, 2, RecyclerView.VERTICAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
-            listViewAdapter = ListRecyclerAdapter(this@ListFragment)
+            listViewAdapter = ListRecyclerAdapter(this@ListFragment, ratings)
             adapter = listViewAdapter
         }
     }
