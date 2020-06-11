@@ -60,7 +60,9 @@ import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+
 import androidx.appcompat.widget.SearchView;
+
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -87,13 +89,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     GoogleMap map;
     BitmapDescriptor candyCaneIcon;
     BitmapDescriptor navIcon;
+    BitmapDescriptor locationIcon;
     Marker currentPositionMarker;
+    LatLng currentSearchCoordinates;
 
     LocationManager locationManager;
     Context mContext;
 
     FloatingActionButton centerFab;
     boolean movedByProgram = false;
+    boolean centeredOnUser;
 
 
     @Override
@@ -125,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        initMarkers();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -139,6 +145,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         centerFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                centeredOnUser = true;
+                currentSearchCoordinates = null;
                 isLocationEnabled();
             }
         });
@@ -155,7 +163,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
 
-            moveMapToPosition(new LatLng(latitude, longitude));
+            if (centeredOnUser) {
+                moveMapToPosition(new LatLng(latitude, longitude), navIcon);
+            } else {
+                currentPositionMarker.remove();
+                currentPositionMarker = map.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).icon(navIcon));
+            }
         }
 
         @Override
@@ -176,16 +189,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void isLocationEnabled() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            centeredOnUser = false;
             if (firstStartup) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                         0);
             } else {
-                moveMapToPosition(new LatLng(48.210033, 16.363449));
+                moveMapToPosition(new LatLng(48.210033, 16.363449), locationIcon);
             }
         } else {
+            centeredOnUser = true;
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+            moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     2000,
                     10, locationListenerGPS);
@@ -243,10 +258,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
+    private void initMarkers() {
         Bitmap bigCandyCane = BitmapFactory.decodeResource(getResources(), R.drawable.marker);
         Bitmap smallCandyCane = Bitmap.createScaledBitmap(bigCandyCane, 200, 200, false);
         candyCaneIcon = BitmapDescriptorFactory.fromBitmap(smallCandyCane);
@@ -254,6 +266,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bitmap bigNav = BitmapFactory.decodeResource(getResources(), R.drawable.navigation);
         Bitmap smallNav = Bitmap.createScaledBitmap(bigNav, 140, 140, false);
         navIcon = BitmapDescriptorFactory.fromBitmap(smallNav);
+
+        Bitmap bigLocation = BitmapFactory.decodeResource(getResources(), R.drawable.position_marker);
+        Bitmap smallLocation = Bitmap.createScaledBitmap(bigLocation, 140, 140, false);
+        locationIcon = BitmapDescriptorFactory.fromBitmap(smallLocation);
+    }
+
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
         LatLng zwidemu = new LatLng(48.204509, 16.360773);
         LatLng mq = new LatLng(48.203322, 16.358644);
         LatLng spittelberg = new LatLng(48.204116, 16.355023);
@@ -264,8 +286,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
-                if (!movedByProgram) {
+                if (!movedByProgram && !(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                     displayFab();
+                    centeredOnUser = false;
                 }
             }
         });
@@ -330,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             String image = dataSnapshot.child("image").getValue().toString();
 
                             ArrayList<Long> ratings = new ArrayList<>();
-                            for (DataSnapshot postSnapshot: dataSnapshot.child("ratings").getChildren()) {
+                            for (DataSnapshot postSnapshot : dataSnapshot.child("ratings").getChildren()) {
                                 if (postSnapshot.getValue() != null) {
                                     String value = postSnapshot.getValue().toString();
                                     ratings.add(Long.parseLong(value));
@@ -519,7 +542,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //Log.i("Lon", String.valueOf(lon));
                         //Log.i("Lat", String.valueOf(lat));
 
-                        moveMapToPosition(new LatLng(lat, lon));
+                        currentSearchCoordinates = new LatLng(lat, lon);
+                        moveMapToPosition(currentSearchCoordinates, locationIcon);
+                        centeredOnUser = false;
+                        if(!(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
+                            displayFab();
+                        }
 
                     } catch (JSONException e) {
                         Log.e("JSON Error", e.getMessage());
@@ -529,17 +557,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         queue.add(stringRequest);
     }
 
-    private void moveMapToPosition(LatLng position) {
+    private void moveMapToPosition(LatLng position, BitmapDescriptor markerIcon) {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(17).tilt(45f).bearing(-60).build();
         if (currentPositionMarker != null) {
             currentPositionMarker.remove();
         }
-        currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(navIcon));
+        currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(markerIcon));
         movedByProgram = true;
+        centerFab.hide();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
-                centerFab.hide();
                 movedByProgram = false;
             }
 
