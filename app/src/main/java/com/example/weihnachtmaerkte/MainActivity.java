@@ -71,7 +71,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import static com.example.weihnachtmaerkte.FriendsActivity.QR_CODE_PREFIX;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
@@ -278,18 +282,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng zwidemu = new LatLng(48.204509, 16.360773);
-        LatLng mq = new LatLng(48.203322, 16.358644);
-        LatLng spittelberg = new LatLng(48.204116, 16.355023);
-        map.addMarker(new MarkerOptions().position(zwidemu).icon(candyCaneIcon));
-        map.addMarker(new MarkerOptions().position(mq).icon(candyCaneIcon));
-        map.addMarker(new MarkerOptions().position(spittelberg).icon(candyCaneIcon));
 
         map.setOnCameraMoveListener(() -> {
             if (!movedByProgram && !(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                 displayFab();
                 centeredOnUser = false;
             }
+            reorderMarketsByPosition(map.getCameraPosition().target);
+        });
+
+        map.setOnMarkerClickListener(marker -> {
+            moveMapToPosition(marker.getPosition(), null);
+            return false;
         });
 
         isLocationEnabled();
@@ -326,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void retrieveDataFromFireBase() {
+        List<Marker> markers = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         Activity activity = this;
@@ -333,6 +338,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for (Marker m : markers) {
+                    m.remove();
+                }
+
+                markers.clear();
+
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String marketId = ds.getKey().toString();
 
@@ -350,6 +362,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             String marketTime = dataSnapshot.child("time").getValue().toString();
                             String weblink = dataSnapshot.child("url").getValue().toString();
                             String image = dataSnapshot.child("image").getValue().toString();
+                            double xCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("x").getValue().toString());
+                            double yCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("y").getValue().toString());
+
+                            markers.add(map.addMarker(new MarkerOptions().position(new LatLng(xCoord, yCoord)).icon(candyCaneIcon)));
 
                             ArrayList<Long> ratings = new ArrayList<>();
                             for (DataSnapshot postSnapshot : dataSnapshot.child("ratings").getChildren()) {
@@ -358,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     ratings.add(Long.parseLong(value));
                                 }
                             }
-                            Market market = new Market(marketId, marketName, marketAddress, null, marketDates, marketTime, weblink, ratings, image);
+                            Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, image);
                             markets.add(market);
                         }
 
@@ -379,8 +395,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ratingsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Log.d("value",""+ds.getValue().toString());
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    Log.d("value", "" + ds.getValue().toString());
                     Rating rating = ds.getValue(Rating.class);
                     ratings.add(rating);
                 }
@@ -407,8 +423,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initSlidingPanel() {
-        PreviewFragment previewFragment = PreviewFragment.newInstance(markets,ratings);
-        ListFragment listFragment = ListFragment.newInstance(markets,ratings);
+        PreviewFragment previewFragment = PreviewFragment.newInstance(markets, ratings);
+        ListFragment listFragment = ListFragment.newInstance(markets, ratings);
         FragmentManager manager = getSupportFragmentManager();
 
    /*     Bundle bundle = new Bundle();
@@ -519,7 +535,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             ImageView imageViewQrCode = navigationView.findViewById(R.id.qr_code);
             imageViewQrCode.setImageBitmap(bitmap);
         } catch (Exception e) {
-            Log.e("Exception", (e.getMessage()== null) ? "No further information" : e.getMessage());
+            Log.e("Exception", (e.getMessage() == null) ? "No further information" : e.getMessage());
         }
 
         TextView headerMessage = navigationView.getHeaderView(0).findViewById(R.id.header_username);
@@ -561,12 +577,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         currentSearchCoordinates = new LatLng(lat, lon);
                         moveMapToPosition(currentSearchCoordinates, locationIcon);
                         centeredOnUser = false;
-                        if(!(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)){
+                        if (!(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
                             displayFab();
                         }
 
                     } catch (JSONException e) {
-                        Log.e("JSON Error", (e.getMessage()== null) ? "No further information" : e.getMessage());
+                        Log.e("JSON Error", (e.getMessage() == null) ? "No further information" : e.getMessage());
                     }
                 }, error -> Log.e("Response error", "That didn't work!"));
 
@@ -575,12 +591,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void moveMapToPosition(LatLng position, BitmapDescriptor markerIcon) {
         CameraPosition cameraPosition = new CameraPosition.Builder().target(position).zoom(17).tilt(45f).bearing(-60).build();
-        if (currentPositionMarker != null) {
+        if (currentPositionMarker != null && markerIcon != null) {
             currentPositionMarker.remove();
         }
-        currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(markerIcon));
+        if(markerIcon != null){
+            currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(markerIcon));
+            centerFab.hide();
+        }
         movedByProgram = true;
-        centerFab.hide();
+        reorderMarketsByPosition(position);
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
@@ -593,6 +612,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+    }
+
+    private void reorderMarketsByPosition(LatLng referencePosition) {
+        if (markets != null && markets.size() != 0) {
+            Collections.sort(markets, new PositionComparator(referencePosition));
+            /*for (Market m : markets) {
+                Log.i("Markets", m.getName());
+            }*/
+        }
+    }
+
+    private static class PositionComparator implements Comparator<Market> {
+
+        private LatLng referencePosition;
+
+        PositionComparator(LatLng referencePosition) {
+            this.referencePosition = referencePosition;
+        }
+
+        @Override
+        public int compare(Market o1, Market o2) {
+            assert o1 != null && o2 != null;
+            double distToMarket1 = Math.hypot(referencePosition.longitude - o1.getCoordinates()[1], referencePosition.latitude - o1.getCoordinates()[0]);
+            double distToMarket2 = Math.hypot(referencePosition.longitude - o2.getCoordinates()[1], referencePosition.latitude - o2.getCoordinates()[0]);
+            //Log.i("Distance", o1.getName() + ": " + distToMarket1);
+            //Log.i("Distance", o2.getName() + ": " + distToMarket2);
+            return Double.compare(distToMarket1, distToMarket2);
+        }
     }
 
 }
