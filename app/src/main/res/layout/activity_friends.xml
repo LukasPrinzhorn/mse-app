@@ -62,7 +62,8 @@
             <ImageView
                 android:id="@+id/qr_code"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/qr_code_description"/>
 
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>

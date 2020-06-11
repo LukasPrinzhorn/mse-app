@@ -66,4 +66,7 @@
     <string name="rating_food">Speisen</string>
     <string name="rating_drinks">Getränke</string>
     <string name="rating_crowding">Überfülltheit</string>
+    <string name="qr_code_description">QR code used to be added as a new friend</string>
+    <string name="person_icon_description">Icon of a person, chest and head</string>
+    <string name="result">Result</string>
 </resources>
