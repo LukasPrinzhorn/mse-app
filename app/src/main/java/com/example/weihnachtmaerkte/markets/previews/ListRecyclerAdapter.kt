@@ -1,4 +1,4 @@
-package com.example.weihnachtmaerkte.markets
+package com.example.weihnachtmaerkte.markets.previews
 
 
 import android.view.LayoutInflater
@@ -14,27 +14,26 @@ import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.preview_item.view.*
 
 
-class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ListRecyclerAdapter(private var onMarketListener: OnMarketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Market> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PreviewViewHolder(
+        return ListViewHolder(
                 LayoutInflater.from(parent.context).inflate(
-                        R.layout.preview_item,
+                        R.layout.list_item,
                         parent,
                         false
                 ),
                 onMarketListener
         )
-}
+    }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
-            is PreviewViewHolder -> {
+            is ListViewHolder -> {
                 holder.bind(items[position])
             }
-
         }
     }
 
@@ -42,15 +41,15 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
         return items.size
     }
 
-    fun submitList(marketList: List<Market>) {
-        items = marketList
-    }
-
     interface OnMarketListener {
         fun onMarketClick(position: Int)
     }
 
-    class PreviewViewHolder
+    fun submitList(marketList: List<Market>) {
+        items = marketList
+    }
+
+    class ListViewHolder
     constructor(
             itemView: View,
             private var onMarketListener: OnMarketListener
@@ -88,14 +87,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
                         .load(market.image)
                         .into(marketImage)
             }
-
-            if (market.name.length > 16) {
-                val text: String = market.name.substring(0, 16) + "..."
-                marketName.text = text
-            } else {
-                marketName.text = market.name
-
-            }
+            marketName.text = market.name
             val ratingIds: ArrayList<Long>? = market.ratings
             val ratings: List<Rating> = DataSource.createRatingDataSet()
             val results = ArrayList<Rating>()
@@ -129,20 +121,18 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
             }
         }
 
-        private fun round(number: Float, decimal: Int): Float {
+        private fun round(number:Float, decimal:Int):Float{
             val numberString: String = "" + number
-            val splits: List<String> = numberString.split(".")
-            if (splits.size == 1) {
+            val splits : List<String> = numberString.split(".")
+            if (splits.size == 1){
                 return number
             }
-            return if (splits.size == 2) {
+            return if (splits.size == 2){
                 val s: String = splits[0] + "." + splits[1].substring(0, decimal)
                 s.toFloat()
             } else {
                 0f
             }
         }
-
-
     }
 }

@@ -67,7 +67,7 @@
             android:label="Friends"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".markets.DetailedMarketActivity"
+            android:name=".markets.detailedview.DetailedMarketActivity"
             android:label="@string/title_activity_detailed_market"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />

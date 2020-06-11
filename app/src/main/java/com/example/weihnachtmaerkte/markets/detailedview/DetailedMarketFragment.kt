@@ -1,4 +1,4 @@
-package com.example.weihnachtmaerkte.markets
+package com.example.weihnachtmaerkte.markets.detailedview
 
 import android.os.Bundle
 import android.text.method.LinkMovementMethod

@@ -1,4 +1,4 @@
-package com.example.weihnachtmaerkte.markets
+package com.example.weihnachtmaerkte.markets.previews
 
 import android.content.Context
 import android.content.Intent
@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
+import com.example.weihnachtmaerkte.markets.TopSpacingItemDecoration
+import com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketActivity
 import kotlinx.android.synthetic.main.fragment_preview.*
 
 

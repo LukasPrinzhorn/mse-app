@@ -1,4 +1,4 @@
-package com.example.weihnachtmaerkte.markets
+package com.example.weihnachtmaerkte.markets.previews
 
 import android.content.Context
 import android.content.Intent
@@ -12,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
+import com.example.weihnachtmaerkte.markets.TopSpacingItemDecoration
+import com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketActivity
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_preview.*
 
 
-class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener{
+class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
 
     private lateinit var previewAdapter: PreviewRecyclerAdapter
     private var markets: ArrayList<Market> = ArrayList()

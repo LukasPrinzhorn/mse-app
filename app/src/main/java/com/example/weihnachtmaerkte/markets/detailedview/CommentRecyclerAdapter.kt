@@ -1,4 +1,4 @@
-package com.example.weihnachtmaerkte.markets
+package com.example.weihnachtmaerkte.markets.detailedview
 
 
 import android.view.LayoutInflater

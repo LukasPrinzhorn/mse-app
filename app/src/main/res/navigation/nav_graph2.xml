@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/First2Fragment"
-        android:name="com.example.weihnachtmaerkte.markets.DetailedMarketFragment"
+        android:name="com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_detailed_market">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/Second2Fragment"
-        android:name="com.example.weihnachtmaerkte.markets.DetailedMarketRateFragment"
+        android:name="com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketRateFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_detailed_market_rate">
 
@@ -33,7 +33,7 @@
     </fragment>
     <fragment
         android:id="@+id/Third2Fragment"
-        android:name="com.example.weihnachtmaerkte.markets.DetailedMarketCommentsFragment"
+        android:name="com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketCommentsFragment"
         android:label="@string/third_fragment_label"
         tools:layout="@layout/fragment_detailed_market_comments">
 

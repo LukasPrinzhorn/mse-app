@@ -1,4 +1,4 @@
-package com.example.weihnachtmaerkte.markets
+package com.example.weihnachtmaerkte.markets.detailedview
 
 import android.content.Intent
 import android.os.Bundle

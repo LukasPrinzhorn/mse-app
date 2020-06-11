@@ -5,7 +5,6 @@ import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -14,18 +13,15 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.weihnachtmaerkte.entities.Market;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.weihnachtmaerkte.markets.ListFragment;
-import com.example.weihnachtmaerkte.markets.PreviewFragment;
+import com.example.weihnachtmaerkte.markets.previews.ListFragment;
+import com.example.weihnachtmaerkte.markets.previews.PreviewFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -49,7 +45,6 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -57,8 +52,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Handler;
-import android.provider.Settings;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
@@ -69,16 +62,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.CountDownLatch;
 
 import static com.example.weihnachtmaerkte.FriendsActivity.QR_CODE_PREFIX;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
@@ -335,11 +324,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             Long marketId = Long.parseLong(marketIdString);
                             String marketName = dataSnapshot.child("name").getValue().toString();
                             String marketAddress = dataSnapshot.child("address").getValue().toString();
-                            ArrayList<Long> ratings = new ArrayList<>(Arrays.asList(1L,3L));
-                            Market market = new Market(marketId, marketName, marketAddress, null, "null", "null", "null", ratings, "@drawable/zwidemu");
+                            String marketDates = dataSnapshot.child("date").getValue().toString();
+                            String marketTime = dataSnapshot.child("time").getValue().toString();
+                            String weblink = dataSnapshot.child("url").getValue().toString();
+                            String image = dataSnapshot.child("image").getValue().toString();
 
+                            ArrayList<Long> ratings = new ArrayList<>();
+                            for (DataSnapshot postSnapshot: dataSnapshot.child("ratings").getChildren()) {
+                                if (postSnapshot.getValue() != null) {
+                                    String value = postSnapshot.getValue().toString();
+                                    ratings.add(Long.parseLong(value));
+                                }
+                            }
+                            Market market = new Market(marketId, marketName, marketAddress, null, marketDates, marketTime, weblink, ratings, image);
                             markets.add(market);
-                            Log.d("Marketgröße",""+markets.size());
                         }
 
                         @Override
@@ -371,8 +369,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initSlidingPanel() {
-        Log.d("Marketgröße-sliding",""+markets.size());
-
         PreviewFragment previewFragment = PreviewFragment.newInstance(markets);
         ListFragment listFragment = ListFragment.newInstance(markets);
         FragmentManager manager = getSupportFragmentManager();

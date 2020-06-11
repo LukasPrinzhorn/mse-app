@@ -52,7 +52,7 @@ class DataSource {
                                 "Meine Familie liebt Wien's Weihnachtsmärkte, aber diesen ganz besonders",
                                 null)
                 val rating5 =
-                        Rating(4,
+                        Rating(5,
                                 4.8f,
                                 4.2f,
                                 2.5f,
@@ -136,3 +136,19 @@ class DataSource {
         }
     }
 }
+
+/*
+[
+				{
+				"id": "4L",
+				"ambience": "4.8f",
+				"food": "4.2f",
+				"drinks": "2.5f",
+				"crowding": "1.3f",
+				"family": "4.3f",
+				"title": "Omas Apfelzauber",
+				"text": "Die schönste Zeit im Jahr noch süßer mit Omas Apfelzauber Punsch beim Kesslerstand. Und das zu nur 3€",
+				"images": "null"
+				}
+			]
+ */
