@@ -1,8 +1,10 @@
 package com.example.weihnachtmaerkte;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -28,6 +31,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.weihnachtmaerkte.backend.DTOs.SimpleUserDTO;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
@@ -157,6 +162,26 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
             firebaseDatabase.getReference("users/" + userId).child("friends").child(friendId).setValue(true);
             firebaseDatabase.getReference("users/" + friendId).child("friends").child(userId).setValue(true);
 
+            if(sharedPreferences.contains("dialogAccepted")) {
+                Bitmap dialogueImage = BitmapFactory.decodeResource(getResources(), R.drawable.dialogue_image);
+                dialogueImage = Bitmap.createScaledBitmap(dialogueImage,1440,274, false);
+
+                LayoutInflater inflater = this.getLayoutInflater();
+                ImageView imageView = (ImageView) inflater.inflate(R.layout.dialogue_image, null);
+                imageView.setImageBitmap(dialogueImage);
+                AlertDialog.Builder builder = new AlertDialog.Builder(FriendsActivity.this);
+                builder.setTitle("Freunde können durch wischen gelöscht werden")
+                        .setPositiveButton("Verstanden", (dialog, id) -> {
+                            SharedPreferences.Editor editor= sharedPreferences.edit();
+                            editor.putBoolean("dialogAccepted", true);
+                            editor.apply();
+                        })
+                .setView(imageView);
+                // Create the AlertDialog object and return it
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+
         }
     }
 
@@ -184,14 +209,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
                     }).show();
 
             Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    removeFriend(deletedUser.getId());
-                }
-
-            }, 3500);
+            handler.postDelayed(() -> removeFriend(deletedUser.getId()), 3500);
         }
 
         @Override
