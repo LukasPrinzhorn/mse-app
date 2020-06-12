@@ -333,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<Marker> markers = new ArrayList<>();
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        Activity activity = this;
         DatabaseReference databaseReference = firebaseDatabase.getReference("markets/");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -354,8 +353,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             /*TODO check Rating List?*/
-                            String marketIdString = dataSnapshot.child("id").getValue().toString();
-                            Long marketId = Long.parseLong(marketIdString);
+                            String marketId = dataSnapshot.child("id").getValue().toString();
+                            Log.d("debugValue",marketId);
                             String marketName = dataSnapshot.child("name").getValue().toString();
                             String marketAddress = dataSnapshot.child("address").getValue().toString();
                             String marketDates = dataSnapshot.child("date").getValue().toString();
@@ -367,11 +366,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             markers.add(map.addMarker(new MarkerOptions().position(new LatLng(xCoord, yCoord)).icon(candyCaneIcon)));
 
-                            ArrayList<Long> ratings = new ArrayList<>();
+                            ArrayList<String> ratings = new ArrayList<>();
                             for (DataSnapshot postSnapshot : dataSnapshot.child("ratings").getChildren()) {
                                 if (postSnapshot.getValue() != null) {
                                     String value = postSnapshot.getValue().toString();
-                                    ratings.add(Long.parseLong(value));
+                                    ratings.add(value);
                                 }
                             }
                             Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, image);

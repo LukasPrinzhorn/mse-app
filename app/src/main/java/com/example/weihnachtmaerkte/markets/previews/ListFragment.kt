@@ -57,7 +57,7 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     override fun onMarketClick(position: Int) {
         val intent = Intent(this@ListFragment.activity, DetailedMarketActivity::class.java)
         val bundle = Bundle()
-        bundle.putLong("id", markets[position].id)
+        bundle.putString("id", markets[position].id)
         bundle.putParcelableArrayList("markets", markets)
         bundle.putParcelableArrayList("ratings", ratings)
         intent.putExtra("bundle", bundle)

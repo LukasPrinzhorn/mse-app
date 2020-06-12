@@ -4,36 +4,36 @@ import android.os.Parcel
 import android.os.Parcelable
 
 
-data class Market(val id: Long,
+data class Market(val id: String,
                   var name: String,
                   var address: String,
                   var coordinates: DoubleArray?,
                   var dates: String,
                   var openingHours: String,
                   var weblink: String,
-                  var ratings: ArrayList<Long>?,
+                  var ratings: ArrayList<String>?,
                   var image: String
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readLong(),
+            parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.createDoubleArray(),
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readString().toString(),
-            parcel.readArrayList(Market::class.java.classLoader)?.filterIsInstance<Long>() as ArrayList<Long>,
+            parcel.readArrayList(Market::class.java.classLoader)?.filterIsInstance<String>() as ArrayList<String>,
             parcel.readString().toString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(id)
+        parcel.writeString(id)
         parcel.writeString(name)
         parcel.writeString(address)
         parcel.writeDoubleArray(coordinates)
         parcel.writeString(dates)
         parcel.writeString(openingHours)
         parcel.writeString(weblink)
-        parcel.writeList(ratings as List<Long>?)
+        parcel.writeList(ratings as List<String>?)
         parcel.writeString(image)
     }
 

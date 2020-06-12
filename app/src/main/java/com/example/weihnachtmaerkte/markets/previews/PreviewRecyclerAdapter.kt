@@ -96,7 +96,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
                 marketName.text = market.name
 
             }
-            val ratingIds: ArrayList<Long>? = market.ratings
+            val ratingIds: ArrayList<String>? = market.ratings
             //val ratings: List<Rating> = DataSource.createRatingDataSet()
             val results = ArrayList<Rating>()
             if (ratingIds != null) {

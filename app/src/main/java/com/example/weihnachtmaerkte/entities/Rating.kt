@@ -3,7 +3,7 @@ package com.example.weihnachtmaerkte.entities
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Rating(val id: Long = 0L,
+data class Rating(val id: String = "",
                   var ambience: Float = 0f,
                   var food: Float = 0f,
                   var drinks: Float = 0f,
@@ -14,7 +14,7 @@ data class Rating(val id: Long = 0L,
                   var userid: String = ""
 ) : Parcelable{
     constructor(parcel: Parcel) : this(
-            parcel.readLong(),
+            parcel.readString().toString(),
             parcel.readFloat(),
             parcel.readFloat(),
             parcel.readFloat(),
@@ -26,7 +26,7 @@ data class Rating(val id: Long = 0L,
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeLong(id)
+        parcel.writeString(id)
         parcel.writeFloat(ambience)
         parcel.writeFloat(food)
         parcel.writeFloat(drinks)

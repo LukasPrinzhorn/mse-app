@@ -87,7 +87,7 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, privat
                         .into(marketImage)
             }
             marketName.text = market.name
-            val ratingIds: ArrayList<Long>? = market.ratings
+            val ratingIds: ArrayList<String>? = market.ratings
             //val ratings: List<Rating> = DataSource.createRatingDataSet()
             val results = ArrayList<Rating>()
             if (ratingIds != null) {

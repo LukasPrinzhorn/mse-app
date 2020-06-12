@@ -36,7 +36,7 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
         }
 
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
-        val id: Long = bundle?.get("id") as Long
+        val id: String = bundle?.get("id") as String
         markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
         markets.forEach {
             if (it.id == id) {

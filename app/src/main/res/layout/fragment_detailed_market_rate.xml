@@ -72,6 +72,57 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/detailed_market_rate_title" />
 
+            <RatingBar
+                android:id="@+id/ratingBarAmbience"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:progressTint="@color/colorPrimary"
+                android:layout_marginStart="24dp"
+                app:layout_constraintStart_toEndOf="@+id/detailed_ambiente"
+                app:layout_constraintTop_toTopOf="@+id/detailed_ambiente" />
+
+            <RatingBar
+                android:id="@+id/ratingBarFood"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:progressTint="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
+                app:layout_constraintTop_toTopOf="@+id/detailed_speisen" />
+
+            <RatingBar
+                android:id="@+id/ratingBarDrinks"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:progressTint="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
+                app:layout_constraintTop_toTopOf="@+id/detailed_getraenke" />
+
+            <RatingBar
+                android:id="@+id/ratingBarCrowding"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:progressTint="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
+                app:layout_constraintTop_toTopOf="@+id/detailed_crowding" />
+
+            <RatingBar
+                android:id="@+id/ratingBarFamily"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:progressTint="@color/colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
+                app:layout_constraintTop_toTopOf="@+id/detailed_family" />
+     <!--
             <ImageView
                 android:id="@+id/detailed_ambiente_1"
                 android:layout_width="wrap_content"
@@ -121,7 +172,7 @@
                 app:layout_constraintStart_toEndOf="@+id/detailed_ambiente_4"
                 app:layout_constraintTop_toTopOf="@+id/detailed_ambiente"
                 app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
+-->
             <TextView
                 android:id="@+id/detailed_speisen"
                 android:layout_width="wrap_content"
@@ -132,7 +183,7 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
                 app:layout_constraintTop_toBottomOf="@id/detailed_ambiente" />
-
+<!--
             <ImageView
                 android:id="@+id/detailed_speisen_1"
                 android:layout_width="wrap_content"
@@ -181,7 +232,7 @@
                 app:layout_constraintStart_toEndOf="@+id/detailed_speisen_4"
                 app:layout_constraintTop_toTopOf="@+id/detailed_speisen"
                 app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
+-->
             <TextView
                 android:id="@+id/detailed_getraenke"
                 android:layout_width="wrap_content"
@@ -192,7 +243,7 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
                 app:layout_constraintTop_toBottomOf="@id/detailed_speisen" />
-
+<!--
             <ImageView
                 android:id="@+id/detailed_getraenke_1"
                 android:layout_width="wrap_content"
@@ -241,7 +292,7 @@
                 app:layout_constraintStart_toEndOf="@+id/detailed_getraenke_4"
                 app:layout_constraintTop_toTopOf="@+id/detailed_getraenke"
                 app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
+-->
             <TextView
                 android:id="@+id/detailed_crowding"
                 android:layout_width="wrap_content"
@@ -252,7 +303,7 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
                 app:layout_constraintTop_toBottomOf="@id/detailed_getraenke" />
-
+<!--
             <ImageView
                 android:id="@+id/detailed_crowding_1"
                 android:layout_width="wrap_content"
@@ -301,7 +352,7 @@
                 app:layout_constraintStart_toEndOf="@+id/detailed_crowding_4"
                 app:layout_constraintTop_toTopOf="@+id/detailed_crowding"
                 app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
+-->
             <TextView
                 android:id="@+id/detailed_family"
                 android:layout_width="wrap_content"
@@ -312,7 +363,7 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@+id/detailed_ambiente"
                 app:layout_constraintTop_toBottomOf="@id/detailed_crowding" />
-
+<!--
             <ImageView
                 android:id="@+id/detailed_family_1"
                 android:layout_width="wrap_content"
@@ -361,7 +412,7 @@
                 app:layout_constraintStart_toEndOf="@+id/detailed_family_4"
                 app:layout_constraintTop_toTopOf="@+id/detailed_family"
                 app:srcCompat="@drawable/ic_star_border_black_24dp" />
-
+-->
 
             <Button
                 android:id="@+id/button_rate_go_back"
@@ -424,6 +475,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
                 app:layout_constraintBottom_toBottomOf="parent"/>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

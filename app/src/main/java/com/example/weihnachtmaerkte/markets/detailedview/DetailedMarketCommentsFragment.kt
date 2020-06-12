@@ -38,7 +38,7 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
         }
 
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
-        val id: Long = bundle?.get("id") as Long
+        val id: String = bundle?.get("id") as String
         markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
         ratings = bundle.getParcelableArrayList<Rating>("ratings") as ArrayList<Rating>
         markets.forEach {
@@ -52,7 +52,7 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
     }
 
     private fun addDataSet() {
-        val itemIds: ArrayList<Long> = market.ratings!!
+        val itemIds: ArrayList<String> = market.ratings!!
         //val ratings: List<Rating> = DataSource.createRatingDataSet()
         val results = ArrayList<Rating>()
         ratings.forEach {

@@ -69,7 +69,7 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
     override fun onMarketClick(position: Int) {
         val intent = Intent(this@PreviewFragment.activity, DetailedMarketActivity::class.java)
         val bundle = Bundle()
-        bundle.putLong("id", markets[position].id)
+        bundle.putString("id", markets[position].id)
         bundle.putParcelableArrayList("markets", markets)
         bundle.putParcelableArrayList("ratings", ratings)
         intent.putExtra("bundle", bundle)
