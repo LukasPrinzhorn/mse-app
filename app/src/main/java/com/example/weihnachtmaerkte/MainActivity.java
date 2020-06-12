@@ -375,6 +375,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             String avgDrinks = dataSnapshot.child("avgDrinks").getValue().toString();
                             String avgCrowding = dataSnapshot.child("avgCrowding").getValue().toString();
                             String avgFamily = dataSnapshot.child("avgFamily").getValue().toString();
+                            String avgOverall = dataSnapshot.child("avgOverall").getValue().toString();
                             String numberOfRates = dataSnapshot.child("numberOfRates").getValue().toString();
                             String image = dataSnapshot.child("image").getValue().toString();
                             double xCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("x").getValue().toString());
@@ -389,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     ratings.add(value);
                                 }
                             }
-                            Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, Float.parseFloat(avgAmbience), Float.parseFloat(avgFood), Float.parseFloat(avgDrinks), Float.parseFloat(avgCrowding), Float.parseFloat(avgFamily),Integer.parseInt(numberOfRates), image);
+                            Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, Float.parseFloat(avgAmbience), Float.parseFloat(avgFood), Float.parseFloat(avgDrinks), Float.parseFloat(avgCrowding), Float.parseFloat(avgFamily), Float.parseFloat(avgOverall), Integer.parseInt(numberOfRates), image);
                             markets.add(market);
                         }
 
