@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-
+        initSlidingPanel();
         //TODO find better solutions
         new Thread() {
             @Override
@@ -426,7 +426,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                initSlidingPanel();
+
             }
         }.start();
     }
