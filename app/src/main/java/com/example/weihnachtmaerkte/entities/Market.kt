@@ -17,6 +17,7 @@ data class Market(val id: String,
                   var avgDrinks: Float,
                   var avgCrowding: Float,
                   var avgFamily: Float,
+                  var avgOverall: Float,
                   var numberOfRates: Int,
                   var image: String
 ) : Parcelable {
@@ -29,6 +30,7 @@ data class Market(val id: String,
             parcel.readString().toString(),
             parcel.readString().toString(),
             parcel.readArrayList(Market::class.java.classLoader)?.filterIsInstance<String>() as ArrayList<String>,
+            parcel.readFloat(),
             parcel.readFloat(),
             parcel.readFloat(),
             parcel.readFloat(),
@@ -51,6 +53,7 @@ data class Market(val id: String,
         parcel.writeFloat(avgDrinks)
         parcel.writeFloat(avgCrowding)
         parcel.writeFloat(avgFamily)
+        parcel.writeFloat(avgOverall)
         parcel.writeInt(numberOfRates)
         parcel.writeString(image)
     }

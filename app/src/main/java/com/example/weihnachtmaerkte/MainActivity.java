@@ -628,90 +628,52 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    public LatLng getReferencePosition() {
+    private LatLng getReferencePosition() {
         return map.getCameraPosition().target;
     }
 
     private void initFilterButtons() {
         Button foodButton = findViewById(R.id.button_food);
         foodButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.FOOD);
+            listFragment.reorderMarketsByCriteria(SortingCriteria.FOOD);
             currentSortingCriteria = SortingCriteria.FOOD;
         });
 
         Button drinksButton = findViewById(R.id.button_drinks);
         drinksButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.DRINKS);
+            listFragment.reorderMarketsByCriteria(SortingCriteria.DRINKS);
             currentSortingCriteria = SortingCriteria.DRINKS;
         });
 
         Button familyButton = findViewById(R.id.button_family);
         familyButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.FAMILY);
+            listFragment.reorderMarketsByCriteria(SortingCriteria.FAMILY);
             currentSortingCriteria = SortingCriteria.FAMILY;
         });
 
         Button overallButton = findViewById(R.id.button_overall);
         overallButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.OVERALL);
+            listFragment.reorderMarketsByCriteria(SortingCriteria.OVERALL);
             currentSortingCriteria = SortingCriteria.OVERALL;
         });
 
         Button ambianceButton = findViewById(R.id.button_ambiance);
         ambianceButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.AMBIANCE);
+            listFragment.reorderMarketsByCriteria(SortingCriteria.AMBIANCE);
             currentSortingCriteria = SortingCriteria.AMBIANCE;
         });
 
         Button crowdingButton = findViewById(R.id.button_crowding);
         crowdingButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.CROWDING);
+            listFragment.reorderMarketsByCriteria(SortingCriteria.CROWDING);
             currentSortingCriteria = SortingCriteria.CROWDING;
         });
 
         Button distanceButton = findViewById(R.id.button_distance);
         distanceButton.setOnClickListener(v -> {
-            reorderMarketsByCriteria(SortingCriteria.DISTANCE);
+            listFragment.reorderMarketsByPosition(getReferencePosition());
             currentSortingCriteria = SortingCriteria.DISTANCE;
         });
-    }
-
-    public void reorderMarketsByCriteria(SortingCriteria sortingCriteria) {
-        Collections.sort(markets, new CustomComparator(sortingCriteria));
-    }
-
-    private static class CustomComparator implements Comparator<Market> {
-
-        private SortingCriteria sortingCriteria;
-
-        public CustomComparator(SortingCriteria sortingCriteria) {
-            this.sortingCriteria = sortingCriteria;
-        }
-
-        @Override
-        public int compare(Market o1, Market o2) {
-            switch (sortingCriteria) {
-                case FOOD:
-                    return Double.compare();
-                break;
-                case DRINKS:
-                    return Double.compare();
-                break;
-                case FAMILY:
-                    return Double.compare();
-                break;
-                case OVERALL:
-                    return Double.compare();
-                case AMBIANCE:
-                    return Double.compare();
-                break;
-                case CROWDING:
-                    return Double.compare();
-                break;
-                default:
-                    return 0;
-            }
-        }
     }
 
     public enum SortingCriteria {

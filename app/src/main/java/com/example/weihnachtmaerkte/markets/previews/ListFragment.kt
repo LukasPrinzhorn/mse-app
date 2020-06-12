@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weihnachtmaerkte.MainActivity.SortingCriteria
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
@@ -87,6 +88,8 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
             /*for (Market m : markets) {
                 Log.i("Markets", m.getName());
             }*/
+            listViewAdapter.submitList(markets)
+            listViewAdapter.notifyDataSetChanged()
         }
     }
 
@@ -98,6 +101,30 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
             //Log.i("Distance", o1.getName() + ": " + distToMarket1);
             //Log.i("Distance", o2.getName() + ": " + distToMarket2);
             return java.lang.Double.compare(distToMarket1, distToMarket2)
+        }
+
+    }
+
+    fun reorderMarketsByCriteria(sortingCriteria: SortingCriteria?) {
+        Collections.sort(markets, CustomComparator(sortingCriteria))
+        /*for (Market m : markets) {
+                Log.i("Markets", m.getName());
+            }*/
+        listViewAdapter.submitList(markets)
+        listViewAdapter.notifyDataSetChanged()
+    }
+
+    private class CustomComparator(private val sortingCriteria: SortingCriteria?) : Comparator<Market> {
+        override fun compare(o1: Market, o2: Market): Int {
+            return when (sortingCriteria) {
+                SortingCriteria.FOOD -> java.lang.Double.compare(o1.avgFood.toDouble(), o2.avgFood.toDouble())
+                SortingCriteria.DRINKS -> java.lang.Double.compare(o1.avgDrinks.toDouble(), o2.avgDrinks.toDouble())
+                SortingCriteria.FAMILY -> java.lang.Double.compare(o1.avgFamily.toDouble(), o2.avgFamily.toDouble())
+                SortingCriteria.OVERALL -> java.lang.Double.compare(o1.avgOverall.toDouble(), o2.avgOverall.toDouble())
+                SortingCriteria.AMBIANCE -> java.lang.Double.compare(o1.avgAmbience.toDouble(), o2.avgAmbience.toDouble())
+                SortingCriteria.CROWDING -> java.lang.Double.compare(o1.avgCrowding.toDouble(), o2.avgCrowding.toDouble())
+                else -> 0
+            }
         }
 
     }
