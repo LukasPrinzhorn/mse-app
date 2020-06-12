@@ -370,6 +370,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             String marketDates = dataSnapshot.child("date").getValue().toString();
                             String marketTime = dataSnapshot.child("time").getValue().toString();
                             String weblink = dataSnapshot.child("url").getValue().toString();
+                            String avgAmbience = dataSnapshot.child("avgAmbience").getValue().toString();
+                            String avgFood = dataSnapshot.child("avgFood").getValue().toString();
+                            String avgDrinks = dataSnapshot.child("avgDrinks").getValue().toString();
+                            String avgCrowding = dataSnapshot.child("avgCrowding").getValue().toString();
+                            String avgFamily = dataSnapshot.child("avgFamily").getValue().toString();
+                            String numberOfRates = dataSnapshot.child("numberOfRates").getValue().toString();
                             String image = dataSnapshot.child("image").getValue().toString();
                             double xCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("x").getValue().toString());
                             double yCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("y").getValue().toString());
@@ -383,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     ratings.add(value);
                                 }
                             }
-                            Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, image);
+                            Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, Float.parseFloat(avgAmbience), Float.parseFloat(avgFood), Float.parseFloat(avgDrinks), Float.parseFloat(avgCrowding), Float.parseFloat(avgFamily),Integer.parseInt(numberOfRates), image);
                             markets.add(market);
                         }
 

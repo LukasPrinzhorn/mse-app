@@ -98,6 +98,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
             }
             val ratingIds: ArrayList<String>? = market.ratings
             //val ratings: List<Rating> = DataSource.createRatingDataSet()
+            /*alte Berechnung
             val results = ArrayList<Rating>()
             if (ratingIds != null) {
                 ratings.forEach {
@@ -106,7 +107,14 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
                     }
                 }
             }
-            marketRating.text = calculateAverageRating(results)
+             */
+            val avgRatings = ArrayList<Float>()
+            avgRatings.add(market.avgAmbience)
+            avgRatings.add(market.avgFood)
+            avgRatings.add(market.avgDrinks)
+            avgRatings.add(market.avgCrowding)
+            avgRatings.add(market.avgFamily)
+            marketRating.text = calculateAverageRating(avgRatings)
             itemView.setOnClickListener(this)
         }
 
@@ -114,7 +122,12 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
             onMarketListener.onMarketClick(adapterPosition)
         }
 
-        private fun calculateAverageRating(list: List<Rating>): String {
+        private fun calculateAverageRating(list: List<Float>): String {
+            var result = 0f
+            list.forEach {result += it}
+            return ""+(result/5.0f)
+/*
+alte Berechnung
             var counter = 0
             var result = 0f
             list.forEach {
@@ -127,6 +140,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
             } else {
                 "0"
             }
+            */
         }
 
         private fun round(number: Float, decimal: Int): Float {
