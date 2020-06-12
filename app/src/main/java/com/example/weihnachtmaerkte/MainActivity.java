@@ -3,7 +3,6 @@ package com.example.weihnachtmaerkte;
 import android.Manifest;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -59,6 +58,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
@@ -71,7 +71,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -106,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FloatingActionButton centerFab;
     boolean movedByProgram = false;
     boolean centeredOnUser;
+
+    private PreviewFragment previewFragment;
+    private ListFragment listFragment;
+    private SortingCriteria currentSortingCriteria;
 
 
     @Override
@@ -159,6 +162,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mContext = this;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+
+        initFilterButtons();
 
     }
 
@@ -288,7 +293,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 displayFab();
                 centeredOnUser = false;
             }
-            reorderMarketsByPosition(map.getCameraPosition().target);
+            if (previewFragment != null) {
+                previewFragment.reorderMarketsByPosition(map.getCameraPosition().target);
+            }
+            if (listFragment != null && (currentSortingCriteria == null || currentSortingCriteria == SortingCriteria.DISTANCE)) {
+                listFragment.reorderMarketsByPosition(map.getCameraPosition().target);
+            }
         });
 
         map.setOnMarkerClickListener(marker -> {
@@ -354,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             /*TODO check Rating List?*/
                             String marketId = dataSnapshot.child("id").getValue().toString();
-                            Log.d("debugValue",marketId);
+                            Log.d("debugValue", marketId);
                             String marketName = dataSnapshot.child("name").getValue().toString();
                             String marketAddress = dataSnapshot.child("address").getValue().toString();
                             String marketDates = dataSnapshot.child("date").getValue().toString();
@@ -422,8 +432,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initSlidingPanel() {
-        PreviewFragment previewFragment = PreviewFragment.newInstance(markets, ratings);
-        ListFragment listFragment = ListFragment.newInstance(markets, ratings);
+        previewFragment = PreviewFragment.newInstance(markets, ratings);
+        listFragment = ListFragment.newInstance(markets, ratings);
         FragmentManager manager = getSupportFragmentManager();
 
    /*     Bundle bundle = new Bundle();
@@ -593,12 +603,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (currentPositionMarker != null && markerIcon != null) {
             currentPositionMarker.remove();
         }
-        if(markerIcon != null){
+        if (markerIcon != null) {
             currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(markerIcon));
             centerFab.hide();
         }
         movedByProgram = true;
-        reorderMarketsByPosition(position);
+        if (previewFragment != null) {
+            previewFragment.reorderMarketsByPosition(position);
+        }
+        if (listFragment != null && (currentSortingCriteria == null || currentSortingCriteria == SortingCriteria.DISTANCE)) {
+            listFragment.reorderMarketsByPosition(position);
+        }
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
@@ -613,32 +628,100 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void reorderMarketsByPosition(LatLng referencePosition) {
-        if (markets != null && markets.size() != 0) {
-            Collections.sort(markets, new PositionComparator(referencePosition));
-            /*for (Market m : markets) {
-                Log.i("Markets", m.getName());
-            }*/
-        }
+    public LatLng getReferencePosition() {
+        return map.getCameraPosition().target;
     }
 
-    private static class PositionComparator implements Comparator<Market> {
+    private void initFilterButtons() {
+        Button foodButton = findViewById(R.id.button_food);
+        foodButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.FOOD);
+            currentSortingCriteria = SortingCriteria.FOOD;
+        });
 
-        private LatLng referencePosition;
+        Button drinksButton = findViewById(R.id.button_drinks);
+        drinksButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.DRINKS);
+            currentSortingCriteria = SortingCriteria.DRINKS;
+        });
 
-        PositionComparator(LatLng referencePosition) {
-            this.referencePosition = referencePosition;
+        Button familyButton = findViewById(R.id.button_family);
+        familyButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.FAMILY);
+            currentSortingCriteria = SortingCriteria.FAMILY;
+        });
+
+        Button overallButton = findViewById(R.id.button_overall);
+        overallButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.OVERALL);
+            currentSortingCriteria = SortingCriteria.OVERALL;
+        });
+
+        Button ambianceButton = findViewById(R.id.button_ambiance);
+        ambianceButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.AMBIANCE);
+            currentSortingCriteria = SortingCriteria.AMBIANCE;
+        });
+
+        Button crowdingButton = findViewById(R.id.button_crowding);
+        crowdingButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.CROWDING);
+            currentSortingCriteria = SortingCriteria.CROWDING;
+        });
+
+        Button distanceButton = findViewById(R.id.button_distance);
+        distanceButton.setOnClickListener(v -> {
+            reorderMarketsByCriteria(SortingCriteria.DISTANCE);
+            currentSortingCriteria = SortingCriteria.DISTANCE;
+        });
+    }
+
+    public void reorderMarketsByCriteria(SortingCriteria sortingCriteria) {
+        Collections.sort(markets, new CustomComparator(sortingCriteria));
+    }
+
+    private static class CustomComparator implements Comparator<Market> {
+
+        private SortingCriteria sortingCriteria;
+
+        public CustomComparator(SortingCriteria sortingCriteria) {
+            this.sortingCriteria = sortingCriteria;
         }
 
         @Override
         public int compare(Market o1, Market o2) {
-            assert o1 != null && o2 != null;
-            double distToMarket1 = Math.hypot(referencePosition.longitude - o1.getCoordinates()[1], referencePosition.latitude - o1.getCoordinates()[0]);
-            double distToMarket2 = Math.hypot(referencePosition.longitude - o2.getCoordinates()[1], referencePosition.latitude - o2.getCoordinates()[0]);
-            //Log.i("Distance", o1.getName() + ": " + distToMarket1);
-            //Log.i("Distance", o2.getName() + ": " + distToMarket2);
-            return Double.compare(distToMarket1, distToMarket2);
+            switch (sortingCriteria) {
+                case FOOD:
+                    return Double.compare();
+                break;
+                case DRINKS:
+                    return Double.compare();
+                break;
+                case FAMILY:
+                    return Double.compare();
+                break;
+                case OVERALL:
+                    return Double.compare();
+                case AMBIANCE:
+                    return Double.compare();
+                break;
+                case CROWDING:
+                    return Double.compare();
+                break;
+                default:
+                    return 0;
+            }
         }
+    }
+
+    public enum SortingCriteria {
+        OVERALL,
+        AMBIANCE,
+        FOOD,
+        DRINKS,
+        CROWDING,
+        FAMILY,
+        DISTANCE
     }
 
 }

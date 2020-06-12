@@ -70,4 +70,5 @@
     <string name="person_icon_description">Icon of a person, chest and head</string>
     <string name="result">Result</string>
     <string name="swipe_dialogue_image_description">Representation of swipe feature</string>
+    <string name="button_distance_description">Entfernung</string>
 </resources>
