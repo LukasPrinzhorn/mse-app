@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.comment_item.view.*
 
 class CommentRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: List<Rating> = ArrayList()
+    private var ratings: ArrayList<Rating> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CommentViewHolder(
@@ -20,39 +20,49 @@ class CommentRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                         R.layout.comment_item,
                         parent,
                         false
-                )
+                ),
+                ratings
         )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CommentViewHolder -> {
-                holder.bind(items[position])
+                holder.bind(ratings[position])
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return items.size
+        return ratings.size
     }
 
     interface OnCommentListener
 
-    fun submitList(ratingList: List<Rating>) {
-        items = ratingList
+    fun submitList(ratingList: ArrayList<Rating>) {
+        ratings = ratingList
     }
 
     class CommentViewHolder
     constructor(
-            itemView: View
+            itemView: View,
+            var ratings: ArrayList<Rating>
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val commentTitle = itemView.comment_title
         private val commentText = itemView.comment_text
+        private val commentAuthor = itemView.comment_username
 
         fun bind(rating: Rating) {
-            commentTitle.text = rating.title
-            commentText.text = rating.text
+            val userIds: ArrayList<String> = ArrayList()
+            ratings.forEach{
+                userIds.add(it.userid)
+            }
+            if (userIds.contains(rating.userid)){
+                commentTitle.text = rating.title
+                commentText.text = rating.text
+                commentAuthor.text = rating.userid
+            }
         }
     }
 }

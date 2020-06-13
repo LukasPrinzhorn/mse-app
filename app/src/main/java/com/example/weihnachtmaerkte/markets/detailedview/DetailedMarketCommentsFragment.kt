@@ -1,6 +1,7 @@
 package com.example.weihnachtmaerkte.markets.detailedview
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,15 +53,16 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
     }
 
     private fun addDataSet() {
-        val itemIds: ArrayList<String> = market.ratings!!
-        //val ratings: List<Rating> = DataSource.createRatingDataSet()
+        val itemIds: ArrayList<String>? = market.ratings
         val results = ArrayList<Rating>()
         ratings.forEach {
-            if (itemIds.contains(it.id)) {
+            if (itemIds != null && itemIds.contains(it.id) && it.text != null && !it.text.equals("") && it.title != null && !it.title.equals("")) {
                 results.add(it)
             }
         }
         commentViewAdapter.submitList(results)
+        Log.d("testingAdapterSize",""+results)
+
     }
 
     private fun initRecyclerView() {

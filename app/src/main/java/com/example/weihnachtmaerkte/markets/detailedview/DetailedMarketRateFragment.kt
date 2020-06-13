@@ -3,6 +3,9 @@ package com.example.weihnachtmaerkte.markets.detailedview
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,13 +22,25 @@ import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 import com.google.firebase.database.FirebaseDatabase
+import java.lang.Boolean.FALSE
+import java.lang.Boolean.TRUE
+import kotlin.properties.Delegates
 
 
 class DetailedMarketRateFragment : Fragment() {
 
     private lateinit var market: Market
     private lateinit var markets: ArrayList<Market>
+    private lateinit var ratings: ArrayList<Rating>
     private lateinit var userId: String
+
+    private lateinit var saveButton: Button
+    private var desAmbience: Boolean = false
+    private var desFood: Boolean = false
+    private var desDrinks: Boolean = false
+    private var desCrowding: Boolean = false
+    private var desFamily: Boolean = false
+    private var desText: Boolean = false
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -42,14 +57,12 @@ class DetailedMarketRateFragment : Fragment() {
             findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
             view.hideKeyboard()
         }
-        view.findViewById<Button>(R.id.button_rate_save).setOnClickListener {
-            saveRating()
-            findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
-            view.hideKeyboard()
-        }
+        initSaveButton()
+
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: String = bundle?.get("id") as String
         markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
+        ratings = bundle.getParcelableArrayList<Rating>("ratings") as ArrayList<Rating>
         markets.forEach {
             if (it.id == id) {
                 market = it
@@ -61,6 +74,31 @@ class DetailedMarketRateFragment : Fragment() {
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    private fun initSaveButton(){
+        saveButton = requireView().findViewById<Button>(R.id.button_rate_save)
+        saveButton.isEnabled = false;
+
+        saveButton.setOnClickListener {
+            saveRating()
+            findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
+            requireView().hideKeyboard()
+        }
+
+        val rbAmbience: RatingBar = requireView().findViewById(R.id.ratingBarAmbience)
+        val rbFood: RatingBar = requireView().findViewById(R.id.ratingBarFood)
+        val rbDrinks: RatingBar = requireView().findViewById(R.id.ratingBarDrinks)
+        val rbCrowding: RatingBar = requireView().findViewById(R.id.ratingBarCrowding)
+        val rbFamily: RatingBar = requireView().findViewById(R.id.ratingBarFamily)
+        val tvTitle: TextView = requireView().findViewById(R.id.detailed_title_section)
+        val tvComment: TextView = requireView().findViewById(R.id.detailed_comment_section)
+        desAmbience = isChanged(rbAmbience)
+        desFood = isChanged(rbFood)
+        desDrinks = isChanged(rbDrinks)
+        desCrowding = isChanged(rbCrowding)
+        desFamily = isChanged(rbFamily)
+        desText = isChanged(tvTitle, tvComment)
     }
 
     private fun setData() {
@@ -95,7 +133,41 @@ class DetailedMarketRateFragment : Fragment() {
         }*/
     }
 
-    private fun saveRating(){
+    private fun isChanged(rb: RatingBar): Boolean{
+        var result: Boolean = false
+        val ratingBarListener: RatingBar.OnRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
+            ratingBar, rating, _ ->
+            if (ratingBar.rating > 0) {
+                result = true
+                Log.d("testchange",""+desAmbience+desFood+desCrowding)
+            }
+            saveButton.isEnabled = desAmbience && desFood && desDrinks && desCrowding && desFamily && desText
+        }
+        rb.onRatingBarChangeListener = ratingBarListener
+        return result
+    }
+
+    private fun isChanged(tv1: TextView, tv2: TextView): Boolean {
+        var decisionNoComment = false
+        var decisionComment = false
+        val textWatcher: TextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                decisionNoComment = tv1.text.isEmpty() && tv2.text.isEmpty()
+                decisionComment = tv1.text.isNotEmpty() && tv2.text.isNotEmpty()
+                saveButton.isEnabled = desAmbience && desFood && desDrinks && desCrowding && desFamily && (decisionComment || decisionNoComment)
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+            }
+        }
+        tv1.addTextChangedListener(textWatcher)
+        tv2.addTextChangedListener(textWatcher)
+        return (decisionComment || decisionNoComment)
+    }
+
+    private fun saveRating() {
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val databaseReference = firebaseDatabase.getReference("ratings/")
         if (view != null) {
@@ -112,19 +184,109 @@ class DetailedMarketRateFragment : Fragment() {
             val starsCrowding: Float = ratingBarCrowding.rating
             val starsFamily: Float = ratingBarFamily.rating
 
-            val title = if(titleView.text != null) ""+titleView.text else null
-            val comment = if(commentView.text != null) ""+commentView.text else null
+            val title = if (titleView.text != null) "" + titleView.text else null
+            val comment = if (commentView.text != null) "" + commentView.text else null
 
             val ratingId: String? = databaseReference.push().key
             if (ratingId != null) {
                 val rating = Rating(ratingId, starsAmbience, starsFood, starsDrinks, starsCrowding, starsFamily, title, comment, userId)
                 databaseReference.child(ratingId).setValue(rating)
+                ratings.add(rating)
+                saveMarket(rating)
             }
         }
     }
 
-    private fun getUserId() : String{
+    private fun saveMarket(latestRating: Rating) {
+        val firebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReference = firebaseDatabase.getReference("markets/" + market.id)
+
+        val ratingIds: ArrayList<String>? = market.ratings
+        val results = ArrayList<Rating>()
+        if (ratingIds != null) {
+            ratings.forEach {
+                if (ratingIds.contains(it.id)) {
+                    results.add(it)
+                }
+            }
+        }
+        results.add(latestRating)
+        val avg: ArrayList<Float> = calculateAverageRating(results)
+        market.ratings?.add(latestRating.id)
+        Log.d("testingwerte", "${market.id}||"+avg[0]+"|"+avg[1]+"|"+avg[2]+"|"+avg[3]+"|"+avg[4]+"|"+avg[5]+"|")
+
+        databaseReference.child("avgAmbience").setValue(avg[0])
+        databaseReference.child("avgFood").setValue(avg[1])
+        databaseReference.child("avgDrinks").setValue(avg[2])
+        databaseReference.child("avgCrowding").setValue(avg[3])
+        databaseReference.child("avgFamily").setValue(avg[4])
+        databaseReference.child("avgOverall").setValue(avg[5])
+        databaseReference.child("numberOfRates").setValue(++market.numberOfRates)
+        databaseReference.child("ratings").setValue(market.ratings)
+
+    }
+
+    private fun getUserId(): String {
         val sharedPreferences: SharedPreferences? = activity?.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
         return sharedPreferences?.getString(USER_ID, null)!!
+    }
+
+    private fun calculateAverageRating(list: List<Rating>): ArrayList<Float> {
+        val results: ArrayList<Float> = ArrayList()
+        var counter = 0
+        var overall = 0f
+        var ambience = 0f
+        var food = 0f
+        var drinks = 0f
+        var crowding = 0f
+        var family = 0f
+        list.forEach {
+            overall += (it.ambience + it.crowding + it.drinks + it.family + it.food) / 5.0f
+            ambience += it.ambience
+            food += it.food
+            drinks += it.drinks
+            crowding += it.crowding
+            family += it.family
+            counter++
+        }
+        /*alte Berechnung
+                   return if (counter != 0) {
+                       result = (result / counter)
+                       "" + round(result, 1)
+                   } else {
+                       "0"
+                   }
+         */
+        if (counter != 0) {
+            results.add(round((ambience / counter), 1))
+            results.add(round((food / counter), 1))
+            results.add(round((drinks / counter), 1))
+            results.add(round((crowding / counter), 1))
+            results.add(round((family / counter), 1))
+            results.add(round((overall / counter), 1))
+        } else {
+            results.add(3f)
+            results.add(3f)
+            results.add(3f)
+            results.add(3f)
+            results.add(3f)
+            results.add(3f)
+        }
+        return results
+    }
+
+    private fun round(number: Float, decimal: Int): Float {
+        val numberString: String = "" + number
+        val splits: List<String> = numberString.split(".")
+        if (splits.size == 1) {
+            return number
+        }
+        return if (splits.size == 2) {
+            Log.d("Zahlen", splits[0] + "" + splits[1])
+            val s: String = splits[0] + "." + splits[1].substring(0, decimal)
+            s.toFloat()
+        } else {
+            0f
+        }
     }
 }

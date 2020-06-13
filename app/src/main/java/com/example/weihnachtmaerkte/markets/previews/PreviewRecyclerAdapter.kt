@@ -96,65 +96,18 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
                 marketName.text = market.name
 
             }
-            val ratingIds: ArrayList<String>? = market.ratings
-            //val ratings: List<Rating> = DataSource.createRatingDataSet()
-            /*alte Berechnung
-            val results = ArrayList<Rating>()
-            if (ratingIds != null) {
-                ratings.forEach {
-                    if (ratingIds.contains(it.id)) {
-                        results.add(it)
-                    }
-                }
-            }
-             */
             val avgRatings = ArrayList<Float>()
             avgRatings.add(market.avgAmbience)
             avgRatings.add(market.avgFood)
             avgRatings.add(market.avgDrinks)
             avgRatings.add(market.avgCrowding)
             avgRatings.add(market.avgFamily)
-            marketRating.text = calculateAverageRating(avgRatings)
+            marketRating.text = "${market.avgOverall}"
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(v: View?) {
             onMarketListener.onMarketClick(adapterPosition)
-        }
-
-        private fun calculateAverageRating(list: List<Float>): String {
-            var result = 0f
-            list.forEach {result += it}
-            return ""+(result/5.0f)
-/*
-alte Berechnung
-            var counter = 0
-            var result = 0f
-            list.forEach {
-                result += (it.ambience + it.crowding + it.drinks + it.family + it.food) / 5.0f
-                counter++
-            }
-            return if (counter != 0) {
-                result = (result / counter)
-                "" + round(result, 1)
-            } else {
-                "0"
-            }
-            */
-        }
-
-        private fun round(number: Float, decimal: Int): Float {
-            val numberString: String = "" + number
-            val splits: List<String> = numberString.split(".")
-            if (splits.size == 1) {
-                return number
-            }
-            return if (splits.size == 2) {
-                val s: String = splits[0] + "." + splits[1].substring(0, decimal)
-                s.toFloat()
-            } else {
-                0f
-            }
         }
     }
 }

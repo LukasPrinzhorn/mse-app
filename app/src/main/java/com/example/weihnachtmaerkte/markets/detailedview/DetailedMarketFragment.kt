@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 
 
-class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListener {
+class DetailedMarketFragment : Fragment() {
     private lateinit var market: Market
     private lateinit var markets: ArrayList<Market>
 
@@ -47,6 +48,9 @@ class DetailedMarketFragment : Fragment(), CommentRecyclerAdapter.OnCommentListe
 
         view.findViewById<ImageView>(R.id.detailed_go_back).setOnClickListener {
             activity?.finish()
+        }
+        view.findViewById<ImageView>(R.id.detailed_market_date_image).setOnClickListener{
+            Toast.makeText(activity, ""+markets.size, Toast.LENGTH_LONG).show()
         }
     }
 

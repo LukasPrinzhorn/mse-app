@@ -72,8 +72,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import static com.example.weihnachtmaerkte.FriendsActivity.QR_CODE_PREFIX;
@@ -344,6 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("markets/");
+        Log.d("testingsize1", markets.size() + "");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -352,53 +351,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     m.remove();
                 }
 
+                if (markets.size() > 0) {
+                    markets = new ArrayList<>();
+                }
+                Log.d("testingsize2", markets.size() + "");
+
                 markers.clear();
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String marketId = ds.getKey().toString();
-
-
-                    DatabaseReference marketIdRef = databaseReference.child(marketId);
-                    ValueEventListener eventListener = new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            /*TODO check Rating List?*/
-                            String marketId = dataSnapshot.child("id").getValue().toString();
-                            Log.d("debugValue", marketId);
-                            String marketName = dataSnapshot.child("name").getValue().toString();
-                            String marketAddress = dataSnapshot.child("address").getValue().toString();
-                            String marketDates = dataSnapshot.child("date").getValue().toString();
-                            String marketTime = dataSnapshot.child("time").getValue().toString();
-                            String weblink = dataSnapshot.child("url").getValue().toString();
-                            String avgAmbience = dataSnapshot.child("avgAmbience").getValue().toString();
-                            String avgFood = dataSnapshot.child("avgFood").getValue().toString();
-                            String avgDrinks = dataSnapshot.child("avgDrinks").getValue().toString();
-                            String avgCrowding = dataSnapshot.child("avgCrowding").getValue().toString();
-                            String avgFamily = dataSnapshot.child("avgFamily").getValue().toString();
-                            String avgOverall = dataSnapshot.child("avgOverall").getValue().toString();
-                            String numberOfRates = dataSnapshot.child("numberOfRates").getValue().toString();
-                            String image = dataSnapshot.child("image").getValue().toString();
-                            double xCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("x").getValue().toString());
-                            double yCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("y").getValue().toString());
-
-                            markers.add(map.addMarker(new MarkerOptions().position(new LatLng(xCoord, yCoord)).icon(candyCaneIcon)));
-
-                            ArrayList<String> ratings = new ArrayList<>();
-                            for (DataSnapshot postSnapshot : dataSnapshot.child("ratings").getChildren()) {
-                                if (postSnapshot.getValue() != null) {
-                                    String value = postSnapshot.getValue().toString();
-                                    ratings.add(value);
-                                }
-                            }
-                            Market market = new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, Float.parseFloat(avgAmbience), Float.parseFloat(avgFood), Float.parseFloat(avgDrinks), Float.parseFloat(avgCrowding), Float.parseFloat(avgFamily), Float.parseFloat(avgOverall), Integer.parseInt(numberOfRates), image);
-                            markets.add(market);
-                        }
-
-                        @Override
-                        public void onCancelled(@NotNull DatabaseError databaseError) {
-                        }
-                    };
-                    marketIdRef.addListenerForSingleValueEvent(eventListener);
+                    String marketId = ds.getKey();
+                    Market market = getMarketData(ds);
+                    markers.add(map.addMarker(new MarkerOptions().position(new LatLng(market.getCoordinates()[0], market.getCoordinates()[1])).icon(candyCaneIcon)));
+                    markets.add(market);
+                    Log.d("testingsize3", markets.size() + "");
                 }
             }
 
@@ -411,11 +376,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ratingsReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (ratings.size() > 0) {
+                    ratings = new ArrayList<>();
+                }
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Log.d("value", "" + ds.getValue().toString());
                     Rating rating = ds.getValue(Rating.class);
                     ratings.add(rating);
                 }
+
             }
 
             @Override
@@ -425,17 +393,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
         initSlidingPanel();
         //TODO find better solutions
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }.start();
     }
 
     private void initSlidingPanel() {
@@ -457,7 +414,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
                 if (slideOffset > 0) {
-
                     manager.beginTransaction()
                             .replace(R.id.fragmentSliding, listFragment, listFragment.getTag())
                             .commit();
@@ -681,6 +637,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             listFragment.reorderMarketsByPosition(getReferencePosition());
             currentSortingCriteria = SortingCriteria.DISTANCE;
         });
+    }
+
+    private Market getMarketData(@NonNull DataSnapshot dataSnapshot) {
+        String marketId = dataSnapshot.child("id").getValue().toString();
+        String marketName = dataSnapshot.child("name").getValue().toString();
+        String marketAddress = dataSnapshot.child("address").getValue().toString();
+        String marketDates = dataSnapshot.child("date").getValue().toString();
+        String marketTime = dataSnapshot.child("time").getValue().toString();
+        String weblink = dataSnapshot.child("url").getValue().toString();
+        String avgAmbience = dataSnapshot.child("avgAmbience").getValue().toString();
+        String avgFood = dataSnapshot.child("avgFood").getValue().toString();
+        String avgDrinks = dataSnapshot.child("avgDrinks").getValue().toString();
+        String avgCrowding = dataSnapshot.child("avgCrowding").getValue().toString();
+        String avgFamily = dataSnapshot.child("avgFamily").getValue().toString();
+        String avgOverall = dataSnapshot.child("avgOverall").getValue().toString();
+        String numberOfRates = dataSnapshot.child("numberOfRates").getValue().toString();
+        String image = dataSnapshot.child("image").getValue().toString();
+
+        double xCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("x").getValue().toString());
+        double yCoord = Double.parseDouble(dataSnapshot.child("coordinates").child("y").getValue().toString());
+
+        ArrayList<String> ratings = new ArrayList<>();
+        for (DataSnapshot postSnapshot : dataSnapshot.child("ratings").getChildren()) {
+            if (postSnapshot.getValue() != null) {
+                String value = postSnapshot.getValue().toString();
+                ratings.add(value);
+            }
+        }
+        return new Market(marketId, marketName, marketAddress, new double[]{xCoord, yCoord}, marketDates, marketTime, weblink, ratings, Float.parseFloat(avgAmbience), Float.parseFloat(avgFood), Float.parseFloat(avgDrinks), Float.parseFloat(avgCrowding), Float.parseFloat(avgFamily), Float.parseFloat(avgOverall), Integer.parseInt(numberOfRates), image);
+
     }
 
     public enum SortingCriteria {
