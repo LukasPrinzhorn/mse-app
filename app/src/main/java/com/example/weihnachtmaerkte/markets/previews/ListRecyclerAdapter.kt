@@ -60,35 +60,17 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, privat
         private val marketRating = itemView.market_rating
 
         fun bind(market: Market) {
-            if (market.image.startsWith("@")) {
-                if (market.image == "@drawable/museumsquartier") {
-                    marketImage.setImageResource(R.mipmap.museumsquartier)
-                }
-                if (market.image == "@drawable/spittelberg") {
-                    marketImage.setImageResource(R.mipmap.spittelberg)
-                }
-                if (market.image == "@drawable/wiener_weihnachtstraum") {
-                    marketImage.setImageResource(R.mipmap.wiener_weihnachtstraum)
-                }
-                if (market.image == "@drawable/zwidemu") {
-                    marketImage.setImageResource(R.mipmap.zwidemu)
-                }
-                if (market.image == "@drawable/karlsplatz") {
-                    marketImage.setImageResource(R.mipmap.karlsplatz)
-                }
-            } else {
-                val requestOptions = RequestOptions()
-                        .placeholder(R.drawable.ic_launcher_background)
-                        .error(R.drawable.ic_launcher_background)
+            val requestOptions = RequestOptions()
+                    .placeholder(R.drawable.default_image)
+                    .error(R.drawable.default_image)
 
-                Glide.with(itemView.context)
-                        .applyDefaultRequestOptions(requestOptions)
-                        .load(market.image)
-                        .into(marketImage)
-            }
+            Glide.with(itemView.context)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(market.image)
+                    .into(marketImage)
+
             marketName.text = market.name
             val ratingIds: ArrayList<String>? = market.ratings
-            //val ratings: List<Rating> = DataSource.createRatingDataSet()
             val results = ArrayList<Rating>()
             if (ratingIds != null) {
                 ratings.forEach {

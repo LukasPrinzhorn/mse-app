@@ -3,42 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph2"
-    app:startDestination="@id/First2Fragment">
+    app:startDestination="@id/OverviewFragment">
 
     <fragment
-        android:id="@+id/First2Fragment"
+        android:id="@+id/OverviewFragment"
         android:name="com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_detailed_market">
 
         <action
-            android:id="@+id/action_First2Fragment_to_Second2Fragment"
-            app:destination="@id/Second2Fragment" />
+            android:id="@+id/action_OverviewFragment_to_RateFragment"
+            app:destination="@id/RateFragment" />
         <action
-            android:id="@+id/action_First2Fragment_to_Third2Fragment"
-            app:destination="@id/Third2Fragment" />
+            android:id="@+id/action_RateFragment_to_CommentsFragment"
+            app:destination="@id/CommentsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/Second2Fragment"
+        android:id="@+id/RateFragment"
         android:name="com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketRateFragment"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_detailed_market_rate">
 
         <action
-            android:id="@+id/action_Second2Fragment_to_First2Fragment"
-            app:destination="@id/First2Fragment"
-            app:popUpTo="@id/First2Fragment"
+            android:id="@+id/action_RateFragment_to_OverviewFragment"
+            app:destination="@id/OverviewFragment"
+            app:popUpTo="@id/OverviewFragment"
             app:popUpToInclusive="true"/>
 
     </fragment>
     <fragment
-        android:id="@+id/Third2Fragment"
+        android:id="@+id/CommentsFragment"
         android:name="com.example.weihnachtmaerkte.markets.detailedview.DetailedMarketCommentsFragment"
         android:label="@string/third_fragment_label"
         tools:layout="@layout/fragment_detailed_market_comments">
 
         <action
-            android:id="@+id/action_Third3Fragment_to_First2Fragment"
-            app:destination="@id/First2Fragment" />
+            android:id="@+id/action_CommentsFragment_to_OverviewFragment"
+            app:destination="@id/OverviewFragment"
+            app:popUpTo="@id/OverviewFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

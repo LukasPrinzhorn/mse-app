@@ -342,7 +342,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = firebaseDatabase.getReference("markets/");
-        Log.d("testingsize1", markets.size() + "");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -354,8 +353,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (markets.size() > 0) {
                     markets = new ArrayList<>();
                 }
-                Log.d("testingsize2", markets.size() + "");
-
                 markers.clear();
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -363,7 +360,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Market market = getMarketData(ds);
                     markers.add(map.addMarker(new MarkerOptions().position(new LatLng(market.getCoordinates()[0], market.getCoordinates()[1])).icon(candyCaneIcon)));
                     markets.add(market);
-                    Log.d("testingsize3", markets.size() + "");
                 }
             }
 

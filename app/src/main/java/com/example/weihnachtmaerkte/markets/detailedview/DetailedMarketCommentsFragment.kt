@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
@@ -35,7 +37,7 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<ImageView>(R.id.comments_go_back).setOnClickListener {
-            findNavController().navigate(R.id.action_Third3Fragment_to_First2Fragment)
+            findNavController().navigate(R.id.action_CommentsFragment_to_OverviewFragment)
         }
 
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
@@ -80,24 +82,13 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
         textView.text = market.name
 
         val imageView: ImageView = view?.findViewById(R.id.detailed_market_image) as ImageView
-        if (market.image.startsWith("@")) {
-            if (market.image == "@drawable/museumsquartier") {
-                imageView.setImageResource(R.mipmap.museumsquartier)
-            }
-            if (market.image == "@drawable/spittelberg") {
-                imageView.setImageResource(R.mipmap.spittelberg)
-            }
-            if (market.image == "@drawable/wiener_weihnachtstraum") {
-                imageView.setImageResource(R.mipmap.wiener_weihnachtstraum)
-            }
-            if (market.image == "@drawable/zwidemu") {
-                imageView.setImageResource(R.mipmap.zwidemu)
-            }
-            if (market.image == "@drawable/karlsplatz") {
-                imageView.setImageResource(R.mipmap.karlsplatz)
-            }
-        }/* else {
-            //load real picture
-        }*/
+        val requestOptions = RequestOptions()
+                .placeholder(R.drawable.default_image)
+                .error(R.drawable.default_image)
+
+        Glide.with(imageView.context)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(market.image)
+                .into(imageView)
     }
 }

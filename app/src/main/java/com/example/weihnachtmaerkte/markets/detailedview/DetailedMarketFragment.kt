@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 
@@ -28,14 +30,6 @@ class DetailedMarketFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<ImageView>(R.id.fab_detailed_edit).setOnClickListener {
-            findNavController().navigate(R.id.action_First2Fragment_to_Second2Fragment)
-        }
-
-        view.findViewById<TextView>(R.id.button_more_comments).setOnClickListener {
-            findNavController().navigate(R.id.action_First2Fragment_to_Third2Fragment)
-        }
-
         val bundle: Bundle? = activity?.intent?.getBundleExtra("bundle")
         val id: String = bundle?.get("id") as String
         markets = bundle.getParcelableArrayList<Market>("markets") as ArrayList<Market>
@@ -44,14 +38,23 @@ class DetailedMarketFragment : Fragment() {
                 market = it
             }
         }
-        setData()
+
+        view.findViewById<ImageView>(R.id.fab_detailed_edit).setOnClickListener {
+            findNavController().navigate(R.id.action_OverviewFragment_to_RateFragment)
+        }
+        view.findViewById<TextView>(R.id.button_more_comments).setOnClickListener {
+            findNavController().navigate(R.id.action_RateFragment_to_CommentsFragment)
+        }
+        view.findViewById<RatingBar>(R.id.ratingBarIndicatorAmbience).rating = market.avgAmbience
+        view.findViewById<RatingBar>(R.id.ratingBarIndicatorFood).rating = market.avgFood
+        view.findViewById<RatingBar>(R.id.ratingBarIndicatorDrinks).rating = market.avgDrinks
+        view.findViewById<RatingBar>(R.id.ratingBarIndicatorCrowding).rating = market.avgCrowding
+        view.findViewById<RatingBar>(R.id.ratingBarIndicatorFamily).rating = market.avgFamily
 
         view.findViewById<ImageView>(R.id.detailed_go_back).setOnClickListener {
             activity?.finish()
         }
-        view.findViewById<ImageView>(R.id.detailed_market_date_image).setOnClickListener{
-            Toast.makeText(activity, ""+markets.size, Toast.LENGTH_LONG).show()
-        }
+        setData()
     }
 
     private fun setData() {
@@ -68,25 +71,13 @@ class DetailedMarketFragment : Fragment() {
         textView.movementMethod = LinkMovementMethod.getInstance()
 
         val imageView: ImageView = view?.findViewById(R.id.detailed_market_image) as ImageView
+        val requestOptions = RequestOptions()
+                .placeholder(R.drawable.default_image)
+                .error(R.drawable.default_image)
 
-        if (market.image.startsWith("@")) {
-            if (market.image == "@drawable/museumsquartier") {
-                imageView.setImageResource(R.mipmap.museumsquartier)
-            }
-            if (market.image == "@drawable/spittelberg") {
-                imageView.setImageResource(R.mipmap.spittelberg)
-            }
-            if (market.image == "@drawable/wiener_weihnachtstraum") {
-                imageView.setImageResource(R.mipmap.wiener_weihnachtstraum)
-            }
-            if (market.image == "@drawable/zwidemu") {
-                imageView.setImageResource(R.mipmap.zwidemu)
-            }
-            if (market.image == "@drawable/karlsplatz") {
-                imageView.setImageResource(R.mipmap.karlsplatz)
-            }
-        }/* else {
-            //load real picture
-        }*/
+        Glide.with(imageView.context)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(market.image)
+                .into(imageView)
     }
 }

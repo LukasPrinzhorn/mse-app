@@ -16,6 +16,8 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES
 import com.example.weihnachtmaerkte.LoginActivity.USER_ID
 import com.example.weihnachtmaerkte.R
@@ -51,7 +53,7 @@ class DetailedMarketRateFragment : Fragment() {
         userId = getUserId()
 
         view.findViewById<Button>(R.id.button_rate_go_back).setOnClickListener {
-            findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
+            findNavController().navigate(R.id.action_RateFragment_to_OverviewFragment)
             view.hideKeyboard()
         }
         initSaveButton()
@@ -79,7 +81,7 @@ class DetailedMarketRateFragment : Fragment() {
 
         saveButton.setOnClickListener {
             saveRating()
-            findNavController().navigate(R.id.action_Second2Fragment_to_First2Fragment)
+            findNavController().navigate(R.id.action_RateFragment_to_OverviewFragment)
             requireView().hideKeyboard()
         }
 
@@ -105,25 +107,14 @@ class DetailedMarketRateFragment : Fragment() {
 
         val imageView: ImageView = view?.findViewById(R.id.detailed_market_image) as ImageView
 
-        if (market.image.startsWith("@")) {
-            if (market.image == "@drawable/museumsquartier") {
-                imageView.setImageResource(R.mipmap.museumsquartier)
-            }
-            if (market.image == "@drawable/spittelberg") {
-                imageView.setImageResource(R.mipmap.spittelberg)
-            }
-            if (market.image == "@drawable/wiener_weihnachtstraum") {
-                imageView.setImageResource(R.mipmap.wiener_weihnachtstraum)
-            }
-            if (market.image == "@drawable/zwidemu") {
-                imageView.setImageResource(R.mipmap.zwidemu)
-            }
-            if (market.image == "@drawable/karlsplatz") {
-                imageView.setImageResource(R.mipmap.karlsplatz)
-            }
-        }/* else {
-            //load real picture
-        }*/
+        val requestOptions = RequestOptions()
+                .placeholder(R.drawable.default_image)
+                .error(R.drawable.default_image)
+
+        Glide.with(imageView.context)
+                .applyDefaultRequestOptions(requestOptions)
+                .load(market.image)
+                .into(imageView)
     }
 
     private fun initOnRatingListener() {
@@ -163,7 +154,6 @@ class DetailedMarketRateFragment : Fragment() {
     }
 
     private fun checkForm(): Boolean {
-        Log.d("testingCheck", "amb${rbAmbience.rating}amb${rbFood.rating}amb${rbDrinks.rating}amb${rbCrowding.rating}amb${rbFamily.rating}amb${desText}")
         return (rbAmbience.rating > 0) &&
                 (rbFood.rating > 0) &&
                 (rbDrinks.rating > 0) &&
@@ -253,14 +243,7 @@ class DetailedMarketRateFragment : Fragment() {
             family += it.family
             counter++
         }
-        /*alte Berechnung
-                   return if (counter != 0) {
-                       result = (result / counter)
-                       "" + round(result, 1)
-                   } else {
-                       "0"
-                   }
-         */
+
         if (counter != 0) {
             results.add(round((ambience / counter), 1))
             results.add(round((food / counter), 1))
@@ -286,7 +269,6 @@ class DetailedMarketRateFragment : Fragment() {
             return number
         }
         return if (splits.size == 2) {
-            Log.d("Zahlen", splits[0] + "" + splits[1])
             val s: String = splits[0] + "." + splits[1].substring(0, decimal)
             s.toFloat()
         } else {

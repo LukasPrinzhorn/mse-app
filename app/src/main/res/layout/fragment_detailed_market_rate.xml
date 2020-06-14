@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/detailed_market_image"
         android:layout_width="0dp"
-        android:layout_height="140dp"
+        android:layout_height="120dp"
         android:contentDescription="@string/content_description_ImageView_market_image"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingTop="24dp"
+            android:paddingTop="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/detailed_market_image">
@@ -74,52 +74,58 @@
 
             <RatingBar
                 android:id="@+id/ratingBarAmbience"
-                style="?android:attr/ratingBarStyleSmall"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginBottom="5dp"
                 android:isIndicator="false"
                 android:progressTint="@color/colorPrimary"
-                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/detailed_ambiente"
                 app:layout_constraintStart_toEndOf="@+id/detailed_ambiente"
                 app:layout_constraintTop_toTopOf="@+id/detailed_ambiente" />
 
             <RatingBar
                 android:id="@+id/ratingBarFood"
-                style="?android:attr/ratingBarStyleSmall"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="false"
                 android:progressTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/detailed_speisen"
                 app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
                 app:layout_constraintTop_toTopOf="@+id/detailed_speisen" />
 
             <RatingBar
                 android:id="@+id/ratingBarDrinks"
-                style="?android:attr/ratingBarStyleSmall"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="false"
                 android:progressTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/detailed_getraenke"
                 app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
                 app:layout_constraintTop_toTopOf="@+id/detailed_getraenke" />
 
             <RatingBar
                 android:id="@+id/ratingBarCrowding"
-                style="?android:attr/ratingBarStyleSmall"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="false"
                 android:progressTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/detailed_crowding"
                 app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
                 app:layout_constraintTop_toTopOf="@+id/detailed_crowding" />
 
             <RatingBar
                 android:id="@+id/ratingBarFamily"
-                style="?android:attr/ratingBarStyleSmall"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="false"
                 android:progressTint="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/detailed_family"
                 app:layout_constraintStart_toStartOf="@+id/ratingBarAmbience"
                 app:layout_constraintTop_toTopOf="@+id/detailed_family" />
      <!--
@@ -177,7 +183,7 @@
                 android:id="@+id/detailed_speisen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_speisen"
                 android:textColor="@color/borderColor"
                 android:textSize="16sp"
@@ -237,7 +243,7 @@
                 android:id="@+id/detailed_getraenke"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_getraenke"
                 android:textColor="@color/borderColor"
                 android:textSize="16sp"
@@ -297,7 +303,7 @@
                 android:id="@+id/detailed_crowding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_crowding"
                 android:textColor="@color/borderColor"
                 android:textSize="16sp"
@@ -357,7 +363,7 @@
                 android:id="@+id/detailed_family"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/label_family"
                 android:textColor="@color/borderColor"
                 android:textSize="16sp"
@@ -419,7 +425,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp"
                 android:backgroundTint="@color/buttonCancel"
                 android:text="@string/previous"
                 app:layout_constraintStart_toStartOf="parent"
@@ -469,8 +476,9 @@
                 android:id="@+id/button_rate_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
                 android:text="@string/save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
