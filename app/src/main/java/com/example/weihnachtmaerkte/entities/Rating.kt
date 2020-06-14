@@ -22,8 +22,7 @@ data class Rating(val id: String = "",
             parcel.readFloat(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString().toString()) {
-    }
+            parcel.readString().toString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)

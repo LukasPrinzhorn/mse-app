@@ -9,11 +9,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
-import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.preview_item.view.*
 
 
-class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, private var ratings: List<Rating>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Market> = ArrayList()
 
@@ -24,8 +23,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
                         parent,
                         false
                 ),
-                onMarketListener,
-                ratings
+                onMarketListener
         )
     }
 
@@ -53,8 +51,7 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
     class PreviewViewHolder
     constructor(
             itemView: View,
-            private var onMarketListener: OnMarketListener,
-            private var ratings: List<Rating>
+            private var onMarketListener: OnMarketListener
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val marketImage = itemView.market_image

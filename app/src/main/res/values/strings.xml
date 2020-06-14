@@ -21,7 +21,6 @@
     <string name="content_description_ImageView_arrow_Up">Nach oben zeigender Pfeil</string>
     <string name="content_description_ImageView_market_image">Bild des Weihnachtsmarktes</string>
     <string name="content_description_ImageView_image_star">Sternbewertung</string>
-    <string name="content_description_Rating_Star">Stern der Rating-Bewertung</string>
     <string name="content_description_Icon_address">Icon fuer die Adresse</string>
     <string name="content_description_Icon_date">Icon fuer das Datum</string>
     <string name="content_description_Icon_time">Icon fuer die Oeffnungszeiten</string>

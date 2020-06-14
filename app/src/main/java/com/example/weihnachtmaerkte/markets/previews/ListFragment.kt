@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import kotlinx.android.synthetic.main.fragment_preview.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.hypot
 
 
 class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
@@ -96,11 +97,11 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     private class PositionComparator internal constructor(private val referencePosition: LatLng) : Comparator<Market?> {
         override fun compare(o1: Market?, o2: Market?): Int {
             assert(o1 != null && o2 != null)
-            val distToMarket1 = Math.hypot(referencePosition.longitude - o1!!.coordinates!![1], referencePosition.latitude - o1.coordinates!![0])
-            val distToMarket2 = Math.hypot(referencePosition.longitude - o2!!.coordinates!![1], referencePosition.latitude - o2.coordinates!![0])
+            val distToMarket1 = hypot(referencePosition.longitude - o1!!.coordinates!![1], referencePosition.latitude - o1.coordinates!![0])
+            val distToMarket2 = hypot(referencePosition.longitude - o2!!.coordinates!![1], referencePosition.latitude - o2.coordinates!![0])
             //Log.i("Distance", o1.getName() + ": " + distToMarket1);
             //Log.i("Distance", o2.getName() + ": " + distToMarket2);
-            return java.lang.Double.compare(distToMarket1, distToMarket2)
+            return distToMarket1.compareTo(distToMarket2)
         }
 
     }
@@ -117,12 +118,12 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     private class CustomComparator(private val sortingCriteria: SortingCriteria?) : Comparator<Market> {
         override fun compare(o1: Market, o2: Market): Int {
             return when (sortingCriteria) {
-                SortingCriteria.FOOD -> java.lang.Double.compare(o1.avgFood.toDouble(), o2.avgFood.toDouble())
-                SortingCriteria.DRINKS -> java.lang.Double.compare(o1.avgDrinks.toDouble(), o2.avgDrinks.toDouble())
-                SortingCriteria.FAMILY -> java.lang.Double.compare(o1.avgFamily.toDouble(), o2.avgFamily.toDouble())
-                SortingCriteria.OVERALL -> java.lang.Double.compare(o1.avgOverall.toDouble(), o2.avgOverall.toDouble())
-                SortingCriteria.AMBIANCE -> java.lang.Double.compare(o1.avgAmbience.toDouble(), o2.avgAmbience.toDouble())
-                SortingCriteria.CROWDING -> java.lang.Double.compare(o1.avgCrowding.toDouble(), o2.avgCrowding.toDouble())
+                SortingCriteria.FOOD -> o1.avgFood.toDouble().compareTo(o2.avgFood.toDouble())
+                SortingCriteria.DRINKS -> o1.avgDrinks.toDouble().compareTo(o2.avgDrinks.toDouble())
+                SortingCriteria.FAMILY -> o1.avgFamily.toDouble().compareTo(o2.avgFamily.toDouble())
+                SortingCriteria.OVERALL -> o1.avgOverall.toDouble().compareTo(o2.avgOverall.toDouble())
+                SortingCriteria.AMBIANCE -> o1.avgAmbience.toDouble().compareTo(o2.avgAmbience.toDouble())
+                SortingCriteria.CROWDING -> o1.avgCrowding.toDouble().compareTo(o2.avgCrowding.toDouble())
                 else -> 0
             }
         }

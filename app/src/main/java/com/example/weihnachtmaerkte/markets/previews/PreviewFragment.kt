@@ -3,7 +3,6 @@ package com.example.weihnachtmaerkte.markets.previews
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import kotlinx.android.synthetic.main.fragment_preview.*
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.hypot
 
 
 class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
@@ -89,7 +89,7 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
             layoutManager = LinearLayoutManager(this@PreviewFragment.activity, LinearLayoutManager.HORIZONTAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
-            previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment, ratings)
+            previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment)
             adapter = previewAdapter
         }
     }
@@ -108,11 +108,11 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
     private class PositionComparator internal constructor(private val referencePosition: LatLng) : Comparator<Market?> {
         override fun compare(o1: Market?, o2: Market?): Int {
             assert(o1 != null && o2 != null)
-            val distToMarket1 = Math.hypot(referencePosition.longitude - o1!!.coordinates!![1], referencePosition.latitude - o1.coordinates!![0])
-            val distToMarket2 = Math.hypot(referencePosition.longitude - o2!!.coordinates!![1], referencePosition.latitude - o2.coordinates!![0])
+            val distToMarket1 = hypot(referencePosition.longitude - o1!!.coordinates!![1], referencePosition.latitude - o1.coordinates!![0])
+            val distToMarket2 = hypot(referencePosition.longitude - o2!!.coordinates!![1], referencePosition.latitude - o2.coordinates!![0])
             //Log.i("Distance", o1.getName() + ": " + distToMarket1);
             //Log.i("Distance", o2.getName() + ": " + distToMarket2);
-            return java.lang.Double.compare(distToMarket1, distToMarket2)
+            return distToMarket1.compareTo(distToMarket2)
         }
 
     }

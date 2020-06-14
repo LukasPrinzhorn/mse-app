@@ -46,7 +46,7 @@ class CommentRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     class CommentViewHolder
     constructor(
             itemView: View,
-            var ratings: ArrayList<Rating>
+            private var ratings: ArrayList<Rating>
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val commentTitle = itemView.comment_title
