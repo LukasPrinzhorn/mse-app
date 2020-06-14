@@ -74,8 +74,8 @@ class DetailedMarketRateFragment : Fragment() {
     }
 
     private fun initSaveButton() {
-        saveButton = requireView().findViewById<Button>(R.id.button_rate_save)
-        saveButton.isEnabled = false;
+        saveButton = requireView().findViewById(R.id.button_rate_save)
+        saveButton.isEnabled = false
 
         saveButton.setOnClickListener {
             saveRating()
@@ -127,7 +127,7 @@ class DetailedMarketRateFragment : Fragment() {
     }
 
     private fun initOnRatingListener() {
-        val ratingBarListener: RatingBar.OnRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, _ ->
+        val ratingBarListener: RatingBar.OnRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { _, _, _ ->
             saveButton.isEnabled = checkForm()
         }
         rbAmbience.onRatingBarChangeListener = ratingBarListener
