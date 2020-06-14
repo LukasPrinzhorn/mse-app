@@ -22,9 +22,6 @@ import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
 import com.google.firebase.database.FirebaseDatabase
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
-import kotlin.properties.Delegates
 
 
 class DetailedMarketRateFragment : Fragment() {
@@ -35,12 +32,12 @@ class DetailedMarketRateFragment : Fragment() {
     private lateinit var userId: String
 
     private lateinit var saveButton: Button
-    private var desAmbience: Boolean = false
-    private var desFood: Boolean = false
-    private var desDrinks: Boolean = false
-    private var desCrowding: Boolean = false
-    private var desFamily: Boolean = false
-    private var desText: Boolean = false
+    private lateinit var rbAmbience: RatingBar
+    private lateinit var rbFood: RatingBar
+    private lateinit var rbDrinks: RatingBar
+    private lateinit var rbCrowding: RatingBar
+    private lateinit var rbFamily: RatingBar
+    private var desText: Boolean = true
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -76,7 +73,7 @@ class DetailedMarketRateFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
-    private fun initSaveButton(){
+    private fun initSaveButton() {
         saveButton = requireView().findViewById<Button>(R.id.button_rate_save)
         saveButton.isEnabled = false;
 
@@ -86,19 +83,15 @@ class DetailedMarketRateFragment : Fragment() {
             requireView().hideKeyboard()
         }
 
-        val rbAmbience: RatingBar = requireView().findViewById(R.id.ratingBarAmbience)
-        val rbFood: RatingBar = requireView().findViewById(R.id.ratingBarFood)
-        val rbDrinks: RatingBar = requireView().findViewById(R.id.ratingBarDrinks)
-        val rbCrowding: RatingBar = requireView().findViewById(R.id.ratingBarCrowding)
-        val rbFamily: RatingBar = requireView().findViewById(R.id.ratingBarFamily)
+        rbAmbience = requireView().findViewById(R.id.ratingBarAmbience)
+        rbFood = requireView().findViewById(R.id.ratingBarFood)
+        rbDrinks = requireView().findViewById(R.id.ratingBarDrinks)
+        rbCrowding = requireView().findViewById(R.id.ratingBarCrowding)
+        rbFamily = requireView().findViewById(R.id.ratingBarFamily)
         val tvTitle: TextView = requireView().findViewById(R.id.detailed_title_section)
         val tvComment: TextView = requireView().findViewById(R.id.detailed_comment_section)
-        desAmbience = isChanged(rbAmbience)
-        desFood = isChanged(rbFood)
-        desDrinks = isChanged(rbDrinks)
-        desCrowding = isChanged(rbCrowding)
-        desFamily = isChanged(rbFamily)
-        desText = isChanged(tvTitle, tvComment)
+        initOnRatingListener()
+        initTextWatcher(tvTitle, tvComment)
     }
 
     private fun setData() {
@@ -133,30 +126,33 @@ class DetailedMarketRateFragment : Fragment() {
         }*/
     }
 
-    private fun isChanged(rb: RatingBar): Boolean{
-        var result: Boolean = false
-        val ratingBarListener: RatingBar.OnRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
-            ratingBar, rating, _ ->
-            if (ratingBar.rating > 0) {
-                result = true
-                Log.d("testchange",""+desAmbience+desFood+desCrowding)
-            }
-            saveButton.isEnabled = desAmbience && desFood && desDrinks && desCrowding && desFamily && desText
+    private fun initOnRatingListener() {
+        val ratingBarListener: RatingBar.OnRatingBarChangeListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, _ ->
+            saveButton.isEnabled = checkForm()
         }
-        rb.onRatingBarChangeListener = ratingBarListener
-        return result
+        rbAmbience.onRatingBarChangeListener = ratingBarListener
+        rbFood.onRatingBarChangeListener = ratingBarListener
+        rbDrinks.onRatingBarChangeListener = ratingBarListener
+        rbCrowding.onRatingBarChangeListener = ratingBarListener
+        rbFamily.onRatingBarChangeListener = ratingBarListener
     }
 
-    private fun isChanged(tv1: TextView, tv2: TextView): Boolean {
-        var decisionNoComment = false
-        var decisionComment = false
+    private fun initTextWatcher(tv1: TextView, tv2: TextView) {
         val textWatcher: TextWatcher = object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                decisionNoComment = tv1.text.isEmpty() && tv2.text.isEmpty()
-                decisionComment = tv1.text.isNotEmpty() && tv2.text.isNotEmpty()
-                saveButton.isEnabled = desAmbience && desFood && desDrinks && desCrowding && desFamily && (decisionComment || decisionNoComment)
+                val decisionNoComment = tv1.text.isEmpty() && tv2.text.isEmpty()
+                val decisionComment = tv1.text.isNotEmpty() && tv2.text.isNotEmpty()
+                desText = (decisionComment || decisionNoComment)
+                saveButton.isEnabled = checkForm()
+                if (!(decisionComment || decisionNoComment)) {
+                    if (tv1.text.isEmpty())
+                        tv1.error = "Der Titel Ihres Erfahrungsberichtes ist leer"
+                    if (tv2.text.isEmpty())
+                        tv2.error = "Ihr Erfahrungsbericht ist leer"
+                }
+
             }
 
             override fun afterTextChanged(editable: Editable) {
@@ -164,7 +160,15 @@ class DetailedMarketRateFragment : Fragment() {
         }
         tv1.addTextChangedListener(textWatcher)
         tv2.addTextChangedListener(textWatcher)
-        return (decisionComment || decisionNoComment)
+    }
+
+    private fun checkForm(): Boolean {
+        Log.d("testingCheck", "amb${rbAmbience.rating}amb${rbFood.rating}amb${rbDrinks.rating}amb${rbCrowding.rating}amb${rbFamily.rating}amb${desText}")
+        return (rbAmbience.rating > 0) &&
+                (rbFood.rating > 0) &&
+                (rbDrinks.rating > 0) &&
+                (rbCrowding.rating > 0) &&
+                (rbFamily.rating > 0) && desText
     }
 
     private fun saveRating() {
@@ -213,7 +217,7 @@ class DetailedMarketRateFragment : Fragment() {
         results.add(latestRating)
         val avg: ArrayList<Float> = calculateAverageRating(results)
         market.ratings?.add(latestRating.id)
-        Log.d("testingwerte", "${market.id}||"+avg[0]+"|"+avg[1]+"|"+avg[2]+"|"+avg[3]+"|"+avg[4]+"|"+avg[5]+"|")
+        Log.d("testingwerte", "${market.id}||" + avg[0] + "|" + avg[1] + "|" + avg[2] + "|" + avg[3] + "|" + avg[4] + "|" + avg[5] + "|")
 
         databaseReference.child("avgAmbience").setValue(avg[0])
         databaseReference.child("avgFood").setValue(avg[1])
