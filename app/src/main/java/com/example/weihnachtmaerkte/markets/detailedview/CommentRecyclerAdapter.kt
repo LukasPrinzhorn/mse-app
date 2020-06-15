@@ -49,7 +49,7 @@ class CommentRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             itemView: View,
             private var ratings: ArrayList<Rating>
     ) : RecyclerView.ViewHolder(itemView) {
-        private var backgroundColors: ArrayList<Int> = arrayListOf(Color.argb(20,146,0,6), Color.argb(40,146,0,6), Color.argb(60,146,0,6))
+        private var backgroundColors: ArrayList<Int> = arrayListOf(Color.argb(20, 146, 0, 6), Color.argb(40, 146, 0, 6), Color.argb(60, 146, 0, 6))
 
         private val commentTitle = itemView.comment_title
         private val commentText = itemView.comment_text
@@ -58,14 +58,14 @@ class CommentRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         fun bind(rating: Rating, position: Int) {
             val userNames: ArrayList<String> = ArrayList()
-            ratings.forEach{
+            ratings.forEach {
                 userNames.add(it.username)
             }
-            if (userNames.contains(rating.username)){
+            if (userNames.contains(rating.username)) {
                 commentTitle.text = rating.title
                 commentText.text = rating.text
                 commentAuthor.text = rating.username
-                commentItem.setBackgroundColor(backgroundColors[position%3])
+                commentItem.setBackgroundColor(backgroundColors[position % 3])
             }
         }
     }
