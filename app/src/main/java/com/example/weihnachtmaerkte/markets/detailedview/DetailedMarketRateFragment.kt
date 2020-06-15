@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.weihnachtmaerkte.LoginActivity
 import com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES
 import com.example.weihnachtmaerkte.LoginActivity.USER_ID
 import com.example.weihnachtmaerkte.R
@@ -164,6 +165,16 @@ class DetailedMarketRateFragment : Fragment() {
     private fun saveRating() {
         val firebaseDatabase = FirebaseDatabase.getInstance()
         val databaseReference = firebaseDatabase.getReference("ratings/")
+
+        val SHARED_PREFERENCES = "shared_preferences"
+        val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
+        var username: String = ""
+        if (sharedPreferences.contains(LoginActivity.USERNAME)) {
+            username = sharedPreferences.getString(LoginActivity.USERNAME,null).toString()
+        } else {
+            username = userId
+        }
+
         if (view != null) {
             val titleView: TextView = requireView().findViewById(R.id.detailed_title_section)
             val commentView: TextView = requireView().findViewById(R.id.detailed_comment_section)
@@ -183,7 +194,7 @@ class DetailedMarketRateFragment : Fragment() {
 
             val ratingId: String? = databaseReference.push().key
             if (ratingId != null) {
-                val rating = Rating(ratingId, starsAmbience, starsFood, starsDrinks, starsCrowding, starsFamily, title, comment, userId)
+                val rating = Rating(ratingId, starsAmbience, starsFood, starsDrinks, starsCrowding, starsFamily, title, comment, username)
                 databaseReference.child(ratingId).setValue(rating)
                 ratings.add(rating)
                 saveMarket(rating)

@@ -16,6 +16,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFERENCES = "shared_preferences";
     public static final String USER_ID = "user_id";
+    public static final String USERNAME = "username";
 
     private EditText editText;
 
@@ -51,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         assert id != null;
         databaseReference.child(id).setValue(user);
 
+        editor.putString(USERNAME, username);
         editor.putString(USER_ID, id);
         editor.apply();
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

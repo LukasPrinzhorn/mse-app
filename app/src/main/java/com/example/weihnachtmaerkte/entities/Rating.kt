@@ -11,7 +11,7 @@ data class Rating(val id: String = "",
                   var family: Float = 0f,
                   var title: String? = null,
                   var text: String? = null,
-                  var userid: String = ""
+                  var username: String = ""
 ) : Parcelable{
     constructor(parcel: Parcel) : this(
             parcel.readString().toString(),
@@ -33,7 +33,7 @@ data class Rating(val id: String = "",
         parcel.writeFloat(family)
         parcel.writeString(title)
         parcel.writeString(text)
-        parcel.writeString(userid)
+        parcel.writeString(username)
     }
 
     override fun describeContents(): Int {

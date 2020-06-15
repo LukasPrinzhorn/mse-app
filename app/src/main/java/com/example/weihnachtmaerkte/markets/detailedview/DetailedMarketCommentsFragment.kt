@@ -63,8 +63,6 @@ class DetailedMarketCommentsFragment : Fragment(), CommentRecyclerAdapter.OnComm
             }
         }
         commentViewAdapter.submitList(results)
-        Log.d("testingAdapterSize",""+results)
-
     }
 
     private fun initRecyclerView() {
