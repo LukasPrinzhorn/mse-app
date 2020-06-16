@@ -82,7 +82,7 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
             layoutManager = GridLayoutManager(this@ListFragment.activity, 2, RecyclerView.VERTICAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
-            listViewAdapter = ListRecyclerAdapter(this@ListFragment, ratings, marketLongitude, marketLatitude)
+            listViewAdapter = ListRecyclerAdapter(this@ListFragment, ratings)
             adapter = listViewAdapter
         }
     }

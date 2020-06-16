@@ -12,7 +12,7 @@ import com.example.weihnachtmaerkte.entities.Rating
 import kotlinx.android.synthetic.main.preview_item.view.*
 
 
-class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, private var ratings: List<Rating>, private var longitude: Double, private var latitude: Double) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, private var ratings: List<Rating>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var markets: List<Market> = ArrayList()
 
@@ -24,9 +24,7 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, privat
                         false
                 ),
                 onMarketListener,
-                ratings,
-                longitude,
-                latitude
+                ratings
         )
     }
 
@@ -54,9 +52,7 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, privat
     constructor(
             itemView: View,
             private var onMarketListener: OnMarketListener,
-            private var ratings: List<Rating>,
-            private var myLongitude: Double,
-            private var myLatitude: Double
+            private var ratings: List<Rating>
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val marketImage = itemView.market_image
@@ -73,11 +69,7 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, privat
                     .load(market.image)
                     .into(marketImage)
 
-            var marketLongitude: Double = market.coordinates?.get(0)!!
-            var marketLatitude: Double = market.coordinates?.get(1)!!
-            var dist: Double = distFrom(myLatitude, myLongitude, marketLatitude, marketLongitude)
-            var string: String = "" + dist + "|" + market.name
-            marketName.text = string
+            marketName.text = market.name
             val ratingIds: ArrayList<String>? = market.ratings
             val results = ArrayList<Rating>()
             if (ratingIds != null) {
@@ -108,17 +100,6 @@ class ListRecyclerAdapter(private var onMarketListener: OnMarketListener, privat
             } else {
                 "0"
             }
-        }
-
-        fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
-            val earthRadius = 6371000.0 //meters
-            val dLat = Math.toRadians(lat2 - lat1.toDouble())
-            val dLng = Math.toRadians(lng2 - lng1.toDouble())
-            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(Math.toRadians(lat1.toDouble())) * Math.cos(Math.toRadians(lat2.toDouble())) *
-                    Math.sin(dLng / 2) * Math.sin(dLng / 2)
-            val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-            return (earthRadius * c).toDouble()
         }
 
         private fun round(number: Float, decimal: Int): Float {
