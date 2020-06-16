@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weihnachtmaerkte.MainActivity
 import com.example.weihnachtmaerkte.MainActivity.SortingCriteria
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
@@ -74,11 +75,14 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     }
 
     private fun initRecyclerView() {
+        var referencePosition: LatLng = (activity as MainActivity).referencePosition
+        var marketLongitude: Double = referencePosition.longitude
+        var marketLatitude: Double = referencePosition.latitude
         recycler_view.apply {
             layoutManager = GridLayoutManager(this@ListFragment.activity, 2, RecyclerView.VERTICAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
-            listViewAdapter = ListRecyclerAdapter(this@ListFragment, ratings)
+            listViewAdapter = ListRecyclerAdapter(this@ListFragment, ratings, marketLongitude, marketLatitude)
             adapter = listViewAdapter
         }
     }

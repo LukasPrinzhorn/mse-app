@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weihnachtmaerkte.MainActivity
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import com.example.weihnachtmaerkte.entities.Rating
@@ -85,11 +86,14 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
     }
 
     private fun initRecyclerView() {
+        var referencePosition: LatLng = (activity as MainActivity).referencePosition
+        var marketLongitude: Double = referencePosition.longitude
+        var marketLatitude: Double = referencePosition.latitude
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this@PreviewFragment.activity, LinearLayoutManager.HORIZONTAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)
             addItemDecoration(topSpacingDecorator)
-            previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment)
+            previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment, marketLongitude, marketLatitude)
             adapter = previewAdapter
         }
     }

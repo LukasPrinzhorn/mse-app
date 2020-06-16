@@ -12,7 +12,7 @@ import com.example.weihnachtmaerkte.entities.Market
 import kotlinx.android.synthetic.main.preview_item.view.*
 
 
-class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, private var longitude: Double, private var latitude: Double) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: List<Market> = ArrayList()
 
@@ -23,7 +23,9 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
                         parent,
                         false
                 ),
-                onMarketListener
+                onMarketListener,
+                longitude,
+                latitude
         )
     }
 
@@ -51,7 +53,9 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
     class PreviewViewHolder
     constructor(
             itemView: View,
-            private var onMarketListener: OnMarketListener
+            private var onMarketListener: OnMarketListener,
+            private var myLongitude: Double,
+            private var myLatitude: Double
     ) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         private val marketImage = itemView.market_image
@@ -59,6 +63,11 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
         private val marketRating = itemView.market_rating
 
         fun bind(market: Market) {
+            var marketLongitude: Double = market.coordinates?.get(0)!!
+            var marketLatitude: Double = market.coordinates?.get(1)!!
+            var dist: Double = distFrom(myLatitude, myLongitude, marketLatitude, marketLongitude)
+            var string: String = "" + dist + "|" + market.name
+
             val requestOptions = RequestOptions()
                     .placeholder(R.drawable.default_image)
                     .error(R.drawable.default_image)
@@ -70,9 +79,9 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
 
             if (market.name.length > 16) {
                 val text: String = market.name.substring(0, 16) + "..."
-                marketName.text = text
+                marketName.text = string
             } else {
-                marketName.text = market.name
+                marketName.text = string
 
             }
             val avgRatings = ArrayList<Float>()
@@ -83,6 +92,17 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener) : R
             avgRatings.add(market.avgFamily)
             marketRating.text = "${market.avgOverall}"
             itemView.setOnClickListener(this)
+        }
+
+        fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+            val earthRadius = 6371000.0 //meters
+            val dLat = Math.toRadians(lat2 - lat1.toDouble())
+            val dLng = Math.toRadians(lng2 - lng1.toDouble())
+            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                    Math.cos(Math.toRadians(lat1.toDouble())) * Math.cos(Math.toRadians(lat2.toDouble())) *
+                    Math.sin(dLng / 2) * Math.sin(dLng / 2)
+            val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+            return (earthRadius * c).toDouble()
         }
 
         override fun onClick(v: View?) {

@@ -589,7 +589,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private LatLng getReferencePosition() {
+    public LatLng getReferencePosition() {
         return map.getCameraPosition().target;
     }
 
