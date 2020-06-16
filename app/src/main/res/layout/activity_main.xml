@@ -120,7 +120,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/appBarLayout"
-                app:umanoPanelHeight="148dp"
+                app:umanoPanelHeight="176dp"
                 tools:context=".MainActivity">
 
                 <androidx.constraintlayout.widget.ConstraintLayout

@@ -87,6 +87,18 @@
                 app:layout_constraintTop_toBottomOf="@id/market_image"
                 app:layout_constraintVertical_bias="1" />
 
+            <TextView
+                android:id="@+id/market_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/name_bg"
+                android:text="0km"
+                android:textColor="@color/textColor"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/market_image"
+                app:layout_constraintTop_toBottomOf="@id/market_name"
+                app:layout_constraintEnd_toEndOf="@id/market_name"
+                app:layout_constraintVertical_bias="1" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

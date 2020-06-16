@@ -61,12 +61,12 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
         private val marketImage = itemView.market_image
         private val marketName = itemView.market_name
         private val marketRating = itemView.market_rating
+        private val marketDistance = itemView.market_distance
 
         fun bind(market: Market) {
-            var marketLongitude: Double = market.coordinates?.get(0)!!
-            var marketLatitude: Double = market.coordinates?.get(1)!!
-            var dist: Double = distFrom(myLatitude, myLongitude, marketLatitude, marketLongitude)
-            var string: String = "" + dist + "|" + market.name
+            val marketLongitude: Double = market.coordinates?.get(0)!!
+            val marketLatitude: Double = market.coordinates?.get(1)!!
+            val dist: Double = distFrom(myLatitude, myLongitude, marketLatitude, marketLongitude)
 
             val requestOptions = RequestOptions()
                     .placeholder(R.drawable.default_image)
@@ -79,11 +79,17 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
 
             if (market.name.length > 16) {
                 val text: String = market.name.substring(0, 16) + "..."
-                marketName.text = string
+                marketName.text = text
             } else {
-                marketName.text = string
+                marketName.text = market.name
 
             }
+            val distString = if (dist < 1000) {
+                "" + round(dist.toFloat(), 0).toInt() + "m"
+            } else {
+                "" + round(dist.toFloat() / 1000, 1) + " km"
+            }
+            marketDistance.text = distString
             val avgRatings = ArrayList<Float>()
             avgRatings.add(market.avgAmbience)
             avgRatings.add(market.avgFood)
@@ -107,6 +113,20 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
 
         override fun onClick(v: View?) {
             onMarketListener.onMarketClick(adapterPosition)
+        }
+
+        private fun round(number: Float, decimal: Int): Float {
+            val numberString: String = "" + number
+            val splits: List<String> = numberString.split(".")
+            if (splits.size == 1) {
+                return number
+            }
+            return if (splits.size == 2) {
+                val s: String = splits[0] + "." + splits[1].substring(0, decimal)
+                s.toFloat()
+            } else {
+                0f
+            }
         }
     }
 }
