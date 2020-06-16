@@ -591,15 +591,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             centerFab.hide();
         }
         movedByProgram = true;
-        if (previewFragment != null) {
-            previewFragment.reorderMarketsByPosition(position);
-        }
-        if (listFragment != null && (currentSortingCriteria == null || currentSortingCriteria == SortingCriteria.DISTANCE)) {
-            listFragment.reorderMarketsByPosition(position);
-        }
+
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
             @Override
             public void onFinish() {
+                if (previewFragment != null) {
+                    previewFragment.reorderMarketsByPosition(position);
+                }
+                if (listFragment != null && (currentSortingCriteria == null || currentSortingCriteria == SortingCriteria.DISTANCE)) {
+                    listFragment.reorderMarketsByPosition(position);
+                }
                 movedByProgram = false;
             }
 

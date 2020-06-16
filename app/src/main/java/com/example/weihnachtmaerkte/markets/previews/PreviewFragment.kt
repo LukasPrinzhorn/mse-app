@@ -96,16 +96,21 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
             previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment, marketLongitude, marketLatitude)
             adapter = previewAdapter
         }
+        reorderMarketsByPosition(referencePosition)
     }
 
     fun reorderMarketsByPosition(referencePosition: LatLng) {
-        if (markets != null && markets.size != 0) {
-            Collections.sort(markets, PositionComparator(referencePosition))
-            /*for (market in markets) {
+        if (this::previewAdapter.isInitialized) {
+            if (markets != null && markets.size != 0) {
+                Collections.sort(markets, PositionComparator(referencePosition))
+                /*for (market in markets) {
                 Log.i("Markets", market.name);
             }*/
-            previewAdapter.submitList(markets)
-            previewAdapter.notifyDataSetChanged()
+
+                previewAdapter = PreviewRecyclerAdapter(this@PreviewFragment, referencePosition.longitude, referencePosition.latitude)
+                previewAdapter.submitList(markets)
+                recycler_view.adapter = previewAdapter
+            }
         }
     }
 
