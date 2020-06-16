@@ -10,6 +10,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.weihnachtmaerkte.R
 import com.example.weihnachtmaerkte.entities.Market
 import kotlinx.android.synthetic.main.preview_item.view.*
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
 
 
 class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, private var longitude: Double, private var latitude: Double) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -100,15 +104,15 @@ class PreviewRecyclerAdapter(private var onMarketListener: OnMarketListener, pri
             itemView.setOnClickListener(this)
         }
 
-        fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
+        private fun distFrom(lat1: Double, lng1: Double, lat2: Double, lng2: Double): Double {
             val earthRadius = 6371000.0 //meters
-            val dLat = Math.toRadians(lat2 - lat1.toDouble())
-            val dLng = Math.toRadians(lng2 - lng1.toDouble())
-            val a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                    Math.cos(Math.toRadians(lat1.toDouble())) * Math.cos(Math.toRadians(lat2.toDouble())) *
-                    Math.sin(dLng / 2) * Math.sin(dLng / 2)
-            val c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-            return (earthRadius * c).toDouble()
+            val dLat = Math.toRadians(lat2 - lat1)
+            val dLng = Math.toRadians(lng2 - lng1)
+            val a = sin(dLat / 2) * sin(dLat / 2) +
+                    cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2)) *
+                    sin(dLng / 2) * sin(dLng / 2)
+            val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            return (earthRadius * c)
         }
 
         override fun onClick(v: View?) {

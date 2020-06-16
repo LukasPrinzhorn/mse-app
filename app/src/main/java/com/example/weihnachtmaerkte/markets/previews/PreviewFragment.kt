@@ -86,9 +86,9 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
     }
 
     private fun initRecyclerView() {
-        var referencePosition: LatLng = (activity as MainActivity).referencePosition
-        var marketLongitude: Double = referencePosition.longitude
-        var marketLatitude: Double = referencePosition.latitude
+        val referencePosition: LatLng = (activity as MainActivity).referencePosition
+        val marketLongitude: Double = referencePosition.longitude
+        val marketLatitude: Double = referencePosition.latitude
         recycler_view.apply {
             layoutManager = LinearLayoutManager(this@PreviewFragment.activity, LinearLayoutManager.HORIZONTAL, false)
             val topSpacingDecorator = TopSpacingItemDecoration(20)

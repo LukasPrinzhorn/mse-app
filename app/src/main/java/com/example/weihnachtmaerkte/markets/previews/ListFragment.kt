@@ -75,7 +75,7 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     }
 
     private fun initRecyclerView() {
-        var referencePosition: LatLng = (activity as MainActivity).referencePosition
+        val referencePosition: LatLng = (activity as MainActivity).referencePosition
         var marketLongitude: Double = referencePosition.longitude
         var marketLatitude: Double = referencePosition.latitude
         recycler_view.apply {
