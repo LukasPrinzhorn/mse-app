@@ -65,6 +65,7 @@ import android.widget.ImageView;
 import androidx.appcompat.widget.SearchView;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -204,16 +205,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 moveMapToPosition(new LatLng(48.210033, 16.363449), locationIcon);
             }
         } else {
-            centeredOnUser = true;
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if(location != null) {
-                assert location != null;
-                moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
+            final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+            assert manager != null;
+            if (manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                centeredOnUser = true;
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location != null) {
+                    assert location != null;
+                    moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
+                } else {
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                            2000,
+                            10, locationListenerGPS);
+                    isLocationEnabled();
+                }
             } else {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                        2000,
-                        10, locationListenerGPS);
-                isLocationEnabled();
+                Toast.makeText(this, "GPS nicht aktiviert!", Toast.LENGTH_LONG).show();
+                centeredOnUser = false;
+                moveMapToPosition(new LatLng(48.210033, 16.363449), locationIcon);
             }
 
         }
