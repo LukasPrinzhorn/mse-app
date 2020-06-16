@@ -435,6 +435,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                             .commit();
                     menu.clear();
                     getMenuInflater().inflate(R.menu.menu_main, menu);
+
+                    MenuItem searchItem = menu.findItem(R.id.search_item);
+                    SearchView searchView = (SearchView) searchItem.getActionView();
+                    searchView.setFocusable(true);
+                    searchView.setQueryHint("Adresse suchen");
+                    searchView.setIconified(false);
+                    searchView.setIconifiedByDefault(false);
+
+                    searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit(String query) {
+                            Log.i("Search", "Perform search");
+                            searchCoordinates(query);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange(String newText) {
+                            return false;
+                        }
+                    });
+
                 }
             }
 
