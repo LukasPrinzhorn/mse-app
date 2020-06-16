@@ -206,11 +206,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             centeredOnUser = true;
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            assert location != null;
-            moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    2000,
-                    10, locationListenerGPS);
+            if(location != null) {
+                assert location != null;
+                moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
+            } else {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        2000,
+                        10, locationListenerGPS);
+                isLocationEnabled();
+            }
+
         }
     }
 
