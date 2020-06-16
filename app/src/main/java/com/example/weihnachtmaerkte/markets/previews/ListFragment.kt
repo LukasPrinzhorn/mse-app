@@ -118,12 +118,12 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
     private class CustomComparator(private val sortingCriteria: SortingCriteria?) : Comparator<Market> {
         override fun compare(o1: Market, o2: Market): Int {
             return when (sortingCriteria) {
-                SortingCriteria.FOOD -> o1.avgFood.toDouble().compareTo(o2.avgFood.toDouble())
-                SortingCriteria.DRINKS -> o1.avgDrinks.toDouble().compareTo(o2.avgDrinks.toDouble())
-                SortingCriteria.FAMILY -> o1.avgFamily.toDouble().compareTo(o2.avgFamily.toDouble())
-                SortingCriteria.OVERALL -> o1.avgOverall.toDouble().compareTo(o2.avgOverall.toDouble())
-                SortingCriteria.AMBIANCE -> o1.avgAmbience.toDouble().compareTo(o2.avgAmbience.toDouble())
-                SortingCriteria.CROWDING -> o1.avgCrowding.toDouble().compareTo(o2.avgCrowding.toDouble())
+                SortingCriteria.FOOD -> o2.avgFood.toDouble().compareTo(o1.avgFood.toDouble())
+                SortingCriteria.DRINKS -> o2.avgDrinks.toDouble().compareTo(o1.avgDrinks.toDouble())
+                SortingCriteria.FAMILY -> o2.avgFamily.toDouble().compareTo(o1.avgFamily.toDouble())
+                SortingCriteria.OVERALL -> o2.avgOverall.toDouble().compareTo(o1.avgOverall.toDouble())
+                SortingCriteria.AMBIANCE -> o2.avgAmbience.toDouble().compareTo(o1.avgAmbience.toDouble())
+                SortingCriteria.CROWDING -> o2.avgCrowding.toDouble().compareTo(o1.avgCrowding.toDouble())
                 else -> 0
             }
         }
