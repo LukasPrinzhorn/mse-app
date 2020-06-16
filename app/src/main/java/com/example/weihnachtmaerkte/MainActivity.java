@@ -146,8 +146,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         assert mapFragment != null;
         mapFragment.getMapAsync(this);
 
-        retrieveDataFromFireBase();
-
         centerFab = findViewById(R.id.center_fab);
         centerFab.hide();
         centerFab.setImageResource(R.drawable.my_location);
@@ -230,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView.setCheckedItem(R.id.nav_explore);
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -254,8 +253,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.i("Search", "Perform search");
                 searchCoordinates(query);
-                return true;
+                return false;
             }
 
             @Override
@@ -305,6 +305,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         isLocationEnabled();
+
+        retrieveDataFromFireBase();
     }
 
     private void displayFab() {
