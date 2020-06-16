@@ -108,8 +108,8 @@ class PreviewFragment : Fragment(), PreviewRecyclerAdapter.OnMarketListener {
     private class PositionComparator internal constructor(private val referencePosition: LatLng) : Comparator<Market?> {
         override fun compare(o1: Market?, o2: Market?): Int {
             assert(o1 != null && o2 != null)
-            val distToMarket1 = hypot(referencePosition.longitude - o1!!.coordinates!![1], referencePosition.latitude - o1.coordinates!![0])
-            val distToMarket2 = hypot(referencePosition.longitude - o2!!.coordinates!![1], referencePosition.latitude - o2.coordinates!![0])
+            val distToMarket1 = hypot(referencePosition.longitude - o1!!.coordinates!![0], referencePosition.latitude - o1.coordinates!![1])
+            val distToMarket2 = hypot(referencePosition.longitude - o2!!.coordinates!![0], referencePosition.latitude - o2.coordinates!![1])
             //Log.i("Distance", o1.getName() + ": " + distToMarket1);
             //Log.i("Distance", o2.getName() + ": " + distToMarket2);
             return distToMarket1.compareTo(distToMarket2)

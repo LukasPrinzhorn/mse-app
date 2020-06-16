@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String marketId = ds.getKey();
                     Market market = getMarketData(ds);
-                    markers.add(map.addMarker(new MarkerOptions().position(new LatLng(market.getCoordinates()[0], market.getCoordinates()[1])).icon(candyCaneIcon)));
+                    markers.add(map.addMarker(new MarkerOptions().position(new LatLng(market.getCoordinates()[1], market.getCoordinates()[0])).icon(candyCaneIcon)));
                     markets.add(market);
                 }
             }
