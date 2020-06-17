@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    LocationListener locationListenerGPS = new LocationListener() {
+    final LocationListener locationListenerGPS = new LocationListener() {
         @Override
         public void onLocationChanged(android.location.Location location) {
             double latitude = location.getLatitude();
@@ -369,7 +369,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 markers.clear();
 
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String marketId = ds.getKey();
                     Market market = getMarketData(ds);
                     assert market.getCoordinates() != null;
                     markers.add(map.addMarker(new MarkerOptions().position(new LatLng(market.getCoordinates()[1], market.getCoordinates()[0])).icon(candyCaneIcon)));

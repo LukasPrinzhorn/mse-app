@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private static class RegisterUser {
-        public String username;
+        public final String username;
 
         RegisterUser(String username) {
             this.username = username;

@@ -56,7 +56,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
 
     private DrawerLayout drawer;
 
-    private List<SimpleUserDTO> friends = new ArrayList<>();
+    private final List<SimpleUserDTO> friends = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
