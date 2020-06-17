@@ -168,7 +168,7 @@ class DetailedMarketRateFragment : Fragment() {
 
         val SHARED_PREFERENCES = "shared_preferences"
         val sharedPreferences: SharedPreferences = requireActivity().getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        var username: String = ""
+        var username = ""
         username = if (sharedPreferences.contains(LoginActivity.USERNAME)) {
             sharedPreferences.getString(LoginActivity.USERNAME,null).toString()
         } else {
