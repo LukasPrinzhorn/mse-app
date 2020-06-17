@@ -71,17 +71,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-
-/*
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-*/
 
 import static com.example.weihnachtmaerkte.FriendsActivity.QR_CODE_PREFIX;
 import static com.example.weihnachtmaerkte.LoginActivity.SHARED_PREFERENCES;
