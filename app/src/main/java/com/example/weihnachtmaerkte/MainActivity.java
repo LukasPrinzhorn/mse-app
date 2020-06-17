@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
                         0);
             } else {
-                moveMapToPosition(new LatLng(48.210033, 16.363449), locationIcon);
+                moveMapToPosition(new LatLng(48.210033, 16.363449), null);
             }
         } else {
             final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             } else {
                 Toast.makeText(this, "GPS nicht aktiviert!", Toast.LENGTH_LONG).show();
                 centeredOnUser = false;
-                moveMapToPosition(new LatLng(48.210033, 16.363449), locationIcon);
+                moveMapToPosition(new LatLng(48.210033, 16.363449), null );
             }
 
         }
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         map = googleMap;
 
         map.setOnCameraMoveListener(() -> {
-            if (!movedByProgram && !(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
+            if (!movedByProgram && (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)) {
                 displayFab();
                 centeredOnUser = false;
             }
@@ -602,8 +602,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (markerIcon != null) {
             currentPositionMarker = map.addMarker(new MarkerOptions().position(position).icon(markerIcon));
             centerFab.hide();
+
         }
-        movedByProgram = true;
+
+        if(markerIcon != null && markerIcon.equals(navIcon)){
+            movedByProgram = true;
+        }
+
 
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition), new GoogleMap.CancelableCallback() {
             @Override
