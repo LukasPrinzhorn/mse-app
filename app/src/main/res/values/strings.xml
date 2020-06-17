@@ -11,7 +11,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_sign_in">Register</string>
+    <string name="action_sign_in">Registrieren</string>
 
     <!-- unused: <string name="freunde">Freunde:</string>-->
     <string name="title_activity_detailed_market">Übersicht</string>
