@@ -67,7 +67,6 @@ import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng currentSearchCoordinates;
 
     private LocationManager locationManager;
-    private Context mContext;
 
     private FloatingActionButton centerFab;
     boolean movedByProgram = false;
@@ -157,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
 
-        mContext = this;
+        Context mContext = this;
         locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
 
         initFilterButtons();
@@ -211,7 +209,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 centeredOnUser = true;
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 if (location != null) {
-                    assert location != null;
                     moveMapToPosition(new LatLng(location.getLatitude(), location.getLongitude()), navIcon);
                 } else {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -374,6 +371,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     String marketId = ds.getKey();
                     Market market = getMarketData(ds);
+                    assert market.getCoordinates() != null;
                     markers.add(map.addMarker(new MarkerOptions().position(new LatLng(market.getCoordinates()[1], market.getCoordinates()[0])).icon(candyCaneIcon)));
                     markets.add(market);
                 }

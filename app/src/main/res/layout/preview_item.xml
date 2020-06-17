@@ -92,7 +92,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@drawable/name_bg"
-                android:text="0km"
+                android:text="@string/distance_placeholder"
                 android:textColor="@color/textColor"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/market_image"
