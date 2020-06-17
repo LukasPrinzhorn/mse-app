@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.weihnachtmaerkte.BuildConfig
 import com.example.weihnachtmaerkte.MainActivity
 import com.example.weihnachtmaerkte.MainActivity.SortingCriteria
 import com.example.weihnachtmaerkte.R
@@ -100,7 +101,9 @@ class ListFragment : Fragment(), ListRecyclerAdapter.OnMarketListener {
 
     private class PositionComparator internal constructor(private val referencePosition: LatLng) : Comparator<Market?> {
         override fun compare(o1: Market?, o2: Market?): Int {
-            assert(o1 != null && o2 != null)
+            if (BuildConfig.DEBUG && !(o1 != null && o2 != null)) {
+                error("Assertion failed")
+            }
             val distToMarket1 = hypot(referencePosition.longitude - o1!!.coordinates!![0], referencePosition.latitude - o1.coordinates!![1])
             val distToMarket2 = hypot(referencePosition.longitude - o2!!.coordinates!![0], referencePosition.latitude - o2.coordinates!![1])
             //Log.i("Distance", o1.getName() + ": " + distToMarket1);

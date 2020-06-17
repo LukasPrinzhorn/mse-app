@@ -30,7 +30,6 @@
     <!-- Default Values -->
     <string name="default_market_rating">0</string>
     <string name="default_market_name">Not Known</string>
-    <string name="default_market_distance">1,2km</string>
     <string name="app_icon">App Icon</string>
     <string name="choose_username">Wähle einen Nutzernamen</string>
     <string name="person_icon">placeholder person icon</string>
