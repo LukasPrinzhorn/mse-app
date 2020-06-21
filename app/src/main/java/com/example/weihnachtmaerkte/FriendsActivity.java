@@ -157,7 +157,7 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
             firebaseDatabase.getReference("users/" + userId).child("friends").child(friendId).setValue(true);
             firebaseDatabase.getReference("users/" + friendId).child("friends").child(userId).setValue(true);
 
-            if(sharedPreferences.contains("dialogAccepted")) {
+            if(!sharedPreferences.contains("dialogAccepted")) {
                 Bitmap dialogueImage = BitmapFactory.decodeResource(getResources(), R.drawable.dialogue_image);
                 dialogueImage = Bitmap.createScaledBitmap(dialogueImage,1440,274, false);
 
@@ -175,6 +175,9 @@ public class FriendsActivity extends AppCompatActivity implements NavigationView
                 // Create the AlertDialog object and return it
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putBoolean("dialogAccepted", true);
+                editor.apply();
             }
 
         }
